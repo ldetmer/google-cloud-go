@@ -1,7 +1,7 @@
 {
   "clientLibrary": {
     "name": "cloud.google.com/go/analytics/admin/apiv1alpha",
-    "version": "0.25.2",
+    "version": "0.30.0",
     "language": "GO",
     "apis": [
       {
@@ -744,52 +744,6 @@
       ]
     },
     {
-      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateConnectedSiteTag_sync",
-      "title": "analyticsadmin CreateConnectedSiteTag Sample",
-      "description": "CreateConnectedSiteTag creates a connected site tag for a Universal Analytics property. You can\ncreate a maximum of 20 connected site tags per property.\nNote: This API cannot be used on GA4 properties.",
-      "file": "AnalyticsAdminClient/CreateConnectedSiteTag/main.go",
-      "language": "GO",
-      "clientMethod": {
-        "shortName": "CreateConnectedSiteTag",
-        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.CreateConnectedSiteTag",
-        "parameters": [
-          {
-            "type": "context.Context",
-            "name": "ctx"
-          },
-          {
-            "type": "adminpb.CreateConnectedSiteTagRequest",
-            "name": "req"
-          },
-          {
-            "type": "...gax.CallOption",
-            "name": "opts"
-          }
-        ],
-        "resultType": "*adminpb.CreateConnectedSiteTagResponse",
-        "client": {
-          "shortName": "AnalyticsAdminClient",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
-        },
-        "method": {
-          "shortName": "CreateConnectedSiteTag",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.CreateConnectedSiteTag",
-          "service": {
-            "shortName": "AnalyticsAdminService",
-            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
-          }
-        }
-      },
-      "origin": "API_DEFINITION",
-      "segments": [
-        {
-          "start": 18,
-          "end": 53,
-          "type": "FULL"
-        }
-      ]
-    },
-    {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateConversionEvent_sync",
       "title": "analyticsadmin CreateConversionEvent Sample",
       "description": "CreateConversionEvent deprecated: Use `CreateKeyEvent` instead.\nCreates a conversion event with the specified attributes.\n\n\nDeprecated: CreateConversionEvent may be removed in a future version.",
@@ -1390,7 +1344,7 @@
     {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateProperty_sync",
       "title": "analyticsadmin CreateProperty Sample",
-      "description": "CreateProperty creates an \"GA4\" property with the specified location and attributes.",
+      "description": "CreateProperty creates a Google Analytics property with the specified location and\nattributes.",
       "file": "AnalyticsAdminClient/CreateProperty/main.go",
       "language": "GO",
       "clientMethod": {
@@ -1418,6 +1372,52 @@
         "method": {
           "shortName": "CreateProperty",
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.CreateProperty",
+          "service": {
+            "shortName": "AnalyticsAdminService",
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateReportingDataAnnotation_sync",
+      "title": "analyticsadmin CreateReportingDataAnnotation Sample",
+      "description": "CreateReportingDataAnnotation creates a Reporting Data Annotation.",
+      "file": "AnalyticsAdminClient/CreateReportingDataAnnotation/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "CreateReportingDataAnnotation",
+        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.CreateReportingDataAnnotation",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.CreateReportingDataAnnotationRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.ReportingDataAnnotation",
+        "client": {
+          "shortName": "AnalyticsAdminClient",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
+        },
+        "method": {
+          "shortName": "CreateReportingDataAnnotation",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.CreateReportingDataAnnotation",
           "service": {
             "shortName": "AnalyticsAdminService",
             "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
@@ -1934,51 +1934,6 @@
       ]
     },
     {
-      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteConnectedSiteTag_sync",
-      "title": "analyticsadmin DeleteConnectedSiteTag Sample",
-      "description": "DeleteConnectedSiteTag deletes a connected site tag for a Universal Analytics property.\nNote: this has no effect on GA4 properties.",
-      "file": "AnalyticsAdminClient/DeleteConnectedSiteTag/main.go",
-      "language": "GO",
-      "clientMethod": {
-        "shortName": "DeleteConnectedSiteTag",
-        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.DeleteConnectedSiteTag",
-        "parameters": [
-          {
-            "type": "context.Context",
-            "name": "ctx"
-          },
-          {
-            "type": "adminpb.DeleteConnectedSiteTagRequest",
-            "name": "req"
-          },
-          {
-            "type": "...gax.CallOption",
-            "name": "opts"
-          }
-        ],
-        "client": {
-          "shortName": "AnalyticsAdminClient",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
-        },
-        "method": {
-          "shortName": "DeleteConnectedSiteTag",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.DeleteConnectedSiteTag",
-          "service": {
-            "shortName": "AnalyticsAdminService",
-            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
-          }
-        }
-      },
-      "origin": "API_DEFINITION",
-      "segments": [
-        {
-          "start": 18,
-          "end": 51,
-          "type": "FULL"
-        }
-      ]
-    },
-    {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteConversionEvent_sync",
       "title": "analyticsadmin DeleteConversionEvent Sample",
       "description": "DeleteConversionEvent deprecated: Use `DeleteKeyEvent` instead.\nDeletes a conversion event in a property.\n\n\nDeprecated: DeleteConversionEvent may be removed in a future version.",
@@ -2476,7 +2431,7 @@
     {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteProperty_sync",
       "title": "analyticsadmin DeleteProperty Sample",
-      "description": "DeleteProperty marks target Property as soft-deleted (ie: \"trashed\") and returns it.\n\nThis API does not have a method to restore soft-deleted properties.\nHowever, they can be restored using the Trash Can UI.\n\nIf the properties are not restored before the expiration time, the Property\nand all child resources (eg: GoogleAdsLinks, Streams, AccessBindings)\nwill be permanently purged.\nhttps: //support.google.com/analytics/answer/6154772\n\nReturns an error if the target is not found, or is not a GA4 Property.",
+      "description": "DeleteProperty marks target Property as soft-deleted (ie: \"trashed\") and returns it.\n\nThis API does not have a method to restore soft-deleted properties.\nHowever, they can be restored using the Trash Can UI.\n\nIf the properties are not restored before the expiration time, the Property\nand all child resources (eg: GoogleAdsLinks, Streams, AccessBindings)\nwill be permanently purged.\nhttps: //support.google.com/analytics/answer/6154772\n\nReturns an error if the target is not found.",
       "file": "AnalyticsAdminClient/DeleteProperty/main.go",
       "language": "GO",
       "clientMethod": {
@@ -2515,6 +2470,51 @@
         {
           "start": 18,
           "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_DeleteReportingDataAnnotation_sync",
+      "title": "analyticsadmin DeleteReportingDataAnnotation Sample",
+      "description": "DeleteReportingDataAnnotation deletes a Reporting Data Annotation.",
+      "file": "AnalyticsAdminClient/DeleteReportingDataAnnotation/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "DeleteReportingDataAnnotation",
+        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.DeleteReportingDataAnnotation",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.DeleteReportingDataAnnotationRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "client": {
+          "shortName": "AnalyticsAdminClient",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
+        },
+        "method": {
+          "shortName": "DeleteReportingDataAnnotation",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.DeleteReportingDataAnnotation",
+          "service": {
+            "shortName": "AnalyticsAdminService",
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 51,
           "type": "FULL"
         }
       ]
@@ -2695,98 +2695,6 @@
         {
           "start": 18,
           "end": 51,
-          "type": "FULL"
-        }
-      ]
-    },
-    {
-      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_FetchAutomatedGa4ConfigurationOptOut_sync",
-      "title": "analyticsadmin FetchAutomatedGa4ConfigurationOptOut Sample",
-      "description": "FetchAutomatedGa4ConfigurationOptOut fetches the opt out status for the automated GA4 setup process for a UA\nproperty.\nNote: this has no effect on GA4 property.",
-      "file": "AnalyticsAdminClient/FetchAutomatedGa4ConfigurationOptOut/main.go",
-      "language": "GO",
-      "clientMethod": {
-        "shortName": "FetchAutomatedGa4ConfigurationOptOut",
-        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.FetchAutomatedGa4ConfigurationOptOut",
-        "parameters": [
-          {
-            "type": "context.Context",
-            "name": "ctx"
-          },
-          {
-            "type": "adminpb.FetchAutomatedGa4ConfigurationOptOutRequest",
-            "name": "req"
-          },
-          {
-            "type": "...gax.CallOption",
-            "name": "opts"
-          }
-        ],
-        "resultType": "*adminpb.FetchAutomatedGa4ConfigurationOptOutResponse",
-        "client": {
-          "shortName": "AnalyticsAdminClient",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
-        },
-        "method": {
-          "shortName": "FetchAutomatedGa4ConfigurationOptOut",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.FetchAutomatedGa4ConfigurationOptOut",
-          "service": {
-            "shortName": "AnalyticsAdminService",
-            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
-          }
-        }
-      },
-      "origin": "API_DEFINITION",
-      "segments": [
-        {
-          "start": 18,
-          "end": 53,
-          "type": "FULL"
-        }
-      ]
-    },
-    {
-      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_FetchConnectedGa4Property_sync",
-      "title": "analyticsadmin FetchConnectedGa4Property Sample",
-      "description": "FetchConnectedGa4Property given a specified UA property, looks up the GA4 property connected to it.\nNote: this cannot be used with GA4 properties.",
-      "file": "AnalyticsAdminClient/FetchConnectedGa4Property/main.go",
-      "language": "GO",
-      "clientMethod": {
-        "shortName": "FetchConnectedGa4Property",
-        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.FetchConnectedGa4Property",
-        "parameters": [
-          {
-            "type": "context.Context",
-            "name": "ctx"
-          },
-          {
-            "type": "adminpb.FetchConnectedGa4PropertyRequest",
-            "name": "req"
-          },
-          {
-            "type": "...gax.CallOption",
-            "name": "opts"
-          }
-        ],
-        "resultType": "*adminpb.FetchConnectedGa4PropertyResponse",
-        "client": {
-          "shortName": "AnalyticsAdminClient",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
-        },
-        "method": {
-          "shortName": "FetchConnectedGa4Property",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.FetchConnectedGa4Property",
-          "service": {
-            "shortName": "AnalyticsAdminService",
-            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
-          }
-        }
-      },
-      "origin": "API_DEFINITION",
-      "segments": [
-        {
-          "start": 18,
-          "end": 53,
           "type": "FULL"
         }
       ]
@@ -3898,7 +3806,7 @@
     {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetMeasurementProtocolSecret_sync",
       "title": "analyticsadmin GetMeasurementProtocolSecret Sample",
-      "description": "GetMeasurementProtocolSecret lookup for a single \"GA4\" MeasurementProtocolSecret.",
+      "description": "GetMeasurementProtocolSecret lookup for a single MeasurementProtocolSecret.",
       "file": "AnalyticsAdminClient/GetMeasurementProtocolSecret/main.go",
       "language": "GO",
       "clientMethod": {
@@ -3944,7 +3852,7 @@
     {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetProperty_sync",
       "title": "analyticsadmin GetProperty Sample",
-      "description": "GetProperty lookup for a single \"GA4\" Property.",
+      "description": "GetProperty lookup for a single GA Property.",
       "file": "AnalyticsAdminClient/GetProperty/main.go",
       "language": "GO",
       "clientMethod": {
@@ -3972,6 +3880,98 @@
         "method": {
           "shortName": "GetProperty",
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.GetProperty",
+          "service": {
+            "shortName": "AnalyticsAdminService",
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetReportingDataAnnotation_sync",
+      "title": "analyticsadmin GetReportingDataAnnotation Sample",
+      "description": "GetReportingDataAnnotation lookup a single Reporting Data Annotation.",
+      "file": "AnalyticsAdminClient/GetReportingDataAnnotation/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "GetReportingDataAnnotation",
+        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.GetReportingDataAnnotation",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.GetReportingDataAnnotationRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.ReportingDataAnnotation",
+        "client": {
+          "shortName": "AnalyticsAdminClient",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
+        },
+        "method": {
+          "shortName": "GetReportingDataAnnotation",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.GetReportingDataAnnotation",
+          "service": {
+            "shortName": "AnalyticsAdminService",
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetReportingIdentitySettings_sync",
+      "title": "analyticsadmin GetReportingIdentitySettings Sample",
+      "description": "GetReportingIdentitySettings returns the singleton data retention settings for this property.",
+      "file": "AnalyticsAdminClient/GetReportingIdentitySettings/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "GetReportingIdentitySettings",
+        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.GetReportingIdentitySettings",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.GetReportingIdentitySettingsRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.ReportingIdentitySettings",
+        "client": {
+          "shortName": "AnalyticsAdminClient",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
+        },
+        "method": {
+          "shortName": "GetReportingIdentitySettings",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.GetReportingIdentitySettings",
           "service": {
             "shortName": "AnalyticsAdminService",
             "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
@@ -4172,6 +4172,52 @@
       ]
     },
     {
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_GetSubpropertySyncConfig_sync",
+      "title": "analyticsadmin GetSubpropertySyncConfig Sample",
+      "description": "GetSubpropertySyncConfig lookup for a single `SubpropertySyncConfig`.",
+      "file": "AnalyticsAdminClient/GetSubpropertySyncConfig/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "GetSubpropertySyncConfig",
+        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.GetSubpropertySyncConfig",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.GetSubpropertySyncConfigRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.SubpropertySyncConfig",
+        "client": {
+          "shortName": "AnalyticsAdminClient",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
+        },
+        "method": {
+          "shortName": "GetSubpropertySyncConfig",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.GetSubpropertySyncConfig",
+          "service": {
+            "shortName": "AnalyticsAdminService",
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListAccessBindings_sync",
       "title": "analyticsadmin ListAccessBindings Sample",
       "description": "ListAccessBindings lists all access bindings on an account or property.",
@@ -4266,7 +4312,7 @@
     {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListAccounts_sync",
       "title": "analyticsadmin ListAccounts Sample",
-      "description": "ListAccounts returns all accounts accessible by the caller.\n\nNote that these accounts might not currently have GA4 properties.\nSoft-deleted (ie: \"trashed\") accounts are excluded by default.\nReturns an empty list if no relevant accounts are found.",
+      "description": "ListAccounts returns all accounts accessible by the caller.\n\nNote that these accounts might not currently have GA properties.\nSoft-deleted (ie: \"trashed\") accounts are excluded by default.\nReturns an empty list if no relevant accounts are found.",
       "file": "AnalyticsAdminClient/ListAccounts/main.go",
       "language": "GO",
       "clientMethod": {
@@ -4535,52 +4581,6 @@
         {
           "start": 18,
           "end": 66,
-          "type": "FULL"
-        }
-      ]
-    },
-    {
-      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListConnectedSiteTags_sync",
-      "title": "analyticsadmin ListConnectedSiteTags Sample",
-      "description": "ListConnectedSiteTags lists the connected site tags for a Universal Analytics property. A maximum\nof 20 connected site tags will be returned. Note: this has no effect on GA4\nproperty.",
-      "file": "AnalyticsAdminClient/ListConnectedSiteTags/main.go",
-      "language": "GO",
-      "clientMethod": {
-        "shortName": "ListConnectedSiteTags",
-        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.ListConnectedSiteTags",
-        "parameters": [
-          {
-            "type": "context.Context",
-            "name": "ctx"
-          },
-          {
-            "type": "adminpb.ListConnectedSiteTagsRequest",
-            "name": "req"
-          },
-          {
-            "type": "...gax.CallOption",
-            "name": "opts"
-          }
-        ],
-        "resultType": "*adminpb.ListConnectedSiteTagsResponse",
-        "client": {
-          "shortName": "AnalyticsAdminClient",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
-        },
-        "method": {
-          "shortName": "ListConnectedSiteTags",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.ListConnectedSiteTags",
-          "service": {
-            "shortName": "AnalyticsAdminService",
-            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
-          }
-        }
-      },
-      "origin": "API_DEFINITION",
-      "segments": [
-        {
-          "start": 18,
-          "end": 53,
           "type": "FULL"
         }
       ]
@@ -5186,7 +5186,7 @@
     {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListProperties_sync",
       "title": "analyticsadmin ListProperties Sample",
-      "description": "ListProperties returns child Properties under the specified parent Account.\n\nOnly \"GA4\" properties will be returned.\nProperties will be excluded if the caller does not have access.\nSoft-deleted (ie: \"trashed\") properties are excluded by default.\nReturns an empty list if no relevant properties are found.",
+      "description": "ListProperties returns child Properties under the specified parent Account.\n\nProperties will be excluded if the caller does not have access.\nSoft-deleted (ie: \"trashed\") properties are excluded by default.\nReturns an empty list if no relevant properties are found.",
       "file": "AnalyticsAdminClient/ListProperties/main.go",
       "language": "GO",
       "clientMethod": {
@@ -5214,6 +5214,52 @@
         "method": {
           "shortName": "ListProperties",
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.ListProperties",
+          "service": {
+            "shortName": "AnalyticsAdminService",
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 66,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListReportingDataAnnotations_sync",
+      "title": "analyticsadmin ListReportingDataAnnotations Sample",
+      "description": "ListReportingDataAnnotations list all Reporting Data Annotations on a property.",
+      "file": "AnalyticsAdminClient/ListReportingDataAnnotations/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "ListReportingDataAnnotations",
+        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.ListReportingDataAnnotations",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.ListReportingDataAnnotationsRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "ReportingDataAnnotationIterator",
+        "client": {
+          "shortName": "AnalyticsAdminClient",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
+        },
+        "method": {
+          "shortName": "ListReportingDataAnnotations",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.ListReportingDataAnnotations",
           "service": {
             "shortName": "AnalyticsAdminService",
             "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
@@ -5414,6 +5460,52 @@
       ]
     },
     {
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ListSubpropertySyncConfigs_sync",
+      "title": "analyticsadmin ListSubpropertySyncConfigs Sample",
+      "description": "ListSubpropertySyncConfigs list all `SubpropertySyncConfig` resources for a property.",
+      "file": "AnalyticsAdminClient/ListSubpropertySyncConfigs/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "ListSubpropertySyncConfigs",
+        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.ListSubpropertySyncConfigs",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.ListSubpropertySyncConfigsRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "SubpropertySyncConfigIterator",
+        "client": {
+          "shortName": "AnalyticsAdminClient",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
+        },
+        "method": {
+          "shortName": "ListSubpropertySyncConfigs",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.ListSubpropertySyncConfigs",
+          "service": {
+            "shortName": "AnalyticsAdminService",
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 66,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_ProvisionAccountTicket_sync",
       "title": "analyticsadmin ProvisionAccountTicket Sample",
       "description": "ProvisionAccountTicket requests a ticket for creating an account.",
@@ -5553,7 +5645,7 @@
     {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_RunAccessReport_sync",
       "title": "analyticsadmin RunAccessReport Sample",
-      "description": "RunAccessReport returns a customized report of data access records. The report provides\nrecords of each time a user reads Google Analytics reporting data. Access\nrecords are retained for up to 2 years.\n\nData Access Reports can be requested for a property. Reports may be\nrequested for any property, but dimensions that aren't related to quota can\nonly be requested on Google Analytics 360 properties. This method is only\navailable to Administrators.\n\nThese data access records include GA4 UI Reporting, GA4 UI Explorations,\nGA4 Data API, and other products like Firebase & Admob that can retrieve\ndata from Google Analytics through a linkage. These records don't include\nproperty configuration changes like adding a stream or changing a\nproperty's time zone. For configuration change history, see\n[searchChangeHistoryEvents](https: //developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents).",
+      "description": "RunAccessReport returns a customized report of data access records. The report provides\nrecords of each time a user reads Google Analytics reporting data. Access\nrecords are retained for up to 2 years.\n\nData Access Reports can be requested for a property. Reports may be\nrequested for any property, but dimensions that aren't related to quota can\nonly be requested on Google Analytics 360 properties. This method is only\navailable to Administrators.\n\nThese data access records include GA UI Reporting, GA UI Explorations,\nGA Data API, and other products like Firebase & Admob that can retrieve\ndata from Google Analytics through a linkage. These records don't include\nproperty configuration changes like adding a stream or changing a\nproperty's time zone. For configuration change history, see\n[searchChangeHistoryEvents](https: //developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents).\n\nTo give your feedback on this API, complete the [Google Analytics Access\nReports\nfeedback](https: //docs.google.com/forms/d/e/1FAIpQLSdmEBUrMzAEdiEKk5TV5dEHvDUZDRlgWYdQdAeSdtR4hVjEhw/viewform)\nform.",
       "file": "AnalyticsAdminClient/RunAccessReport/main.go",
       "language": "GO",
       "clientMethod": {
@@ -5599,7 +5691,7 @@
     {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_SearchChangeHistoryEvents_sync",
       "title": "analyticsadmin SearchChangeHistoryEvents Sample",
-      "description": "SearchChangeHistoryEvents searches through all changes to an account or its children given the\nspecified set of filters.",
+      "description": "SearchChangeHistoryEvents searches through all changes to an account or its children given the\nspecified set of filters.\n\nOnly returns the subset of changes supported by the API. The UI may return\nadditional changes.",
       "file": "AnalyticsAdminClient/SearchChangeHistoryEvents/main.go",
       "language": "GO",
       "clientMethod": {
@@ -5643,21 +5735,21 @@
       ]
     },
     {
-      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_SetAutomatedGa4ConfigurationOptOut_sync",
-      "title": "analyticsadmin SetAutomatedGa4ConfigurationOptOut Sample",
-      "description": "SetAutomatedGa4ConfigurationOptOut sets the opt out status for the automated GA4 setup process for a UA\nproperty.\nNote: this has no effect on GA4 property.",
-      "file": "AnalyticsAdminClient/SetAutomatedGa4ConfigurationOptOut/main.go",
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_SubmitUserDeletion_sync",
+      "title": "analyticsadmin SubmitUserDeletion Sample",
+      "description": "SubmitUserDeletion submits a request for user deletion for a property.",
+      "file": "AnalyticsAdminClient/SubmitUserDeletion/main.go",
       "language": "GO",
       "clientMethod": {
-        "shortName": "SetAutomatedGa4ConfigurationOptOut",
-        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.SetAutomatedGa4ConfigurationOptOut",
+        "shortName": "SubmitUserDeletion",
+        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.SubmitUserDeletion",
         "parameters": [
           {
             "type": "context.Context",
             "name": "ctx"
           },
           {
-            "type": "adminpb.SetAutomatedGa4ConfigurationOptOutRequest",
+            "type": "adminpb.SubmitUserDeletionRequest",
             "name": "req"
           },
           {
@@ -5665,14 +5757,14 @@
             "name": "opts"
           }
         ],
-        "resultType": "*adminpb.SetAutomatedGa4ConfigurationOptOutResponse",
+        "resultType": "*adminpb.SubmitUserDeletionResponse",
         "client": {
           "shortName": "AnalyticsAdminClient",
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
         },
         "method": {
-          "shortName": "SetAutomatedGa4ConfigurationOptOut",
-          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.SetAutomatedGa4ConfigurationOptOut",
+          "shortName": "SubmitUserDeletion",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.SubmitUserDeletion",
           "service": {
             "shortName": "AnalyticsAdminService",
             "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
@@ -6747,6 +6839,52 @@
       ]
     },
     {
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateReportingDataAnnotation_sync",
+      "title": "analyticsadmin UpdateReportingDataAnnotation Sample",
+      "description": "UpdateReportingDataAnnotation updates a Reporting Data Annotation.",
+      "file": "AnalyticsAdminClient/UpdateReportingDataAnnotation/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "UpdateReportingDataAnnotation",
+        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.UpdateReportingDataAnnotation",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.UpdateReportingDataAnnotationRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.ReportingDataAnnotation",
+        "client": {
+          "shortName": "AnalyticsAdminClient",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
+        },
+        "method": {
+          "shortName": "UpdateReportingDataAnnotation",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.UpdateReportingDataAnnotation",
+          "service": {
+            "shortName": "AnalyticsAdminService",
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
       "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateSKAdNetworkConversionValueSchema_sync",
       "title": "analyticsadmin UpdateSKAdNetworkConversionValueSchema Sample",
       "description": "UpdateSKAdNetworkConversionValueSchema updates a SKAdNetworkConversionValueSchema.",
@@ -6869,6 +7007,52 @@
         "method": {
           "shortName": "UpdateSubpropertyEventFilter",
           "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.UpdateSubpropertyEventFilter",
+          "service": {
+            "shortName": "AnalyticsAdminService",
+            "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "analyticsadmin_v1alpha_generated_AnalyticsAdminService_UpdateSubpropertySyncConfig_sync",
+      "title": "analyticsadmin UpdateSubpropertySyncConfig Sample",
+      "description": "UpdateSubpropertySyncConfig updates a `SubpropertySyncConfig`.",
+      "file": "AnalyticsAdminClient/UpdateSubpropertySyncConfig/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "UpdateSubpropertySyncConfig",
+        "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient.UpdateSubpropertySyncConfig",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.UpdateSubpropertySyncConfigRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.SubpropertySyncConfig",
+        "client": {
+          "shortName": "AnalyticsAdminClient",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminClient"
+        },
+        "method": {
+          "shortName": "UpdateSubpropertySyncConfig",
+          "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService.UpdateSubpropertySyncConfig",
           "service": {
             "shortName": "AnalyticsAdminService",
             "fullName": "google.analytics.admin.v1alpha.AnalyticsAdminService"

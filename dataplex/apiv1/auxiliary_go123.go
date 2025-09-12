@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -83,6 +83,12 @@ func (it *DataTaxonomyIterator) All() iter.Seq2[*dataplexpb.DataTaxonomy, error]
 
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
+func (it *EncryptionConfigIterator) All() iter.Seq2[*dataplexpb.EncryptionConfig, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
 func (it *EntityIterator) All() iter.Seq2[*dataplexpb.Entity, error] {
 	return iterator.RangeAdapter(it.Next)
 }
@@ -113,6 +119,24 @@ func (it *EnvironmentIterator) All() iter.Seq2[*dataplexpb.Environment, error] {
 
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
+func (it *GlossaryCategoryIterator) All() iter.Seq2[*dataplexpb.GlossaryCategory, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *GlossaryIterator) All() iter.Seq2[*dataplexpb.Glossary, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *GlossaryTermIterator) All() iter.Seq2[*dataplexpb.GlossaryTerm, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
 func (it *JobIterator) All() iter.Seq2[*dataplexpb.Job, error] {
 	return iterator.RangeAdapter(it.Next)
 }
@@ -126,6 +150,12 @@ func (it *LakeIterator) All() iter.Seq2[*dataplexpb.Lake, error] {
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
 func (it *LocationIterator) All() iter.Seq2[*locationpb.Location, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *MetadataJobIterator) All() iter.Seq2[*dataplexpb.MetadataJob, error] {
 	return iterator.RangeAdapter(it.Next)
 }
 

@@ -546,6 +546,11 @@
                 "GenerateStatelessSummary"
               ]
             },
+            "GenerateSuggestions": {
+              "methods": [
+                "GenerateSuggestions"
+              ]
+            },
             "GetConversation": {
               "methods": [
                 "GetConversation"
@@ -559,6 +564,11 @@
             "GetOperation": {
               "methods": [
                 "GetOperation"
+              ]
+            },
+            "IngestContextReferences": {
+              "methods": [
+                "IngestContextReferences"
               ]
             },
             "ListConversations": {
@@ -626,6 +636,11 @@
                 "GenerateStatelessSummary"
               ]
             },
+            "GenerateSuggestions": {
+              "methods": [
+                "GenerateSuggestions"
+              ]
+            },
             "GetConversation": {
               "methods": [
                 "GetConversation"
@@ -639,6 +654,11 @@
             "GetOperation": {
               "methods": [
                 "GetOperation"
+              ]
+            },
+            "IngestContextReferences": {
+              "methods": [
+                "IngestContextReferences"
               ]
             },
             "ListConversations": {
@@ -1811,6 +1831,110 @@
         }
       }
     },
+    "PhoneNumbers": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "PhoneNumbersClient",
+          "rpcs": {
+            "CancelOperation": {
+              "methods": [
+                "CancelOperation"
+              ]
+            },
+            "DeletePhoneNumber": {
+              "methods": [
+                "DeletePhoneNumber"
+              ]
+            },
+            "GetLocation": {
+              "methods": [
+                "GetLocation"
+              ]
+            },
+            "GetOperation": {
+              "methods": [
+                "GetOperation"
+              ]
+            },
+            "ListLocations": {
+              "methods": [
+                "ListLocations"
+              ]
+            },
+            "ListOperations": {
+              "methods": [
+                "ListOperations"
+              ]
+            },
+            "ListPhoneNumbers": {
+              "methods": [
+                "ListPhoneNumbers"
+              ]
+            },
+            "UndeletePhoneNumber": {
+              "methods": [
+                "UndeletePhoneNumber"
+              ]
+            },
+            "UpdatePhoneNumber": {
+              "methods": [
+                "UpdatePhoneNumber"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "PhoneNumbersClient",
+          "rpcs": {
+            "CancelOperation": {
+              "methods": [
+                "CancelOperation"
+              ]
+            },
+            "DeletePhoneNumber": {
+              "methods": [
+                "DeletePhoneNumber"
+              ]
+            },
+            "GetLocation": {
+              "methods": [
+                "GetLocation"
+              ]
+            },
+            "GetOperation": {
+              "methods": [
+                "GetOperation"
+              ]
+            },
+            "ListLocations": {
+              "methods": [
+                "ListLocations"
+              ]
+            },
+            "ListOperations": {
+              "methods": [
+                "ListOperations"
+              ]
+            },
+            "ListPhoneNumbers": {
+              "methods": [
+                "ListPhoneNumbers"
+              ]
+            },
+            "UndeletePhoneNumber": {
+              "methods": [
+                "UndeletePhoneNumber"
+              ]
+            },
+            "UpdatePhoneNumber": {
+              "methods": [
+                "UpdatePhoneNumber"
+              ]
+            }
+          }
+        }
+      }
+    },
     "SessionEntityTypes": {
       "clients": {
         "grpc": {
@@ -2003,6 +2127,120 @@
             "StreamingDetectIntent": {
               "methods": [
                 "StreamingDetectIntent"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "SipTrunks": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SipTrunksClient",
+          "rpcs": {
+            "CancelOperation": {
+              "methods": [
+                "CancelOperation"
+              ]
+            },
+            "CreateSipTrunk": {
+              "methods": [
+                "CreateSipTrunk"
+              ]
+            },
+            "DeleteSipTrunk": {
+              "methods": [
+                "DeleteSipTrunk"
+              ]
+            },
+            "GetLocation": {
+              "methods": [
+                "GetLocation"
+              ]
+            },
+            "GetOperation": {
+              "methods": [
+                "GetOperation"
+              ]
+            },
+            "GetSipTrunk": {
+              "methods": [
+                "GetSipTrunk"
+              ]
+            },
+            "ListLocations": {
+              "methods": [
+                "ListLocations"
+              ]
+            },
+            "ListOperations": {
+              "methods": [
+                "ListOperations"
+              ]
+            },
+            "ListSipTrunks": {
+              "methods": [
+                "ListSipTrunks"
+              ]
+            },
+            "UpdateSipTrunk": {
+              "methods": [
+                "UpdateSipTrunk"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SipTrunksClient",
+          "rpcs": {
+            "CancelOperation": {
+              "methods": [
+                "CancelOperation"
+              ]
+            },
+            "CreateSipTrunk": {
+              "methods": [
+                "CreateSipTrunk"
+              ]
+            },
+            "DeleteSipTrunk": {
+              "methods": [
+                "DeleteSipTrunk"
+              ]
+            },
+            "GetLocation": {
+              "methods": [
+                "GetLocation"
+              ]
+            },
+            "GetOperation": {
+              "methods": [
+                "GetOperation"
+              ]
+            },
+            "GetSipTrunk": {
+              "methods": [
+                "GetSipTrunk"
+              ]
+            },
+            "ListLocations": {
+              "methods": [
+                "ListLocations"
+              ]
+            },
+            "ListOperations": {
+              "methods": [
+                "ListOperations"
+              ]
+            },
+            "ListSipTrunks": {
+              "methods": [
+                "ListSipTrunks"
+              ]
+            },
+            "UpdateSipTrunk": {
+              "methods": [
+                "UpdateSipTrunk"
               ]
             }
           }

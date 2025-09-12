@@ -1,6 +1,295 @@
 # Changes
 
 
+## [1.27.0](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.26.0...dataplex/v1.27.0) (2025-09-11)
+
+
+### Features
+
+* **dataplex:** A new field `catalog_publishing_enabled` is added to message `.google.cloud.dataplex.v1.DataQualitySpec` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `catalog_publishing_status` is added to message `.google.cloud.dataplex.v1.DataQualityResult` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `catalog_publishing_status` is added to message `.google.cloud.dataplex.v1.DataScanEvent` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `created_entry_links` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `deleted_entry_links` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `dimensions` is added to message `.google.cloud.dataplex.v1.DataQualityColumnResult` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `entry_link_types` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `entry_link` is added to message `.google.cloud.dataplex.v1.ImportItem` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `glossaries` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `passed` is added to message `.google.cloud.dataplex.v1.DataQualityColumnResult` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `project` is added to message `.google.cloud.dataplex.v1.DataDiscoverySpec` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `referenced_entry_scopes` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new field `unchanged_entry_links` is added to message `.google.cloud.dataplex.v1.MetadataJob` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `CreateEntryLinkRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `CreateGlossaryCategoryRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `CreateGlossaryRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `CreateGlossaryTermRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `DataScanCatalogPublishingStatus` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `DeleteEntryLinkRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `DeleteGlossaryCategoryRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `DeleteGlossaryRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `DeleteGlossaryTermRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `EntryLink` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `GetEntryLinkRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `GetGlossaryCategoryRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `GetGlossaryRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `GetGlossaryTermRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `Glossary` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `GlossaryCategory` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `GlossaryTerm` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `ListGlossariesRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `ListGlossariesResponse` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `ListGlossaryCategoriesRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `ListGlossaryCategoriesResponse` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `ListGlossaryTermsRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `ListGlossaryTermsResponse` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `UpdateGlossaryCategoryRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `UpdateGlossaryRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new message `UpdateGlossaryTermRequest` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new method `CreateEntryLink` is added to service `CatalogService` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new method `DeleteEntryLink` is added to service `CatalogService` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new method `GetEntryLink` is added to service `CatalogService` ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new resource_definition `dataplex.googleapis.com/EntryLink` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new resource_definition `dataplex.googleapis.com/Glossary` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new resource_definition `dataplex.googleapis.com/GlossaryCategory` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new resource_definition `dataplex.googleapis.com/GlossaryTerm` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A new service `BusinessGlossaryService` is added ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+
+
+### Documentation
+
+* **dataplex:** A comment for enum value `ABORTED` in enum `State` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for enum value `CREATED` in enum `State` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for enum value `FULL` in enum `SyncMode` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for enum value `TASK_CONFIG` in enum `ExecutionTrigger` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for enum value `TASK_CONFIG` in enum `Trigger` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `alternate_use_permission` in message `.google.cloud.dataplex.v1.AspectType` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `alternate_use_permission` in message `.google.cloud.dataplex.v1.EntryType` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `aspect_keys` in message `.google.cloud.dataplex.v1.ImportItem` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `average_length` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `average` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `average` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `count` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `create_time` in message `.google.cloud.dataplex.v1.Entry` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `dimension` in message `.google.cloud.dataplex.v1.DataQualityRule` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `distinct_ratio` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `end` in message `.google.cloud.dataplex.v1.ScannedData` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `entity` in message `.google.cloud.dataplex.v1.DataSource` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `field` in message `.google.cloud.dataplex.v1.ScannedData` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `fields` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `image_version` in message `.google.cloud.dataplex.v1.Environment` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `max_length` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `max` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `max` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `min_length` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `min` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `min` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `mode` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `name` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `name` in message `.google.cloud.dataplex.v1.DataQualityDimension` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `name` in message `.google.cloud.dataplex.v1.DataScan` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `name` in message `.google.cloud.dataplex.v1.DataScanJob` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `name` in message `.google.cloud.dataplex.v1.DeleteDataScanRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `name` in message `.google.cloud.dataplex.v1.GetDataScanJobRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `name` in message `.google.cloud.dataplex.v1.GetDataScanRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `name` in message `.google.cloud.dataplex.v1.RunDataScanRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `name` in message `.google.cloud.dataplex.v1.SearchEntriesRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `null_ratio` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `order_by` in message `.google.cloud.dataplex.v1.SearchEntriesRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `output_path` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `parent` in message `.google.cloud.dataplex.v1.CreateDataScanRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `parent` in message `.google.cloud.dataplex.v1.CreateEntryGroupRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `parent` in message `.google.cloud.dataplex.v1.CreateLakeRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `parent` in message `.google.cloud.dataplex.v1.ListDataScanJobsRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `parent` in message `.google.cloud.dataplex.v1.ListDataScansRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `parent` in message `.google.cloud.dataplex.v1.ListDataTaxonomiesRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `parent` in message `.google.cloud.dataplex.v1.ListLakesRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `profile` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `profile` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `quartiles` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `quartiles` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `query` in message `.google.cloud.dataplex.v1.SearchEntriesRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `ratio` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `resource` in message `.google.cloud.dataplex.v1.DataSource` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `results_table` in message `.google.cloud.dataplex.v1.DataProfileSpec` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `row_count` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `row_filter` in message `.google.cloud.dataplex.v1.DataProfileSpec` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `rule` in message `.google.cloud.dataplex.v1.GenerateDataQualityRulesResponse` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `scanned_data` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `standard_deviation` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `standard_deviation` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `start` in message `.google.cloud.dataplex.v1.ScannedData` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `top_n_values` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `type` in message `.google.cloud.dataplex.v1.AspectType` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `type` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `update_mask` in message `.google.cloud.dataplex.v1.ImportItem` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `update_time` in message `.google.cloud.dataplex.v1.Entry` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `user_managed` in message `.google.cloud.dataplex.v1.Schema` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for field `value` in message `.google.cloud.dataplex.v1.DataProfileResult` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for message `AspectType` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for message `DeleteAspectTypeRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for message `DeleteEntryTypeRequest` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for method `CreateMetadataJob` in service `CatalogService` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for service `CatalogService` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for service `CmekService` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **dataplex:** A comment for service `ContentService` is changed ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+
+## [1.26.0](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.25.3...dataplex/v1.26.0) (2025-07-09)
+
+
+### Features
+
+* **dataplex:** A new field `semantic_search` is added to `message.google.cloud.dataplex.v1.SearchEntriesRequest` ([98ba6f0](https://github.com/googleapis/google-cloud-go/commit/98ba6f06e69685bca510ca85c12124434f9ba1e8))
+
+## [1.25.3](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.25.2...dataplex/v1.25.3) (2025-05-13)
+
+
+### Documentation
+
+* **dataplex:** A comment for enum `SyncMode` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for enum value `EXPORT` in enum `Type` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for enum value `INTERNAL_ERROR` in enum `ErrorCode` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `aspect_types` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `encryption_config_id` in message `.google.cloud.dataplex.v1.CreateEncryptionConfigRequest` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `entry_groups` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `entry_types` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `error_message` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `exported_entries` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `organization_level` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `output_path` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `projects` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `scan_statistics` in message `.google.cloud.dataplex.v1.DataDiscoveryResult` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `scope` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for field `source_storage_uri` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for message `DataDiscoveryResult` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for message `MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for message `MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+* **dataplex:** A comment for message `MetadataJob` is changed ([909dcbd](https://github.com/googleapis/google-cloud-go/commit/909dcbdba2685cdf6c4727be3357918be99bc847))
+
+## [1.25.2](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.25.1...dataplex/v1.25.2) (2025-04-15)
+
+
+### Documentation
+
+* **dataplex:** Minor changes ([43bc515](https://github.com/googleapis/google-cloud-go/commit/43bc51591e4ffe7efc76449bb00e3747cda2c944))
+
+## [1.25.1](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.25.0...dataplex/v1.25.1) (2025-04-15)
+
+
+### Bug Fixes
+
+* **dataplex:** Update google.golang.org/api to 0.229.0 ([3319672](https://github.com/googleapis/google-cloud-go/commit/3319672f3dba84a7150772ccb5433e02dab7e201))
+
+## [1.25.0](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.24.0...dataplex/v1.25.0) (2025-04-15)
+
+
+### Features
+
+* **dataplex:** Add Data Discovery result statistics ([20f762c](https://github.com/googleapis/google-cloud-go/commit/20f762c528726a3f038d3e1f37e8a4952118badf))
+* **dataplex:** Add Data Discovery result statistics ([#11968](https://github.com/googleapis/google-cloud-go/issues/11968)) ([8d466c4](https://github.com/googleapis/google-cloud-go/commit/8d466c492fb1a15e1e857268397e795287fb844e))
+* **dataplex:** Add EntryLinkEvent for logs ([20f762c](https://github.com/googleapis/google-cloud-go/commit/20f762c528726a3f038d3e1f37e8a4952118badf))
+
+
+### Documentation
+
+* **dataplex:** Minor formatting changes ([8d466c4](https://github.com/googleapis/google-cloud-go/commit/8d466c492fb1a15e1e857268397e795287fb844e))
+
+## [1.24.0](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.23.1...dataplex/v1.24.0) (2025-03-27)
+
+
+### Features
+
+* **dataplex:** Add support for REST transport ([#11903](https://github.com/googleapis/google-cloud-go/issues/11903)) ([11f7222](https://github.com/googleapis/google-cloud-go/commit/11f72226e9694bd47adb4376fc557d7b74da3549))
+
+## [1.23.1](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.23.0...dataplex/v1.23.1) (2025-03-13)
+
+
+### Bug Fixes
+
+* **dataplex:** Update golang.org/x/net to 0.37.0 ([1144978](https://github.com/googleapis/google-cloud-go/commit/11449782c7fb4896bf8b8b9cde8e7441c84fb2fd))
+
+## [1.23.0](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.22.0...dataplex/v1.23.0) (2025-03-12)
+
+
+### Features
+
+* **dataplex:** Add custom BigQuery dataset location support in Auto Discovery ([484978a](https://github.com/googleapis/google-cloud-go/commit/484978aa8ad4213172e7ffefcfd939071b90ee14))
+* **dataplex:** DataTaxonomyService is now deprecated ([484978a](https://github.com/googleapis/google-cloud-go/commit/484978aa8ad4213172e7ffefcfd939071b90ee14))
+
+
+### Documentation
+
+* **dataplex:** Update the Dataplex Catalog proto to remove the info about schema changes ([484978a](https://github.com/googleapis/google-cloud-go/commit/484978aa8ad4213172e7ffefcfd939071b90ee14))
+
+## [1.22.0](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.21.0...dataplex/v1.22.0) (2025-02-12)
+
+
+### Features
+
+* **dataplex:** Added value `NONE` to  the `SyncMode` enum ([7e10021](https://github.com/googleapis/google-cloud-go/commit/7e100215974a28e556e9b801b4922a0e97bd98c1))
+
+
+### Documentation
+
+* **dataplex:** Modified various comments ([7e10021](https://github.com/googleapis/google-cloud-go/commit/7e100215974a28e556e9b801b4922a0e97bd98c1))
+
+## [1.21.0](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.20.0...dataplex/v1.21.0) (2025-01-02)
+
+
+### Features
+
+* **dataplex:** A new field `force` is added to message `.google.cloud.dataplex.v1.DeleteDataScanRequest` ([8ebcc6d](https://github.com/googleapis/google-cloud-go/commit/8ebcc6d276fc881c3914b5a7af3265a04e718e45))
+
+
+### Bug Fixes
+
+* **dataplex:** Update golang.org/x/net to v0.33.0 ([e9b0b69](https://github.com/googleapis/google-cloud-go/commit/e9b0b69644ea5b276cacff0a707e8a5e87efafc9))
+
+
+### Documentation
+
+* **dataplex:** Miscellaneous doc updates ([8ebcc6d](https://github.com/googleapis/google-cloud-go/commit/8ebcc6d276fc881c3914b5a7af3265a04e718e45))
+
+## [1.20.0](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.19.2...dataplex/v1.20.0) (2024-11-19)
+
+
+### Features
+
+* **dataplex:** A new enum `TableType` is added ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** A new field `datascan_id` is added to message `.google.cloud.dataplex.v1.DiscoveryEvent` ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** A new field `suspended` is added to DataScans ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** A new field `table` is added to message `.google.cloud.dataplex.v1.DiscoveryEvent` ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** A new message `TableDetails` is added ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add a DATA_DISCOVERY enum type in DataScanEvent ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add a DataDiscoveryAppliedConfigs message ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add a TABLE_DELETED field in DiscoveryEvent ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add a TABLE_IGNORED field in DiscoveryEvent ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add a TABLE_PUBLISHED field in DiscoveryEvent ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add a TABLE_UPDATED field in DiscoveryEvent ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add an Issue field to DiscoveryEvent.ActionDetails to output the action message in Cloud Logs ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add annotations in CreateMetadataJob, GetMetadataJob, ListMetaDataJobs and CancelMetadataJob for cloud audit logging ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add data_version field to AspectSource ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add new Data Discovery scan type in Datascan ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Expose create time in DataScanJobAPI ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Expose create time to customers ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Release metadata export in private preview ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Release MetadataJob APIs and related resources in GA ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Update Go Bigtable import path ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Update Go Datastore import path ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+
+
+### Documentation
+
+* **dataplex:** A comment for message `DataScanEvent` is changed ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add comment for field `status` in message `.google.cloud.dataplex.v1.MetadataJob` per https ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add comment for field `type` in message `.google.cloud.dataplex.v1.MetadataJob` per https ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add Identifier for `name` in message `.google.cloud.dataplex.v1.MetadataJob` per https ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add info about schema changes for BigQuery metadata in Dataplex Catalog ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Add link to fully qualified names documentation ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Correct API documentation ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Correct the dimensions for data quality rules ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Dataplex Tasks do not support Dataplex Content path as a direct input anymore ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+* **dataplex:** Scrub descriptions for standalone discovery scans ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+
 ## [1.19.2](https://github.com/googleapis/google-cloud-go/compare/dataplex/v1.19.1...dataplex/v1.19.2) (2024-10-23)
 
 

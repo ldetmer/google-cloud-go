@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -560,6 +560,70 @@ func (op *DeleteManagementServerOperation) Name() string {
 	return op.lro.Name()
 }
 
+// InitializeServiceOperation manages a long-running operation from InitializeService.
+type InitializeServiceOperation struct {
+	lro      *longrunning.Operation
+	pollPath string
+}
+
+// Wait blocks until the long-running operation is completed, returning the response and any errors encountered.
+//
+// See documentation of Poll for error-handling information.
+func (op *InitializeServiceOperation) Wait(ctx context.Context, opts ...gax.CallOption) (*backupdrpb.InitializeServiceResponse, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp backupdrpb.InitializeServiceResponse
+	if err := op.lro.WaitWithInterval(ctx, &resp, time.Minute, opts...); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// Poll fetches the latest state of the long-running operation.
+//
+// Poll also fetches the latest metadata, which can be retrieved by Metadata.
+//
+// If Poll fails, the error is returned and op is unmodified. If Poll succeeds and
+// the operation has completed with failure, the error is returned and op.Done will return true.
+// If Poll succeeds and the operation has completed successfully,
+// op.Done will return true, and the response of the operation is returned.
+// If Poll succeeds and the operation has not completed, the returned response and error are both nil.
+func (op *InitializeServiceOperation) Poll(ctx context.Context, opts ...gax.CallOption) (*backupdrpb.InitializeServiceResponse, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp backupdrpb.InitializeServiceResponse
+	if err := op.lro.Poll(ctx, &resp, opts...); err != nil {
+		return nil, err
+	}
+	if !op.Done() {
+		return nil, nil
+	}
+	return &resp, nil
+}
+
+// Metadata returns metadata associated with the long-running operation.
+// Metadata itself does not contact the server, but Poll does.
+// To get the latest metadata, call this method after a successful call to Poll.
+// If the metadata is not available, the returned metadata and error are both nil.
+func (op *InitializeServiceOperation) Metadata() (*backupdrpb.OperationMetadata, error) {
+	var meta backupdrpb.OperationMetadata
+	if err := op.lro.Metadata(&meta); err == longrunning.ErrNoMetadata {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+	return &meta, nil
+}
+
+// Done reports whether the long-running operation has completed.
+func (op *InitializeServiceOperation) Done() bool {
+	return op.lro.Done()
+}
+
+// Name returns the name of the long-running operation.
+// The name is assigned by the server and is unique within the service from which the operation is created.
+func (op *InitializeServiceOperation) Name() string {
+	return op.lro.Name()
+}
+
 // RestoreBackupOperation manages a long-running operation from RestoreBackup.
 type RestoreBackupOperation struct {
 	lro      *longrunning.Operation
@@ -752,6 +816,134 @@ func (op *UpdateBackupOperation) Name() string {
 	return op.lro.Name()
 }
 
+// UpdateBackupPlanAssociationOperation manages a long-running operation from UpdateBackupPlanAssociation.
+type UpdateBackupPlanAssociationOperation struct {
+	lro      *longrunning.Operation
+	pollPath string
+}
+
+// Wait blocks until the long-running operation is completed, returning the response and any errors encountered.
+//
+// See documentation of Poll for error-handling information.
+func (op *UpdateBackupPlanAssociationOperation) Wait(ctx context.Context, opts ...gax.CallOption) (*backupdrpb.BackupPlanAssociation, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp backupdrpb.BackupPlanAssociation
+	if err := op.lro.WaitWithInterval(ctx, &resp, time.Minute, opts...); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// Poll fetches the latest state of the long-running operation.
+//
+// Poll also fetches the latest metadata, which can be retrieved by Metadata.
+//
+// If Poll fails, the error is returned and op is unmodified. If Poll succeeds and
+// the operation has completed with failure, the error is returned and op.Done will return true.
+// If Poll succeeds and the operation has completed successfully,
+// op.Done will return true, and the response of the operation is returned.
+// If Poll succeeds and the operation has not completed, the returned response and error are both nil.
+func (op *UpdateBackupPlanAssociationOperation) Poll(ctx context.Context, opts ...gax.CallOption) (*backupdrpb.BackupPlanAssociation, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp backupdrpb.BackupPlanAssociation
+	if err := op.lro.Poll(ctx, &resp, opts...); err != nil {
+		return nil, err
+	}
+	if !op.Done() {
+		return nil, nil
+	}
+	return &resp, nil
+}
+
+// Metadata returns metadata associated with the long-running operation.
+// Metadata itself does not contact the server, but Poll does.
+// To get the latest metadata, call this method after a successful call to Poll.
+// If the metadata is not available, the returned metadata and error are both nil.
+func (op *UpdateBackupPlanAssociationOperation) Metadata() (*backupdrpb.OperationMetadata, error) {
+	var meta backupdrpb.OperationMetadata
+	if err := op.lro.Metadata(&meta); err == longrunning.ErrNoMetadata {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+	return &meta, nil
+}
+
+// Done reports whether the long-running operation has completed.
+func (op *UpdateBackupPlanAssociationOperation) Done() bool {
+	return op.lro.Done()
+}
+
+// Name returns the name of the long-running operation.
+// The name is assigned by the server and is unique within the service from which the operation is created.
+func (op *UpdateBackupPlanAssociationOperation) Name() string {
+	return op.lro.Name()
+}
+
+// UpdateBackupPlanOperation manages a long-running operation from UpdateBackupPlan.
+type UpdateBackupPlanOperation struct {
+	lro      *longrunning.Operation
+	pollPath string
+}
+
+// Wait blocks until the long-running operation is completed, returning the response and any errors encountered.
+//
+// See documentation of Poll for error-handling information.
+func (op *UpdateBackupPlanOperation) Wait(ctx context.Context, opts ...gax.CallOption) (*backupdrpb.BackupPlan, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp backupdrpb.BackupPlan
+	if err := op.lro.WaitWithInterval(ctx, &resp, time.Minute, opts...); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// Poll fetches the latest state of the long-running operation.
+//
+// Poll also fetches the latest metadata, which can be retrieved by Metadata.
+//
+// If Poll fails, the error is returned and op is unmodified. If Poll succeeds and
+// the operation has completed with failure, the error is returned and op.Done will return true.
+// If Poll succeeds and the operation has completed successfully,
+// op.Done will return true, and the response of the operation is returned.
+// If Poll succeeds and the operation has not completed, the returned response and error are both nil.
+func (op *UpdateBackupPlanOperation) Poll(ctx context.Context, opts ...gax.CallOption) (*backupdrpb.BackupPlan, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp backupdrpb.BackupPlan
+	if err := op.lro.Poll(ctx, &resp, opts...); err != nil {
+		return nil, err
+	}
+	if !op.Done() {
+		return nil, nil
+	}
+	return &resp, nil
+}
+
+// Metadata returns metadata associated with the long-running operation.
+// Metadata itself does not contact the server, but Poll does.
+// To get the latest metadata, call this method after a successful call to Poll.
+// If the metadata is not available, the returned metadata and error are both nil.
+func (op *UpdateBackupPlanOperation) Metadata() (*backupdrpb.OperationMetadata, error) {
+	var meta backupdrpb.OperationMetadata
+	if err := op.lro.Metadata(&meta); err == longrunning.ErrNoMetadata {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+	return &meta, nil
+}
+
+// Done reports whether the long-running operation has completed.
+func (op *UpdateBackupPlanOperation) Done() bool {
+	return op.lro.Done()
+}
+
+// Name returns the name of the long-running operation.
+// The name is assigned by the server and is unique within the service from which the operation is created.
+func (op *UpdateBackupPlanOperation) Name() string {
+	return op.lro.Name()
+}
+
 // UpdateBackupVaultOperation manages a long-running operation from UpdateBackupVault.
 type UpdateBackupVaultOperation struct {
 	lro      *longrunning.Operation
@@ -900,7 +1092,7 @@ type BackupIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*backupdrpb.Backup, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *BackupIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -947,7 +1139,7 @@ type BackupPlanAssociationIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*backupdrpb.BackupPlanAssociation, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *BackupPlanAssociationIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -994,7 +1186,7 @@ type BackupPlanIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*backupdrpb.BackupPlan, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *BackupPlanIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -1021,6 +1213,53 @@ func (it *BackupPlanIterator) takeBuf() interface{} {
 	return b
 }
 
+// BackupPlanRevisionIterator manages a stream of *backupdrpb.BackupPlanRevision.
+type BackupPlanRevisionIterator struct {
+	items    []*backupdrpb.BackupPlanRevision
+	pageInfo *iterator.PageInfo
+	nextFunc func() error
+
+	// Response is the raw response for the current page.
+	// It must be cast to the RPC response type.
+	// Calling Next() or InternalFetch() updates this value.
+	Response interface{}
+
+	// InternalFetch is for use by the Google Cloud Libraries only.
+	// It is not part of the stable interface of this package.
+	//
+	// InternalFetch returns results from a single call to the underlying RPC.
+	// The number of results is no greater than pageSize.
+	// If there are no more results, nextPageToken is empty and err is nil.
+	InternalFetch func(pageSize int, pageToken string) (results []*backupdrpb.BackupPlanRevision, nextPageToken string, err error)
+}
+
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
+func (it *BackupPlanRevisionIterator) PageInfo() *iterator.PageInfo {
+	return it.pageInfo
+}
+
+// Next returns the next result. Its second return value is iterator.Done if there are no more
+// results. Once Next returns Done, all subsequent calls will return Done.
+func (it *BackupPlanRevisionIterator) Next() (*backupdrpb.BackupPlanRevision, error) {
+	var item *backupdrpb.BackupPlanRevision
+	if err := it.nextFunc(); err != nil {
+		return item, err
+	}
+	item = it.items[0]
+	it.items = it.items[1:]
+	return item, nil
+}
+
+func (it *BackupPlanRevisionIterator) bufLen() int {
+	return len(it.items)
+}
+
+func (it *BackupPlanRevisionIterator) takeBuf() interface{} {
+	b := it.items
+	it.items = nil
+	return b
+}
+
 // BackupVaultIterator manages a stream of *backupdrpb.BackupVault.
 type BackupVaultIterator struct {
 	items    []*backupdrpb.BackupVault
@@ -1041,7 +1280,7 @@ type BackupVaultIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*backupdrpb.BackupVault, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *BackupVaultIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -1088,7 +1327,7 @@ type DataSourceIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*backupdrpb.DataSource, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *DataSourceIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -1115,6 +1354,53 @@ func (it *DataSourceIterator) takeBuf() interface{} {
 	return b
 }
 
+// DataSourceReferenceIterator manages a stream of *backupdrpb.DataSourceReference.
+type DataSourceReferenceIterator struct {
+	items    []*backupdrpb.DataSourceReference
+	pageInfo *iterator.PageInfo
+	nextFunc func() error
+
+	// Response is the raw response for the current page.
+	// It must be cast to the RPC response type.
+	// Calling Next() or InternalFetch() updates this value.
+	Response interface{}
+
+	// InternalFetch is for use by the Google Cloud Libraries only.
+	// It is not part of the stable interface of this package.
+	//
+	// InternalFetch returns results from a single call to the underlying RPC.
+	// The number of results is no greater than pageSize.
+	// If there are no more results, nextPageToken is empty and err is nil.
+	InternalFetch func(pageSize int, pageToken string) (results []*backupdrpb.DataSourceReference, nextPageToken string, err error)
+}
+
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
+func (it *DataSourceReferenceIterator) PageInfo() *iterator.PageInfo {
+	return it.pageInfo
+}
+
+// Next returns the next result. Its second return value is iterator.Done if there are no more
+// results. Once Next returns Done, all subsequent calls will return Done.
+func (it *DataSourceReferenceIterator) Next() (*backupdrpb.DataSourceReference, error) {
+	var item *backupdrpb.DataSourceReference
+	if err := it.nextFunc(); err != nil {
+		return item, err
+	}
+	item = it.items[0]
+	it.items = it.items[1:]
+	return item, nil
+}
+
+func (it *DataSourceReferenceIterator) bufLen() int {
+	return len(it.items)
+}
+
+func (it *DataSourceReferenceIterator) takeBuf() interface{} {
+	b := it.items
+	it.items = nil
+	return b
+}
+
 // LocationIterator manages a stream of *locationpb.Location.
 type LocationIterator struct {
 	items    []*locationpb.Location
@@ -1135,7 +1421,7 @@ type LocationIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*locationpb.Location, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *LocationIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -1182,7 +1468,7 @@ type ManagementServerIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*backupdrpb.ManagementServer, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *ManagementServerIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -1229,7 +1515,7 @@ type OperationIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*longrunningpb.Operation, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *OperationIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }

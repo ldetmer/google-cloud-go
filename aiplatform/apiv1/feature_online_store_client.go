@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package aiplatform
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"math"
 	"net/url"
 
@@ -39,18 +40,19 @@ var newFeatureOnlineStoreClientHook clientHook
 
 // FeatureOnlineStoreCallOptions contains the retry settings for each method of FeatureOnlineStoreClient.
 type FeatureOnlineStoreCallOptions struct {
-	FetchFeatureValues    []gax.CallOption
-	SearchNearestEntities []gax.CallOption
-	GetLocation           []gax.CallOption
-	ListLocations         []gax.CallOption
-	GetIamPolicy          []gax.CallOption
-	SetIamPolicy          []gax.CallOption
-	TestIamPermissions    []gax.CallOption
-	CancelOperation       []gax.CallOption
-	DeleteOperation       []gax.CallOption
-	GetOperation          []gax.CallOption
-	ListOperations        []gax.CallOption
-	WaitOperation         []gax.CallOption
+	FetchFeatureValues     []gax.CallOption
+	SearchNearestEntities  []gax.CallOption
+	FeatureViewDirectWrite []gax.CallOption
+	GetLocation            []gax.CallOption
+	ListLocations          []gax.CallOption
+	GetIamPolicy           []gax.CallOption
+	SetIamPolicy           []gax.CallOption
+	TestIamPermissions     []gax.CallOption
+	CancelOperation        []gax.CallOption
+	DeleteOperation        []gax.CallOption
+	GetOperation           []gax.CallOption
+	ListOperations         []gax.CallOption
+	WaitOperation          []gax.CallOption
 }
 
 func defaultFeatureOnlineStoreGRPCClientOptions() []option.ClientOption {
@@ -70,18 +72,19 @@ func defaultFeatureOnlineStoreGRPCClientOptions() []option.ClientOption {
 
 func defaultFeatureOnlineStoreCallOptions() *FeatureOnlineStoreCallOptions {
 	return &FeatureOnlineStoreCallOptions{
-		FetchFeatureValues:    []gax.CallOption{},
-		SearchNearestEntities: []gax.CallOption{},
-		GetLocation:           []gax.CallOption{},
-		ListLocations:         []gax.CallOption{},
-		GetIamPolicy:          []gax.CallOption{},
-		SetIamPolicy:          []gax.CallOption{},
-		TestIamPermissions:    []gax.CallOption{},
-		CancelOperation:       []gax.CallOption{},
-		DeleteOperation:       []gax.CallOption{},
-		GetOperation:          []gax.CallOption{},
-		ListOperations:        []gax.CallOption{},
-		WaitOperation:         []gax.CallOption{},
+		FetchFeatureValues:     []gax.CallOption{},
+		SearchNearestEntities:  []gax.CallOption{},
+		FeatureViewDirectWrite: []gax.CallOption{},
+		GetLocation:            []gax.CallOption{},
+		ListLocations:          []gax.CallOption{},
+		GetIamPolicy:           []gax.CallOption{},
+		SetIamPolicy:           []gax.CallOption{},
+		TestIamPermissions:     []gax.CallOption{},
+		CancelOperation:        []gax.CallOption{},
+		DeleteOperation:        []gax.CallOption{},
+		GetOperation:           []gax.CallOption{},
+		ListOperations:         []gax.CallOption{},
+		WaitOperation:          []gax.CallOption{},
 	}
 }
 
@@ -92,6 +95,7 @@ type internalFeatureOnlineStoreClient interface {
 	Connection() *grpc.ClientConn
 	FetchFeatureValues(context.Context, *aiplatformpb.FetchFeatureValuesRequest, ...gax.CallOption) (*aiplatformpb.FetchFeatureValuesResponse, error)
 	SearchNearestEntities(context.Context, *aiplatformpb.SearchNearestEntitiesRequest, ...gax.CallOption) (*aiplatformpb.SearchNearestEntitiesResponse, error)
+	FeatureViewDirectWrite(context.Context, ...gax.CallOption) (aiplatformpb.FeatureOnlineStoreService_FeatureViewDirectWriteClient, error)
 	GetLocation(context.Context, *locationpb.GetLocationRequest, ...gax.CallOption) (*locationpb.Location, error)
 	ListLocations(context.Context, *locationpb.ListLocationsRequest, ...gax.CallOption) *LocationIterator
 	GetIamPolicy(context.Context, *iampb.GetIamPolicyRequest, ...gax.CallOption) (*iampb.Policy, error)
@@ -149,6 +153,13 @@ func (c *FeatureOnlineStoreClient) FetchFeatureValues(ctx context.Context, req *
 // indexable, returns Invalid argument response.
 func (c *FeatureOnlineStoreClient) SearchNearestEntities(ctx context.Context, req *aiplatformpb.SearchNearestEntitiesRequest, opts ...gax.CallOption) (*aiplatformpb.SearchNearestEntitiesResponse, error) {
 	return c.internalClient.SearchNearestEntities(ctx, req, opts...)
+}
+
+// FeatureViewDirectWrite bidirectional streaming RPC to directly write to feature values in a
+// feature view. Requests may not have a one-to-one mapping to responses and
+// responses may be returned out-of-order to reduce latency.
+func (c *FeatureOnlineStoreClient) FeatureViewDirectWrite(ctx context.Context, opts ...gax.CallOption) (aiplatformpb.FeatureOnlineStoreService_FeatureViewDirectWriteClient, error) {
+	return c.internalClient.FeatureViewDirectWrite(ctx, opts...)
 }
 
 // GetLocation gets information about a location.
@@ -233,6 +244,8 @@ type featureOnlineStoreGRPCClient struct {
 
 	// The x-goog-* metadata to be sent with each request.
 	xGoogHeaders []string
+
+	logger *slog.Logger
 }
 
 // NewFeatureOnlineStoreClient creates a new feature online store service client based on gRPC.
@@ -259,6 +272,7 @@ func NewFeatureOnlineStoreClient(ctx context.Context, opts ...option.ClientOptio
 		connPool:                 connPool,
 		featureOnlineStoreClient: aiplatformpb.NewFeatureOnlineStoreServiceClient(connPool),
 		CallOptions:              &client.CallOptions,
+		logger:                   internaloption.GetLogger(opts),
 		operationsClient:         longrunningpb.NewOperationsClient(connPool),
 		iamPolicyClient:          iampb.NewIAMPolicyClient(connPool),
 		locationsClient:          locationpb.NewLocationsClient(connPool),
@@ -283,7 +297,7 @@ func (c *featureOnlineStoreGRPCClient) Connection() *grpc.ClientConn {
 // use by Google-written clients.
 func (c *featureOnlineStoreGRPCClient) setGoogleClientInfo(keyval ...string) {
 	kv := append([]string{"gl-go", gax.GoVersion}, keyval...)
-	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "grpc", grpc.Version)
+	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "grpc", grpc.Version, "pb", protoVersion)
 	c.xGoogHeaders = []string{
 		"x-goog-api-client", gax.XGoogHeader(kv...),
 	}
@@ -304,7 +318,7 @@ func (c *featureOnlineStoreGRPCClient) FetchFeatureValues(ctx context.Context, r
 	var resp *aiplatformpb.FetchFeatureValuesResponse
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.featureOnlineStoreClient.FetchFeatureValues(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.featureOnlineStoreClient.FetchFeatureValues, req, settings.GRPC, c.logger, "FetchFeatureValues")
 		return err
 	}, opts...)
 	if err != nil {
@@ -322,7 +336,24 @@ func (c *featureOnlineStoreGRPCClient) SearchNearestEntities(ctx context.Context
 	var resp *aiplatformpb.SearchNearestEntitiesResponse
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.featureOnlineStoreClient.SearchNearestEntities(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.featureOnlineStoreClient.SearchNearestEntities, req, settings.GRPC, c.logger, "SearchNearestEntities")
+		return err
+	}, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *featureOnlineStoreGRPCClient) FeatureViewDirectWrite(ctx context.Context, opts ...gax.CallOption) (aiplatformpb.FeatureOnlineStoreService_FeatureViewDirectWriteClient, error) {
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, c.xGoogHeaders...)
+	var resp aiplatformpb.FeatureOnlineStoreService_FeatureViewDirectWriteClient
+	opts = append((*c.CallOptions).FeatureViewDirectWrite[0:len((*c.CallOptions).FeatureViewDirectWrite):len((*c.CallOptions).FeatureViewDirectWrite)], opts...)
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		c.logger.DebugContext(ctx, "api streaming client request", "serviceName", serviceName, "rpcName", "FeatureViewDirectWrite")
+		resp, err = c.featureOnlineStoreClient.FeatureViewDirectWrite(ctx, settings.GRPC...)
+		c.logger.DebugContext(ctx, "api streaming client response", "serviceName", serviceName, "rpcName", "FeatureViewDirectWrite")
 		return err
 	}, opts...)
 	if err != nil {
@@ -340,7 +371,7 @@ func (c *featureOnlineStoreGRPCClient) GetLocation(ctx context.Context, req *loc
 	var resp *locationpb.Location
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.locationsClient.GetLocation(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.locationsClient.GetLocation, req, settings.GRPC, c.logger, "GetLocation")
 		return err
 	}, opts...)
 	if err != nil {
@@ -369,7 +400,7 @@ func (c *featureOnlineStoreGRPCClient) ListLocations(ctx context.Context, req *l
 		}
 		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 			var err error
-			resp, err = c.locationsClient.ListLocations(ctx, req, settings.GRPC...)
+			resp, err = executeRPC(ctx, c.locationsClient.ListLocations, req, settings.GRPC, c.logger, "ListLocations")
 			return err
 		}, opts...)
 		if err != nil {
@@ -404,7 +435,7 @@ func (c *featureOnlineStoreGRPCClient) GetIamPolicy(ctx context.Context, req *ia
 	var resp *iampb.Policy
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.iamPolicyClient.GetIamPolicy(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.iamPolicyClient.GetIamPolicy, req, settings.GRPC, c.logger, "GetIamPolicy")
 		return err
 	}, opts...)
 	if err != nil {
@@ -422,7 +453,7 @@ func (c *featureOnlineStoreGRPCClient) SetIamPolicy(ctx context.Context, req *ia
 	var resp *iampb.Policy
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.iamPolicyClient.SetIamPolicy(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.iamPolicyClient.SetIamPolicy, req, settings.GRPC, c.logger, "SetIamPolicy")
 		return err
 	}, opts...)
 	if err != nil {
@@ -440,7 +471,7 @@ func (c *featureOnlineStoreGRPCClient) TestIamPermissions(ctx context.Context, r
 	var resp *iampb.TestIamPermissionsResponse
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.iamPolicyClient.TestIamPermissions(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.iamPolicyClient.TestIamPermissions, req, settings.GRPC, c.logger, "TestIamPermissions")
 		return err
 	}, opts...)
 	if err != nil {
@@ -457,7 +488,7 @@ func (c *featureOnlineStoreGRPCClient) CancelOperation(ctx context.Context, req 
 	opts = append((*c.CallOptions).CancelOperation[0:len((*c.CallOptions).CancelOperation):len((*c.CallOptions).CancelOperation)], opts...)
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		_, err = c.operationsClient.CancelOperation(ctx, req, settings.GRPC...)
+		_, err = executeRPC(ctx, c.operationsClient.CancelOperation, req, settings.GRPC, c.logger, "CancelOperation")
 		return err
 	}, opts...)
 	return err
@@ -471,7 +502,7 @@ func (c *featureOnlineStoreGRPCClient) DeleteOperation(ctx context.Context, req 
 	opts = append((*c.CallOptions).DeleteOperation[0:len((*c.CallOptions).DeleteOperation):len((*c.CallOptions).DeleteOperation)], opts...)
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		_, err = c.operationsClient.DeleteOperation(ctx, req, settings.GRPC...)
+		_, err = executeRPC(ctx, c.operationsClient.DeleteOperation, req, settings.GRPC, c.logger, "DeleteOperation")
 		return err
 	}, opts...)
 	return err
@@ -486,7 +517,7 @@ func (c *featureOnlineStoreGRPCClient) GetOperation(ctx context.Context, req *lo
 	var resp *longrunningpb.Operation
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.operationsClient.GetOperation(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.operationsClient.GetOperation, req, settings.GRPC, c.logger, "GetOperation")
 		return err
 	}, opts...)
 	if err != nil {
@@ -515,7 +546,7 @@ func (c *featureOnlineStoreGRPCClient) ListOperations(ctx context.Context, req *
 		}
 		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 			var err error
-			resp, err = c.operationsClient.ListOperations(ctx, req, settings.GRPC...)
+			resp, err = executeRPC(ctx, c.operationsClient.ListOperations, req, settings.GRPC, c.logger, "ListOperations")
 			return err
 		}, opts...)
 		if err != nil {
@@ -550,7 +581,7 @@ func (c *featureOnlineStoreGRPCClient) WaitOperation(ctx context.Context, req *l
 	var resp *longrunningpb.Operation
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.operationsClient.WaitOperation(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.operationsClient.WaitOperation, req, settings.GRPC, c.logger, "WaitOperation")
 		return err
 	}, opts...)
 	if err != nil {

@@ -18,13 +18,13 @@ package spanner
 
 import (
 	"context"
+	"flag"
 	"fmt"
-	"os"
 	"sort"
 	"testing"
 
-	"time"
-
+	"cloud.google.com/go/internal/testutil"
+	. "cloud.google.com/go/spanner/internal/testutil"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"go.opentelemetry.io/otel/attribute"
 	"google.golang.org/api/option"
@@ -33,14 +33,14 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"
-
-	"cloud.google.com/go/internal/testutil"
-	. "cloud.google.com/go/spanner/internal/testutil"
 )
 
 func TestNewBuiltinMetricsTracerFactory(t *testing.T) {
-	os.Setenv("SPANNER_ENABLE_BUILTIN_METRICS", "true")
-	defer os.Unsetenv("SPANNER_ENABLE_BUILTIN_METRICS")
+	flag.Parse() // Needed for testing.Short().
+	if testing.Short() {
+		t.Skip("TestNewBuiltinMetricsTracerFactory tests skipped in -short mode.")
+	}
+
 	ctx := context.Background()
 	clientUID := "test-uid"
 	createSessionRPC := "Spanner.BatchCreateSessions"
@@ -58,18 +58,11 @@ func TestNewBuiltinMetricsTracerFactory(t *testing.T) {
 		attribute.String(monitoredResLabelKeyInstanceConfig, "unknown"),
 		attribute.String(monitoredResLabelKeyLocation, "global"),
 	}
-	wantMetricNamesStdout := []string{metricNameAttemptCount, metricNameAttemptLatencies, metricNameOperationCount, metricNameOperationLatencies}
+	wantMetricNamesStdout := []string{metricNameAttemptCount, metricNameAttemptLatencies, metricNameOperationCount, metricNameOperationLatencies, metricNameGFELatencies}
 	wantMetricTypesGCM := []string{}
 	for _, wantMetricName := range wantMetricNamesStdout {
 		wantMetricTypesGCM = append(wantMetricTypesGCM, nativeMetricsPrefix+wantMetricName)
 	}
-
-	// Reduce sampling period to reduce test run time
-	origSamplePeriod := defaultSamplePeriod
-	defaultSamplePeriod = 5 * time.Second
-	defer func() {
-		defaultSamplePeriod = origSamplePeriod
-	}()
 
 	// return constant client UID instead of random, so that attributes can be compared
 	origGenerateClientUID := generateClientUID
@@ -92,31 +85,42 @@ func TestNewBuiltinMetricsTracerFactory(t *testing.T) {
 	}
 	go monitoringServer.Serve()
 	defer monitoringServer.Shutdown()
-	origExporterOpts := exporterOpts
-	exporterOpts = []option.ClientOption{
-		option.WithEndpoint(monitoringServer.Endpoint),
-		option.WithoutAuthentication(),
-		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
+
+	// Override exporter options
+	origCreateExporterOptions := createExporterOptions
+	createExporterOptions = func(opts ...option.ClientOption) []option.ClientOption {
+		return []option.ClientOption{
+			option.WithEndpoint(monitoringServer.Endpoint), // Connect to mock
+			option.WithoutAuthentication(),
+			option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
+		}
 	}
 	defer func() {
-		exporterOpts = origExporterOpts
+		createExporterOptions = origCreateExporterOptions
 	}()
 
 	tests := []struct {
 		desc                   string
 		config                 ClientConfig
 		wantBuiltinEnabled     bool
-		setEmulator            bool
+		runOnlyInEmulator      bool
 		wantCreateTSCallsCount int // No. of CreateTimeSeries calls
 		wantMethods            []string
 		wantOTELValue          map[string]map[string]int64
 		wantOTELMetrics        map[string][]string
 	}{
 		{
-			desc:                   "should create a new tracer factory with default meter provider",
-			config:                 ClientConfig{},
+			desc:              "should create a new tracer factory with default meter provider",
+			runOnlyInEmulator: isEmulatorEnvSet(),
+			config: ClientConfig{
+				SessionPoolConfig: SessionPoolConfig{
+					MinOpened: 0,
+					MaxOpened: 1,
+				},
+			},
+
 			wantBuiltinEnabled:     true,
-			wantCreateTSCallsCount: 2,
+			wantCreateTSCallsCount: 1,
 			wantMethods:            []string{createSessionRPC, "Spanner.StreamingRead"},
 			wantOTELValue: map[string]map[string]int64{
 				createSessionRPC: {
@@ -124,27 +128,42 @@ func TestNewBuiltinMetricsTracerFactory(t *testing.T) {
 					nativeMetricsPrefix + metricNameOperationCount: 1,
 				},
 				"Spanner.StreamingRead": {
-					nativeMetricsPrefix + metricNameAttemptCount:   2,
-					nativeMetricsPrefix + metricNameOperationCount: 1,
+					nativeMetricsPrefix + metricNameAttemptCount:              2,
+					nativeMetricsPrefix + metricNameOperationCount:            1,
+					nativeMetricsPrefix + metricNameGFEConnectivityErrorCount: 1,
 				},
 			},
 			wantOTELMetrics: map[string][]string{
-				createSessionRPC: wantMetricTypesGCM,
-				// since operation will be retries once we will have extra attempt latency for this operation
-				"Spanner.StreamingRead": append(wantMetricTypesGCM, nativeMetricsPrefix+metricNameAttemptLatencies),
+				createSessionRPC: {
+					nativeMetricsPrefix + metricNameAttemptCount,
+					nativeMetricsPrefix + metricNameAttemptLatencies,
+					nativeMetricsPrefix + metricNameGFELatencies,
+					nativeMetricsPrefix + metricNameOperationCount,
+					nativeMetricsPrefix + metricNameOperationLatencies,
+				},
+				"Spanner.StreamingRead": {
+					nativeMetricsPrefix + metricNameAttemptCount,
+					nativeMetricsPrefix + metricNameAttemptLatencies,
+					nativeMetricsPrefix + metricNameAttemptLatencies,
+					nativeMetricsPrefix + metricNameGFEConnectivityErrorCount,
+					nativeMetricsPrefix + metricNameGFELatencies,
+					nativeMetricsPrefix + metricNameOperationCount,
+					nativeMetricsPrefix + metricNameOperationLatencies,
+				},
 			},
 		},
 		{
-			desc:        "should not create instruments when SPANNER_EMULATOR_HOST is set",
-			config:      ClientConfig{},
-			setEmulator: true,
+			desc:               "should not create instruments when SPANNER_EMULATOR_HOST is set",
+			runOnlyInEmulator:  !isEmulatorEnvSet(),
+			config:             ClientConfig{},
+			wantBuiltinEnabled: false,
 		},
 	}
+
 	for _, test := range tests {
 		t.Run(test.desc, func(t *testing.T) {
-			if test.setEmulator {
-				// Set environment variable
-				t.Setenv("SPANNER_EMULATOR_HOST", "localhost:9010")
+			if test.runOnlyInEmulator {
+				t.Skip("Skipping test that should only run in emulator")
 			}
 			server, client, teardown := setupMockedTestServerWithConfig(t, test.config)
 			defer teardown()
@@ -171,10 +190,6 @@ func TestNewBuiltinMetricsTracerFactory(t *testing.T) {
 			}
 
 			// pop out all old requests
-			// record start time
-			testStartTime := time.Now()
-
-			// pop out all old requests
 			monitoringServer.CreateServiceTimeSeriesRequests()
 
 			// Perform single use read-only transaction
@@ -183,13 +198,7 @@ func TestNewBuiltinMetricsTracerFactory(t *testing.T) {
 				t.Fatalf("ReadRows failed: %v", err)
 			}
 
-			// Calculate elapsed time
-			elapsedTime := time.Since(testStartTime)
-			if elapsedTime < 3*defaultSamplePeriod {
-				// Ensure at least 2 datapoints are recorded
-				time.Sleep(3*defaultSamplePeriod - elapsedTime)
-			}
-
+			client.Close()
 			// Get new CreateServiceTimeSeriesRequests
 			gotCreateTSCalls := monitoringServer.CreateServiceTimeSeriesRequests()
 			var gotExpectedMethods []string
@@ -238,10 +247,14 @@ func TestNewBuiltinMetricsTracerFactory(t *testing.T) {
 				// For StreamingRead, verify operation latency includes all attempt latencies
 				opLatency := gotOTELLatencyValues[method][nativeMetricsPrefix+metricNameOperationLatencies]
 				attemptLatency := gotOTELLatencyValues[method][nativeMetricsPrefix+metricNameAttemptLatencies]
+				gfeLatency := gotOTELLatencyValues[method][nativeMetricsPrefix+metricNameGFELatencies]
 				// expect opLatency and attemptLatency to be non-zero
 				if opLatency == 0 || attemptLatency == 0 {
 					t.Errorf("Operation and attempt latencies should be non-zero for %s: operation_latency=%v, attempt_latency=%v",
 						method, opLatency, attemptLatency)
+				}
+				if gfeLatency != 123 {
+					t.Errorf("GFE latency should be 123 for %s: gfe_latency=%v", method, gfeLatency)
 				}
 				if opLatency <= attemptLatency {
 					t.Errorf("Operation latency should be greater than attempt latency for %s: operation_latency=%v, attempt_latency=%v",

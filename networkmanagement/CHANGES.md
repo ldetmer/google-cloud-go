@@ -1,5 +1,85 @@
 # Changes
 
+## [1.20.0](https://github.com/googleapis/google-cloud-go/compare/networkmanagement/v1.19.1...networkmanagement/v1.20.0) (2025-08-12)
+
+
+### Features
+
+* **networkmanagement:** Add `service_uri` field to CloudRunRevisionEndpoint ([53f9781](https://github.com/googleapis/google-cloud-go/commit/53f97813d99aeaaf45108c642a2d94f598d1bb6b))
+
+## [1.19.1](https://github.com/googleapis/google-cloud-go/compare/networkmanagement/v1.19.0...networkmanagement/v1.19.1) (2025-04-15)
+
+
+### Bug Fixes
+
+* **networkmanagement:** Update google.golang.org/api to 0.229.0 ([3319672](https://github.com/googleapis/google-cloud-go/commit/3319672f3dba84a7150772ccb5433e02dab7e201))
+
+## [1.19.0](https://github.com/googleapis/google-cloud-go/compare/networkmanagement/v1.18.2...networkmanagement/v1.19.0) (2025-04-15)
+
+
+### Features
+
+* **networkmanagement:** Add enum types related to Abort ([dfdf404](https://github.com/googleapis/google-cloud-go/commit/dfdf404138728724aa6305c5c465ecc6fe5b1264))
+* **networkmanagement:** Add enum types related to Drop ([dfdf404](https://github.com/googleapis/google-cloud-go/commit/dfdf404138728724aa6305c5c465ecc6fe5b1264))
+* **networkmanagement:** Add enum types related to Firewall ([dfdf404](https://github.com/googleapis/google-cloud-go/commit/dfdf404138728724aa6305c5c465ecc6fe5b1264))
+* **networkmanagement:** Add enum types related to Google Service ([dfdf404](https://github.com/googleapis/google-cloud-go/commit/dfdf404138728724aa6305c5c465ecc6fe5b1264))
+* **networkmanagement:** Add messages and fields related to Direct VPC Egress ([dfdf404](https://github.com/googleapis/google-cloud-go/commit/dfdf404138728724aa6305c5c465ecc6fe5b1264))
+* **networkmanagement:** Add messages and fields related to Route ([dfdf404](https://github.com/googleapis/google-cloud-go/commit/dfdf404138728724aa6305c5c465ecc6fe5b1264))
+* **networkmanagement:** Add messages and fields related to Serverless External ([dfdf404](https://github.com/googleapis/google-cloud-go/commit/dfdf404138728724aa6305c5c465ecc6fe5b1264))
+
+
+### Documentation
+
+* **networkmanagement:** Update outdated comments ([dfdf404](https://github.com/googleapis/google-cloud-go/commit/dfdf404138728724aa6305c5c465ecc6fe5b1264))
+
+## [1.18.2](https://github.com/googleapis/google-cloud-go/compare/networkmanagement/v1.18.1...networkmanagement/v1.18.2) (2025-03-19)
+
+
+### Documentation
+
+* **networkmanagement:** Update comments for Connectivity Test ([#11847](https://github.com/googleapis/google-cloud-go/issues/11847)) ([671eed9](https://github.com/googleapis/google-cloud-go/commit/671eed979bfdbf199c4c3787d4f18bca1d5883f4))
+
+## [1.18.1](https://github.com/googleapis/google-cloud-go/compare/networkmanagement/v1.18.0...networkmanagement/v1.18.1) (2025-03-13)
+
+
+### Bug Fixes
+
+* **networkmanagement:** Update golang.org/x/net to 0.37.0 ([1144978](https://github.com/googleapis/google-cloud-go/commit/11449782c7fb4896bf8b8b9cde8e7441c84fb2fd))
+
+## [1.18.0](https://github.com/googleapis/google-cloud-go/compare/networkmanagement/v1.17.1...networkmanagement/v1.18.0) (2025-01-15)
+
+
+### Features
+
+* **networkmanagement:** Expose the new v1 vpcflowlogs api proto ([973e3d2](https://github.com/googleapis/google-cloud-go/commit/973e3d267844d251f5bfc33f473b853ac288b959))
+
+## [1.17.1](https://github.com/googleapis/google-cloud-go/compare/networkmanagement/v1.17.0...networkmanagement/v1.17.1) (2025-01-02)
+
+
+### Bug Fixes
+
+* **networkmanagement:** Update golang.org/x/net to v0.33.0 ([e9b0b69](https://github.com/googleapis/google-cloud-go/commit/e9b0b69644ea5b276cacff0a707e8a5e87efafc9))
+
+## [1.17.0](https://github.com/googleapis/google-cloud-go/compare/networkmanagement/v1.16.0...networkmanagement/v1.17.0) (2024-11-19)
+
+
+### Features
+
+* **networkmanagement:** Add round-trip mode ([c1e936d](https://github.com/googleapis/google-cloud-go/commit/c1e936df6527933f5e7c31be0f95aa46ff2c0e61))
+
+## [1.16.0](https://github.com/googleapis/google-cloud-go/compare/networkmanagement/v1.15.0...networkmanagement/v1.16.0) (2024-11-14)
+
+
+### Features
+
+* **networkmanagement:** Add DNS endpoint of Google Kubernetes Engine cluster control plane ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **networkmanagement:** Add more detailed drop causes to corresponding enum ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+
+
+### Documentation
+
+* **networkmanagement:** Update outdated comments ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-go/compare/networkmanagement/v1.14.1...networkmanagement/v1.15.0) (2024-10-23)
 
 

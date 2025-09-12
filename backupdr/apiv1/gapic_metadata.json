@@ -65,6 +65,16 @@
                 "DeleteOperation"
               ]
             },
+            "FetchBackupPlanAssociationsForResourceType": {
+              "methods": [
+                "FetchBackupPlanAssociationsForResourceType"
+              ]
+            },
+            "FetchDataSourceReferencesForResourceType": {
+              "methods": [
+                "FetchDataSourceReferencesForResourceType"
+              ]
+            },
             "FetchUsableBackupVaults": {
               "methods": [
                 "FetchUsableBackupVaults"
@@ -85,6 +95,11 @@
                 "GetBackupPlanAssociation"
               ]
             },
+            "GetBackupPlanRevision": {
+              "methods": [
+                "GetBackupPlanRevision"
+              ]
+            },
             "GetBackupVault": {
               "methods": [
                 "GetBackupVault"
@@ -93,6 +108,11 @@
             "GetDataSource": {
               "methods": [
                 "GetDataSource"
+              ]
+            },
+            "GetDataSourceReference": {
+              "methods": [
+                "GetDataSourceReference"
               ]
             },
             "GetIamPolicy": {
@@ -115,9 +135,19 @@
                 "GetOperation"
               ]
             },
+            "InitializeService": {
+              "methods": [
+                "InitializeService"
+              ]
+            },
             "ListBackupPlanAssociations": {
               "methods": [
                 "ListBackupPlanAssociations"
+              ]
+            },
+            "ListBackupPlanRevisions": {
+              "methods": [
+                "ListBackupPlanRevisions"
               ]
             },
             "ListBackupPlans": {
@@ -178,6 +208,16 @@
             "UpdateBackup": {
               "methods": [
                 "UpdateBackup"
+              ]
+            },
+            "UpdateBackupPlan": {
+              "methods": [
+                "UpdateBackupPlan"
+              ]
+            },
+            "UpdateBackupPlanAssociation": {
+              "methods": [
+                "UpdateBackupPlanAssociation"
               ]
             },
             "UpdateBackupVault": {
@@ -250,6 +290,16 @@
                 "DeleteOperation"
               ]
             },
+            "FetchBackupPlanAssociationsForResourceType": {
+              "methods": [
+                "FetchBackupPlanAssociationsForResourceType"
+              ]
+            },
+            "FetchDataSourceReferencesForResourceType": {
+              "methods": [
+                "FetchDataSourceReferencesForResourceType"
+              ]
+            },
             "FetchUsableBackupVaults": {
               "methods": [
                 "FetchUsableBackupVaults"
@@ -270,6 +320,11 @@
                 "GetBackupPlanAssociation"
               ]
             },
+            "GetBackupPlanRevision": {
+              "methods": [
+                "GetBackupPlanRevision"
+              ]
+            },
             "GetBackupVault": {
               "methods": [
                 "GetBackupVault"
@@ -278,6 +333,11 @@
             "GetDataSource": {
               "methods": [
                 "GetDataSource"
+              ]
+            },
+            "GetDataSourceReference": {
+              "methods": [
+                "GetDataSourceReference"
               ]
             },
             "GetIamPolicy": {
@@ -300,9 +360,19 @@
                 "GetOperation"
               ]
             },
+            "InitializeService": {
+              "methods": [
+                "InitializeService"
+              ]
+            },
             "ListBackupPlanAssociations": {
               "methods": [
                 "ListBackupPlanAssociations"
+              ]
+            },
+            "ListBackupPlanRevisions": {
+              "methods": [
+                "ListBackupPlanRevisions"
               ]
             },
             "ListBackupPlans": {
@@ -363,6 +433,16 @@
             "UpdateBackup": {
               "methods": [
                 "UpdateBackup"
+              ]
+            },
+            "UpdateBackupPlan": {
+              "methods": [
+                "UpdateBackupPlan"
+              ]
+            },
+            "UpdateBackupPlanAssociation": {
+              "methods": [
+                "UpdateBackupPlanAssociation"
               ]
             },
             "UpdateBackupVault": {

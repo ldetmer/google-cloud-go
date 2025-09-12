@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-go/compare/apihub/v0.1.5...apihub/v0.2.0) (2025-09-11)
+
+
+### Features
+
+* **apihub:** Add full lifecycle management for API Operations within API Versions (Create, Update, Delete) ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **apihub:** Add new fields and enums to resources to support richer metadata, including source tracking (SourceMetadata), plugin configurations (AuthConfig, ConfigVariable), new attributes, and additional deployment details ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **apihub:** Enable Deletion of ApiHub Instances via the Provisioning service ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **apihub:** Enhance list filtering options across various resources (APIs, Versions, Specs, Operations, Deployments) with support for user-defined attributes ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **apihub:** Introduce new services for data collection (ApiHubCollect) and curation (ApiHubCurate) ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **apihub:** Make CMEK configuration optional for ApiHub Instances, defaulting to GMEK ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **apihub:** Significantly expand Plugin and Plugin Instance management capabilities, including creation, execution, and lifecycle control ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+
+
+### Documentation
+
+* **apihub:** Update field descriptions, comments, and links in existing services ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+
+## [0.1.5](https://github.com/googleapis/google-cloud-go/compare/apihub/v0.1.4...apihub/v0.1.5) (2025-04-15)
+
+
+### Bug Fixes
+
+* **apihub:** Update google.golang.org/api to 0.229.0 ([3319672](https://github.com/googleapis/google-cloud-go/commit/3319672f3dba84a7150772ccb5433e02dab7e201))
+
+## [0.1.4](https://github.com/googleapis/google-cloud-go/compare/apihub/v0.1.3...apihub/v0.1.4) (2025-03-13)
+
+
+### Bug Fixes
+
+* **apihub:** Update golang.org/x/net to 0.37.0 ([1144978](https://github.com/googleapis/google-cloud-go/commit/11449782c7fb4896bf8b8b9cde8e7441c84fb2fd))
+
+## [0.1.3](https://github.com/googleapis/google-cloud-go/compare/apihub/v0.1.2...apihub/v0.1.3) (2025-01-02)
+
+
+### Bug Fixes
+
+* **apihub:** Update golang.org/x/net to v0.33.0 ([e9b0b69](https://github.com/googleapis/google-cloud-go/commit/e9b0b69644ea5b276cacff0a707e8a5e87efafc9))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-go/compare/apihub/v0.1.1...apihub/v0.1.2) (2024-10-23)
 
 

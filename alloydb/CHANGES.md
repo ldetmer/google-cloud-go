@@ -2,6 +2,188 @@
 
 
 
+
+## [1.18.0](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.17.0...alloydb/v1.18.0) (2025-06-25)
+
+
+### Features
+
+* **alloydb:** Backup.create_completion_time output field ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** Backup.create_completion_time output field ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** Cluster.DenyMaintenancePeriod field ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** Cluster.DenyMaintenancePeriod field ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** Instance.ActivationPolicy field ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** Instance.ActivationPolicy field ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** InstanceNetworkConfig.allocated_ip_range_override field ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** InstanceNetworkConfig.allocated_ip_range_override field ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** InstanceNetworkConfig.network output field ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** InstanceNetworkConfig.network output field ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+
+
+### Documentation
+
+* **alloydb:** A comment for field `earliest_restorable_time` ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** A comment for field `earliest_restorable_time` ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** A comment for field `status` in message `PscAutoConnectionConfig` ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+* **alloydb:** A comment for field `status` in message `PscAutoConnectionConfig` ([e720182](https://github.com/googleapis/google-cloud-go/commit/e720182b5704cac4ae9871785a87e3a94d446bc2))
+
+## [1.17.0](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.16.1...alloydb/v1.17.0) (2025-06-17)
+
+
+### Features
+
+* **alloydb:** Backup.create_completion_time output field ([9614487](https://github.com/googleapis/google-cloud-go/commit/96144875e01bfc8a59c2671c6eae87233710cef7))
+* **alloydb:** Cluster.DenyMaintenancePeriod field ([9614487](https://github.com/googleapis/google-cloud-go/commit/96144875e01bfc8a59c2671c6eae87233710cef7))
+* **alloydb:** Instance.ActivationPolicy field ([9614487](https://github.com/googleapis/google-cloud-go/commit/96144875e01bfc8a59c2671c6eae87233710cef7))
+* **alloydb:** InstanceNetworkConfig.allocated_ip_range_override field ([9614487](https://github.com/googleapis/google-cloud-go/commit/96144875e01bfc8a59c2671c6eae87233710cef7))
+* **alloydb:** InstanceNetworkConfig.network output field ([9614487](https://github.com/googleapis/google-cloud-go/commit/96144875e01bfc8a59c2671c6eae87233710cef7))
+
+
+### Documentation
+
+* **alloydb:** A comment for field `earliest_restorable_time` ([9614487](https://github.com/googleapis/google-cloud-go/commit/96144875e01bfc8a59c2671c6eae87233710cef7))
+* **alloydb:** A comment for field `status` in message `PscAutoConnectionConfig` ([9614487](https://github.com/googleapis/google-cloud-go/commit/96144875e01bfc8a59c2671c6eae87233710cef7))
+
+## [1.16.1](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.16.0...alloydb/v1.16.1) (2025-06-04)
+
+
+### Bug Fixes
+
+* **alloydb:** Fix: upgrade gRPC service registration func ([6a871e0](https://github.com/googleapis/google-cloud-go/commit/6a871e0f6924980da4fec78405bfe0736522afa8))
+
+## [1.16.0](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.15.2...alloydb/v1.16.0) (2025-05-21)
+
+
+### Features
+
+* **alloydb:** A new enum `GCAEntitlementType` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new enum `Scope` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new field `assistive_experiences_enabled` is added to message `.google.cloud.alloydb.v1alpha.Instance` ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new field `gca_config` is added to message `.google.cloud.alloydb.v1alpha.Instance` ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new field `machine_type` is added to message `.google.cloud.alloydb.v1alpha.Instance` ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new field `psc_auto_connections` is added to message `.google.cloud.alloydb.v1alpha.Instance` ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new field `recommended_integer_value` is added to message `.google.cloud.alloydb.v1alpha.SupportedDatabaseFlag` ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new field `recommended_string_value` is added to message `.google.cloud.alloydb.v1alpha.SupportedDatabaseFlag` ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new field `scope` is added to message `.google.cloud.alloydb.v1alpha.ListSupportedDatabaseFlagsRequest` ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new field `scope` is added to message `.google.cloud.alloydb.v1alpha.SupportedDatabaseFlag` ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new message `ExportClusterRequest` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new message `ExportClusterResponse` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new message `GCAInstanceConfig` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new message `GcsDestination` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new message `ImportClusterRequest` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new message `ImportClusterResponse` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new message `PscAutoConnectionConfig` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new message `RestoreFromCloudSQLRequest` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new method `ExportCluster` is added to service `AlloyDBAdmin` ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new method `ImportCluster` is added to service `AlloyDBAdmin` ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A new service `AlloyDBCSQLAdmin` is added ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+
+
+### Documentation
+
+* **alloydb:** A comment for field `database_flags` in message `.google.cloud.alloydb.v1alpha.Instance` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for field `encryption_config` in message `.google.cloud.alloydb.v1alpha.AutomatedBackupPolicy` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for field `encryption_config` in message `.google.cloud.alloydb.v1alpha.ContinuousBackupConfig` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for field `id` in message `.google.cloud.alloydb.v1alpha.Instance` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for field `ip` in message `.google.cloud.alloydb.v1alpha.Instance` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for field `requested_cancellation` in message `.google.cloud.alloydb.v1alpha.OperationMetadata` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for field `state` in message `.google.cloud.alloydb.v1alpha.Instance` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for field `track_wait_event_types` in message `.google.cloud.alloydb.v1alpha.Instance` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for field `use_metadata_exchange` in message `.google.cloud.alloydb.v1alpha.GenerateClientCertificateRequest` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for field `user` in message `.google.cloud.alloydb.v1alpha.ExecuteSqlRequest` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for field `zone_id` in message `.google.cloud.alloydb.v1alpha.Instance` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+* **alloydb:** A comment for message `Instance` is changed ([2aaada3](https://github.com/googleapis/google-cloud-go/commit/2aaada3fb7a9d3eaacec3351019e225c4038646b))
+
+## [1.15.2](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.15.1...alloydb/v1.15.2) (2025-05-06)
+
+
+### Bug Fixes
+
+* **alloydb:** Upgrade gRPC service registration func ([7c01015](https://github.com/googleapis/google-cloud-go/commit/7c01015f2aafb5eeb0237accced76b059bc7635d))
+
+## [1.15.1](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.15.0...alloydb/v1.15.1) (2025-04-15)
+
+
+### Bug Fixes
+
+* **alloydb:** Update google.golang.org/api to 0.229.0 ([3319672](https://github.com/googleapis/google-cloud-go/commit/3319672f3dba84a7150772ccb5433e02dab7e201))
+
+## [1.15.0](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.14.2...alloydb/v1.15.0) (2025-03-19)
+
+
+### Features
+
+* **alloydb:** A new message `ExportClusterRequest` is added ([8e05420](https://github.com/googleapis/google-cloud-go/commit/8e054201c78ab8f96e370f5119838004839de1ba))
+* **alloydb:** A new message `ExportClusterResponse` is added ([8e05420](https://github.com/googleapis/google-cloud-go/commit/8e054201c78ab8f96e370f5119838004839de1ba))
+* **alloydb:** A new message `GcsDestination` is added ([8e05420](https://github.com/googleapis/google-cloud-go/commit/8e054201c78ab8f96e370f5119838004839de1ba))
+* **alloydb:** A new method `ExportCluster` is added to service `AlloyDBAdmin` ([#11861](https://github.com/googleapis/google-cloud-go/issues/11861)) ([8e05420](https://github.com/googleapis/google-cloud-go/commit/8e054201c78ab8f96e370f5119838004839de1ba))
+
+
+### Documentation
+
+* **alloydb:** A comment for field `database_flags` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([8e05420](https://github.com/googleapis/google-cloud-go/commit/8e054201c78ab8f96e370f5119838004839de1ba))
+* **alloydb:** A comment for field `id` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([8e05420](https://github.com/googleapis/google-cloud-go/commit/8e054201c78ab8f96e370f5119838004839de1ba))
+* **alloydb:** A comment for field `ip` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([8e05420](https://github.com/googleapis/google-cloud-go/commit/8e054201c78ab8f96e370f5119838004839de1ba))
+* **alloydb:** A comment for field `requested_cancellation` in message `.google.cloud.alloydb.v1beta.OperationMetadata` is changed ([8e05420](https://github.com/googleapis/google-cloud-go/commit/8e054201c78ab8f96e370f5119838004839de1ba))
+* **alloydb:** A comment for field `state` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([8e05420](https://github.com/googleapis/google-cloud-go/commit/8e054201c78ab8f96e370f5119838004839de1ba))
+* **alloydb:** A comment for field `zone_id` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([8e05420](https://github.com/googleapis/google-cloud-go/commit/8e054201c78ab8f96e370f5119838004839de1ba))
+
+## [1.14.2](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.14.1...alloydb/v1.14.2) (2025-03-13)
+
+
+### Bug Fixes
+
+* **alloydb:** Update golang.org/x/net to 0.37.0 ([1144978](https://github.com/googleapis/google-cloud-go/commit/11449782c7fb4896bf8b8b9cde8e7441c84fb2fd))
+
+## [1.14.1](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.14.0...alloydb/v1.14.1) (2025-01-02)
+
+
+### Bug Fixes
+
+* **alloydb:** Update golang.org/x/net to v0.33.0 ([e9b0b69](https://github.com/googleapis/google-cloud-go/commit/e9b0b69644ea5b276cacff0a707e8a5e87efafc9))
+
+## [1.14.0](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.13.0...alloydb/v1.14.0) (2024-11-14)
+
+
+### Features
+
+* **alloydb:** Add more observability options on the Instance level ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Add more observability options on the Instance level ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Add new API to execute SQL statements ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Add new API to execute SQL statements ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Add new API to perform a promotion or switchover on secondary instances ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Add new API to perform a promotion or switchover on secondary instances ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Add new API to upgrade a cluster ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Add new API to upgrade a cluster ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Add new CloudSQL backup resource ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Add new CloudSQL backup resource ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Add new cluster and instance level configurations to interact with Gemini ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Add new cluster and instance level configurations to interact with Gemini ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Add new PSC instance configuration setting and output the PSC DNS name ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Add new PSC instance configuration setting and output the PSC DNS name ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Add optional field to keep extra roles on a user if it already exists ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Add optional field to keep extra roles on a user if it already exists ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Add support for Free Trials ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Add support for Free Trials ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Add support to schedule maintenance ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Add support to schedule maintenance ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Additional field to set tags on a backup or cluster ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Additional field to set tags on a backup or cluster ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+* **alloydb:** Support for obtaining the public ip addresses of an instance and enabling outbound public ip ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Support for obtaining the public ip addresses of an instance and enabling outbound public ip ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+
+
+### Bug Fixes
+
+* **alloydb:** Deprecated various PSC instance configuration fields ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Deprecated various PSC instance configuration fields ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+
+
+### Documentation
+
+* **alloydb:** Various typo fixes, correcting the formatting, and clarifications on the request_id and validate_only fields in API requests and on the page_size when listing the database ([380e7d2](https://github.com/googleapis/google-cloud-go/commit/380e7d23e69b22ab46cc6e3be58902accee2f26a))
+* **alloydb:** Various typo fixes, correcting the formatting, and clarifications on the request_id and validate_only fields in API requests and on the page_size when listing the database ([f072178](https://github.com/googleapis/google-cloud-go/commit/f072178f6fd90537a5782395f4229e4c8b30af7e))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-go/compare/alloydb/v1.12.1...alloydb/v1.13.0) (2024-10-23)
 
 

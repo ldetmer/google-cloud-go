@@ -15,13 +15,13 @@
 package storage
 
 import (
-	"os"
 	"testing"
 	"time"
 
 	"cloud.google.com/go/storage/experimental"
-	mexporter "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric"
 	"github.com/google/go-cmp/cmp"
+	"go.opentelemetry.io/otel/exporters/stdout/stdoutmetric"
+	"go.opentelemetry.io/otel/sdk/metric"
 	"google.golang.org/api/option"
 )
 
@@ -137,6 +137,21 @@ func TestApplyStorageOpt(t *testing.T) {
 				},
 			},
 		},
+		{
+			desc: "use gRPC bidi reads",
+			opts: []option.ClientOption{withGRPCBidiReads()},
+			want: storageConfig{
+				grpcBidiReads: true,
+			},
+		},
+		{
+			desc: "use gRPC zonal bucket APIs",
+			opts: []option.ClientOption{withZonalBucketAPIs()},
+			want: storageConfig{
+				grpcBidiReads:         true,
+				grpcAppendableUploads: true,
+			},
+		},
 	} {
 		t.Run(test.desc, func(t *testing.T) {
 			var got storageConfig
@@ -146,14 +161,15 @@ func TestApplyStorageOpt(t *testing.T) {
 				}
 			}
 			if !cmp.Equal(got, test.want, cmp.AllowUnexported(storageConfig{}, experimental.ReadStallTimeoutConfig{})) {
-				t.Errorf(cmp.Diff(got, test.want, cmp.AllowUnexported(storageConfig{}, experimental.ReadStallTimeoutConfig{})))
+				diff := cmp.Diff(got, test.want, cmp.AllowUnexported(storageConfig{}, experimental.ReadStallTimeoutConfig{}))
+				t.Errorf("options: diff got, want: %v", diff)
 			}
 		})
 	}
 }
 
 func TestSetCustomExporter(t *testing.T) {
-	exporter, err := mexporter.New()
+	exporter, err := stdoutmetric.New()
 	if err != nil {
 		t.Errorf("TestSetCustomExporter: %v", err)
 	}
@@ -167,6 +183,21 @@ func TestSetCustomExporter(t *testing.T) {
 	}
 	if got.metricExporter != want.metricExporter {
 		t.Errorf("TestSetCustomExpoerter: metricExporter want=%v, got=%v", want.metricExporter, got.metricExporter)
+	}
+}
+
+func TestSetManualReader(t *testing.T) {
+	manualReader := metric.NewManualReader()
+	want := storageConfig{
+		manualReader: manualReader,
+	}
+	var got storageConfig
+	opt := withTestMetricReader(manualReader)
+	if storageOpt, ok := opt.(storageClientOption); ok {
+		storageOpt.ApplyStorageOpt(&got)
+	}
+	if got.manualReader != want.manualReader {
+		t.Errorf("TestSetCustomExpoerter: manualReader want=%v, got=%v", want.manualReader, got.manualReader)
 	}
 }
 
@@ -184,7 +215,7 @@ func TestGetDynamicReadReqInitialTimeoutSecFromEnv(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			os.Setenv(dynamicReadReqInitialTimeoutEnv, tt.envValue)
+			t.Setenv(dynamicReadReqInitialTimeoutEnv, tt.envValue)
 			if got := getDynamicReadReqInitialTimeoutSecFromEnv(defaultValue); got != tt.want {
 				t.Errorf("getDynamicReadReqInitialTimeoutSecFromEnv(defaultValue) = %v, want %v", got, tt.want)
 			}
@@ -204,7 +235,7 @@ func TestGetDynamicReadReqIncreaseRateFromEnv(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			os.Setenv(dynamicReadReqIncreaseRateEnv, tt.envValue)
+			t.Setenv(dynamicReadReqIncreaseRateEnv, tt.envValue)
 			if got := getDynamicReadReqIncreaseRateFromEnv(); got != tt.want {
 				t.Errorf("getDynamicReadReqIncreaseRateFromEnv() = %v, want %v", got, tt.want)
 			}

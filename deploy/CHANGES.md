@@ -1,6 +1,112 @@
 # Changes
 
 
+## [1.27.2](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.27.1...deploy/v1.27.2) (2025-05-13)
+
+
+### Bug Fixes
+
+* **deploy:** Correct pattern of unused resource definition, Revision ([35b4f4a](https://github.com/googleapis/google-cloud-go/commit/35b4f4aced4a5dc79f1315c74feaac7d11657f8a))
+
+
+### Documentation
+
+* **deploy:** Comments updated for fields in several different resources ([35b4f4a](https://github.com/googleapis/google-cloud-go/commit/35b4f4aced4a5dc79f1315c74feaac7d11657f8a))
+
+## [1.27.1](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.27.0...deploy/v1.27.1) (2025-04-15)
+
+
+### Bug Fixes
+
+* **deploy:** Update google.golang.org/api to 0.229.0 ([3319672](https://github.com/googleapis/google-cloud-go/commit/3319672f3dba84a7150772ccb5433e02dab7e201))
+
+## [1.27.0](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.26.4...deploy/v1.27.0) (2025-04-15)
+
+
+### Features
+
+* **deploy:** Add resource definition for Revision ([20f762c](https://github.com/googleapis/google-cloud-go/commit/20f762c528726a3f038d3e1f37e8a4952118badf))
+
+
+### Documentation
+
+* **deploy:** Typos fixes and small improvements ([20f762c](https://github.com/googleapis/google-cloud-go/commit/20f762c528726a3f038d3e1f37e8a4952118badf))
+
+## [1.26.4](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.26.3...deploy/v1.26.4) (2025-03-25)
+
+
+### Documentation
+
+* **deploy:** Fix typo in comments ([427f448](https://github.com/googleapis/google-cloud-go/commit/427f448d9a1a32a2a55a695e9e3a915fcc71ae19))
+
+## [1.26.3](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.26.2...deploy/v1.26.3) (2025-03-13)
+
+
+### Bug Fixes
+
+* **deploy:** Update golang.org/x/net to 0.37.0 ([1144978](https://github.com/googleapis/google-cloud-go/commit/11449782c7fb4896bf8b8b9cde8e7441c84fb2fd))
+
+## [1.26.2](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.26.1...deploy/v1.26.2) (2025-02-12)
+
+
+### Documentation
+
+* **deploy:** Minor documentation improvements ([93b6495](https://github.com/googleapis/google-cloud-go/commit/93b649580863dc8121c69263749064660a83e095))
+
+## [1.26.1](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.26.0...deploy/v1.26.1) (2025-01-02)
+
+
+### Bug Fixes
+
+* **deploy:** Update golang.org/x/net to v0.33.0 ([e9b0b69](https://github.com/googleapis/google-cloud-go/commit/e9b0b69644ea5b276cacff0a707e8a5e87efafc9))
+
+## [1.26.0](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.25.1...deploy/v1.26.0) (2024-12-04)
+
+
+### Features
+
+* **deploy:** A new field `dns_endpoint` is added to message `.google.cloud.deploy.v1.GkeCluster` ([8dedb87](https://github.com/googleapis/google-cloud-go/commit/8dedb878c070cc1e92d62bb9b32358425e3ceffb))
+
+
+### Documentation
+
+* **deploy:** A comment for field `internal_ip` in message `.google.cloud.deploy.v1.GkeCluster` is changed ([8dedb87](https://github.com/googleapis/google-cloud-go/commit/8dedb878c070cc1e92d62bb9b32358425e3ceffb))
+* **deploy:** A comment for field `requested_cancellation` in message `.google.cloud.deploy.v1.OperationMetadata` is changed ([8dedb87](https://github.com/googleapis/google-cloud-go/commit/8dedb878c070cc1e92d62bb9b32358425e3ceffb))
+* **deploy:** A comment for field `skaffold_version` in message `.google.cloud.deploy.v1.Release` is changed ([8dedb87](https://github.com/googleapis/google-cloud-go/commit/8dedb878c070cc1e92d62bb9b32358425e3ceffb))
+* **deploy:** Documentation improvements. `skaffold_version` field is no longer explicitly marked as optional ([8dedb87](https://github.com/googleapis/google-cloud-go/commit/8dedb878c070cc1e92d62bb9b32358425e3ceffb))
+
+## [1.25.1](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.25.0...deploy/v1.25.1) (2024-11-21)
+
+
+### Documentation
+
+* **deploy:** Minor documentation updates ([1036734](https://github.com/googleapis/google-cloud-go/commit/1036734d387691f6264bd7a51c9e19567815a3d2))
+
+## [1.25.0](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.24.0...deploy/v1.25.0) (2024-11-14)
+
+
+### Features
+
+* **deploy:** A new field `timed_promote_release_condition` is added to message `.google.cloud.deploy.v1.AutomationRuleCondition` ([f329c4c](https://github.com/googleapis/google-cloud-go/commit/f329c4c7782fc5f52751235d969bb8de11616ec3))
+* **deploy:** A new field `timed_promote_release_operation` is added to message `.google.cloud.deploy.v1.AutomationRun` ([f329c4c](https://github.com/googleapis/google-cloud-go/commit/f329c4c7782fc5f52751235d969bb8de11616ec3))
+* **deploy:** A new field `timed_promote_release_rule` is added to message `.google.cloud.deploy.v1.AutomationRule` ([f329c4c](https://github.com/googleapis/google-cloud-go/commit/f329c4c7782fc5f52751235d969bb8de11616ec3))
+* **deploy:** A new message `TimedPromoteReleaseCondition` is added ([f329c4c](https://github.com/googleapis/google-cloud-go/commit/f329c4c7782fc5f52751235d969bb8de11616ec3))
+* **deploy:** A new message `TimedPromoteReleaseOperation` is added ([f329c4c](https://github.com/googleapis/google-cloud-go/commit/f329c4c7782fc5f52751235d969bb8de11616ec3))
+* **deploy:** A new message `TimedPromoteReleaseRule` is added ([f329c4c](https://github.com/googleapis/google-cloud-go/commit/f329c4c7782fc5f52751235d969bb8de11616ec3))
+
+
+### Documentation
+
+* **deploy:** A comment for field `target_id` in message `.google.cloud.deploy.v1.AutomationRun` is changed ([f329c4c](https://github.com/googleapis/google-cloud-go/commit/f329c4c7782fc5f52751235d969bb8de11616ec3))
+
+## [1.24.0](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.23.1...deploy/v1.24.0) (2024-11-06)
+
+
+### Features
+
+* **deploy:** Added new fields for the Automation Repair rule ([2c83297](https://github.com/googleapis/google-cloud-go/commit/2c83297a569117b0252b5b2edaecb09e4924d979))
+* **deploy:** Added route destination related fields to Gateway service mesh message ([2c83297](https://github.com/googleapis/google-cloud-go/commit/2c83297a569117b0252b5b2edaecb09e4924d979))
+
 ## [1.23.1](https://github.com/googleapis/google-cloud-go/compare/deploy/v1.23.0...deploy/v1.23.1) (2024-10-23)
 
 

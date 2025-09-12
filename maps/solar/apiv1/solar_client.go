@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package solar
 import (
 	"context"
 	"fmt"
-	"io"
+	"log/slog"
 	"math"
 	"net/http"
 	"net/url"
@@ -27,7 +27,6 @@ import (
 
 	solarpb "cloud.google.com/go/maps/solar/apiv1/solarpb"
 	gax "github.com/googleapis/gax-go/v2"
-	"google.golang.org/api/googleapi"
 	"google.golang.org/api/option"
 	"google.golang.org/api/option/internaloption"
 	gtransport "google.golang.org/api/transport/grpc"
@@ -186,9 +185,9 @@ func (c *Client) Connection() *grpc.ClientConn {
 	return c.internalClient.Connection()
 }
 
-// FindClosestBuildingInsights locates the closest building to a query point. Returns an error with
-// code NOT_FOUND if there are no buildings within approximately 50m of the
-// query point.
+// FindClosestBuildingInsights locates the building whose centroid is closest to a query point. Returns an
+// error with code NOT_FOUND if there are no buildings within approximately
+// 50m of the query point.
 func (c *Client) FindClosestBuildingInsights(ctx context.Context, req *solarpb.FindClosestBuildingInsightsRequest, opts ...gax.CallOption) (*solarpb.BuildingInsights, error) {
 	return c.internalClient.FindClosestBuildingInsights(ctx, req, opts...)
 }
@@ -220,6 +219,8 @@ type gRPCClient struct {
 
 	// The x-goog-* metadata to be sent with each request.
 	xGoogHeaders []string
+
+	logger *slog.Logger
 }
 
 // NewClient creates a new solar client based on gRPC.
@@ -246,6 +247,7 @@ func NewClient(ctx context.Context, opts ...option.ClientOption) (*Client, error
 		connPool:    connPool,
 		client:      solarpb.NewSolarClient(connPool),
 		CallOptions: &client.CallOptions,
+		logger:      internaloption.GetLogger(opts),
 	}
 	c.setGoogleClientInfo()
 
@@ -267,7 +269,7 @@ func (c *gRPCClient) Connection() *grpc.ClientConn {
 // use by Google-written clients.
 func (c *gRPCClient) setGoogleClientInfo(keyval ...string) {
 	kv := append([]string{"gl-go", gax.GoVersion}, keyval...)
-	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "grpc", grpc.Version)
+	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "grpc", grpc.Version, "pb", protoVersion)
 	c.xGoogHeaders = []string{
 		"x-goog-api-client", gax.XGoogHeader(kv...),
 	}
@@ -292,6 +294,8 @@ type restClient struct {
 
 	// Points back to the CallOptions field of the containing Client
 	CallOptions **CallOptions
+
+	logger *slog.Logger
 }
 
 // NewRESTClient creates a new solar rest client.
@@ -309,6 +313,7 @@ func NewRESTClient(ctx context.Context, opts ...option.ClientOption) (*Client, e
 		endpoint:    endpoint,
 		httpClient:  httpClient,
 		CallOptions: &callOpts,
+		logger:      internaloption.GetLogger(opts),
 	}
 	c.setGoogleClientInfo()
 
@@ -332,7 +337,7 @@ func defaultRESTClientOptions() []option.ClientOption {
 // use by Google-written clients.
 func (c *restClient) setGoogleClientInfo(keyval ...string) {
 	kv := append([]string{"gl-go", gax.GoVersion}, keyval...)
-	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "rest", "UNKNOWN")
+	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "rest", "UNKNOWN", "pb", protoVersion)
 	c.xGoogHeaders = []string{
 		"x-goog-api-client", gax.XGoogHeader(kv...),
 	}
@@ -358,7 +363,7 @@ func (c *gRPCClient) FindClosestBuildingInsights(ctx context.Context, req *solar
 	var resp *solarpb.BuildingInsights
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.FindClosestBuildingInsights(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.FindClosestBuildingInsights, req, settings.GRPC, c.logger, "FindClosestBuildingInsights")
 		return err
 	}, opts...)
 	if err != nil {
@@ -373,7 +378,7 @@ func (c *gRPCClient) GetDataLayers(ctx context.Context, req *solarpb.GetDataLaye
 	var resp *solarpb.DataLayers
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.GetDataLayers(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.GetDataLayers, req, settings.GRPC, c.logger, "GetDataLayers")
 		return err
 	}, opts...)
 	if err != nil {
@@ -388,7 +393,7 @@ func (c *gRPCClient) GetGeoTiff(ctx context.Context, req *solarpb.GetGeoTiffRequ
 	var resp *httpbodypb.HttpBody
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.GetGeoTiff(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.GetGeoTiff, req, settings.GRPC, c.logger, "GetGeoTiff")
 		return err
 	}, opts...)
 	if err != nil {
@@ -397,9 +402,9 @@ func (c *gRPCClient) GetGeoTiff(ctx context.Context, req *solarpb.GetGeoTiffRequ
 	return resp, nil
 }
 
-// FindClosestBuildingInsights locates the closest building to a query point. Returns an error with
-// code NOT_FOUND if there are no buildings within approximately 50m of the
-// query point.
+// FindClosestBuildingInsights locates the building whose centroid is closest to a query point. Returns an
+// error with code NOT_FOUND if there are no buildings within approximately
+// 50m of the query point.
 func (c *restClient) FindClosestBuildingInsights(ctx context.Context, req *solarpb.FindClosestBuildingInsightsRequest, opts ...gax.CallOption) (*solarpb.BuildingInsights, error) {
 	baseUrl, err := url.Parse(c.endpoint)
 	if err != nil {
@@ -411,6 +416,11 @@ func (c *restClient) FindClosestBuildingInsights(ctx context.Context, req *solar
 	params.Add("$alt", "json;enum-encoding=int")
 	if req.GetExactQualityRequired() {
 		params.Add("exactQualityRequired", fmt.Sprintf("%v", req.GetExactQualityRequired()))
+	}
+	if items := req.GetExperiments(); len(items) > 0 {
+		for _, item := range items {
+			params.Add("experiments", fmt.Sprintf("%v", item))
+		}
 	}
 	if req.GetLocation().GetLatitude() != 0 {
 		params.Add("location.latitude", fmt.Sprintf("%v", req.GetLocation().GetLatitude()))
@@ -441,17 +451,7 @@ func (c *restClient) FindClosestBuildingInsights(ctx context.Context, req *solar
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "FindClosestBuildingInsights")
 		if err != nil {
 			return err
 		}
@@ -482,6 +482,11 @@ func (c *restClient) GetDataLayers(ctx context.Context, req *solarpb.GetDataLaye
 	params.Add("$alt", "json;enum-encoding=int")
 	if req.GetExactQualityRequired() {
 		params.Add("exactQualityRequired", fmt.Sprintf("%v", req.GetExactQualityRequired()))
+	}
+	if items := req.GetExperiments(); len(items) > 0 {
+		for _, item := range items {
+			params.Add("experiments", fmt.Sprintf("%v", item))
+		}
 	}
 	if req.GetLocation().GetLatitude() != 0 {
 		params.Add("location.latitude", fmt.Sprintf("%v", req.GetLocation().GetLatitude()))
@@ -519,17 +524,7 @@ func (c *restClient) GetDataLayers(ctx context.Context, req *solarpb.GetDataLaye
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetDataLayers")
 		if err != nil {
 			return err
 		}
@@ -576,17 +571,7 @@ func (c *restClient) GetGeoTiff(ctx context.Context, req *solarpb.GetGeoTiffRequ
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, httpRsp, err := executeHTTPRequestWithResponse(ctx, c.httpClient, httpReq, c.logger, nil, "GetGeoTiff")
 		if err != nil {
 			return err
 		}

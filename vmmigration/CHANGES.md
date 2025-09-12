@@ -1,6 +1,62 @@
 # Changes
 
 
+## [1.9.0](https://github.com/googleapis/google-cloud-go/compare/vmmigration/v1.8.6...vmmigration/v1.9.0) (2025-09-11)
+
+
+### Features
+
+* **vmmigration:** API for extending the time to live (TTL) of a Migrating VM ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** Azure as a source ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** CMEK support ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** Cutover forecast ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** Image Import ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** Machine Image Import ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** Migration warnings in addition to errors ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** Multiple additional supported target details ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** OS capabilities detection ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** VM disk migration ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+
+
+### Bug Fixes
+
+* **vmmigration:** Changed field behavior for an existing field `key` in message `.google.cloud.vmmigration.v1.AwsSourceDetails` to `required` to protect from incorrect input ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** Changed field behavior for an existing field `project` in message `.google.cloud.vmmigration.v1.TargetProject` to `required` to protect from incorrect input ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+* **vmmigration:** Changed field behavior for an existing field `value` in message `.google.cloud.vmmigration.v1.AwsSourceDetails` to `required` to protect from incorrect input ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+
+
+### Documentation
+
+* **vmmigration:** Updated comments and descriptions to improve clarity ([d73f912](https://github.com/googleapis/google-cloud-go/commit/d73f9123be77bb3278f48d510cd0fb22feb605bc))
+
+## [1.8.6](https://github.com/googleapis/google-cloud-go/compare/vmmigration/v1.8.5...vmmigration/v1.8.6) (2025-04-15)
+
+
+### Bug Fixes
+
+* **vmmigration:** Update google.golang.org/api to 0.229.0 ([3319672](https://github.com/googleapis/google-cloud-go/commit/3319672f3dba84a7150772ccb5433e02dab7e201))
+
+## [1.8.5](https://github.com/googleapis/google-cloud-go/compare/vmmigration/v1.8.4...vmmigration/v1.8.5) (2025-03-13)
+
+
+### Bug Fixes
+
+* **vmmigration:** Update golang.org/x/net to 0.37.0 ([1144978](https://github.com/googleapis/google-cloud-go/commit/11449782c7fb4896bf8b8b9cde8e7441c84fb2fd))
+
+## [1.8.4](https://github.com/googleapis/google-cloud-go/compare/vmmigration/v1.8.3...vmmigration/v1.8.4) (2025-03-06)
+
+
+### Bug Fixes
+
+* **vmmigration:** Fix out-of-sync version.go ([28f0030](https://github.com/googleapis/google-cloud-go/commit/28f00304ebb13abfd0da2f45b9b79de093cca1ec))
+
+## [1.8.3](https://github.com/googleapis/google-cloud-go/compare/vmmigration/v1.8.2...vmmigration/v1.8.3) (2025-01-02)
+
+
+### Bug Fixes
+
+* **vmmigration:** Update golang.org/x/net to v0.33.0 ([e9b0b69](https://github.com/googleapis/google-cloud-go/commit/e9b0b69644ea5b276cacff0a707e8a5e87efafc9))
+
 ## [1.8.2](https://github.com/googleapis/google-cloud-go/compare/vmmigration/v1.8.1...vmmigration/v1.8.2) (2024-10-23)
 
 

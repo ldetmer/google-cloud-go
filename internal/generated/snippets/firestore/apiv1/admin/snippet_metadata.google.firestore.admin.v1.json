@@ -1,7 +1,7 @@
 {
   "clientLibrary": {
     "name": "cloud.google.com/go/firestore/apiv1/admin",
-    "version": "1.17.0",
+    "version": "1.18.0",
     "language": "GO",
     "apis": [
       {
@@ -98,6 +98,52 @@
         {
           "start": 18,
           "end": 51,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "firestore_v1_generated_FirestoreAdmin_CloneDatabase_sync",
+      "title": "firestore CloneDatabase Sample",
+      "description": "CloneDatabase creates a new database by cloning an existing one.\n\nThe new database must be in the same cloud region or multi-region location\nas the existing database. This behaves similar to\n[FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.FirestoreAdmin.CreateDatabase]\nexcept instead of creating a new empty database, a new database is created\nwith the database type, index configuration, and documents from an existing\ndatabase.\n\nThe [long-running operation][google.longrunning.Operation] can be used to\ntrack the progress of the clone, with the Operation's\n[metadata][google.longrunning.Operation.metadata] field type being the\n[CloneDatabaseMetadata][google.firestore.admin.v1.CloneDatabaseMetadata].\nThe [response][google.longrunning.Operation.response] type is the\n[Database][google.firestore.admin.v1.Database] if the clone was\nsuccessful. The new database is not readable or writeable until the LRO has\ncompleted.",
+      "file": "FirestoreAdminClient/CloneDatabase/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "CloneDatabase",
+        "fullName": "google.firestore.admin.v1.FirestoreAdminClient.CloneDatabase",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.CloneDatabaseRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "CloneDatabaseOperation",
+        "client": {
+          "shortName": "FirestoreAdminClient",
+          "fullName": "google.firestore.admin.v1.FirestoreAdminClient"
+        },
+        "method": {
+          "shortName": "CloneDatabase",
+          "fullName": "google.firestore.admin.v1.FirestoreAdmin.CloneDatabase",
+          "service": {
+            "shortName": "FirestoreAdmin",
+            "fullName": "google.firestore.admin.v1.FirestoreAdmin"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 58,
           "type": "FULL"
         }
       ]
@@ -236,6 +282,52 @@
         {
           "start": 18,
           "end": 58,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "firestore_v1_generated_FirestoreAdmin_CreateUserCreds_sync",
+      "title": "firestore CreateUserCreds Sample",
+      "description": "CreateUserCreds create a user creds.",
+      "file": "FirestoreAdminClient/CreateUserCreds/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "CreateUserCreds",
+        "fullName": "google.firestore.admin.v1.FirestoreAdminClient.CreateUserCreds",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.CreateUserCredsRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.UserCreds",
+        "client": {
+          "shortName": "FirestoreAdminClient",
+          "fullName": "google.firestore.admin.v1.FirestoreAdminClient"
+        },
+        "method": {
+          "shortName": "CreateUserCreds",
+          "fullName": "google.firestore.admin.v1.FirestoreAdmin.CreateUserCreds",
+          "service": {
+            "shortName": "FirestoreAdmin",
+            "fullName": "google.firestore.admin.v1.FirestoreAdmin"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
           "type": "FULL"
         }
       ]
@@ -462,6 +554,143 @@
         {
           "start": 18,
           "end": 51,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "firestore_v1_generated_FirestoreAdmin_DeleteUserCreds_sync",
+      "title": "firestore DeleteUserCreds Sample",
+      "description": "DeleteUserCreds deletes a user creds.",
+      "file": "FirestoreAdminClient/DeleteUserCreds/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "DeleteUserCreds",
+        "fullName": "google.firestore.admin.v1.FirestoreAdminClient.DeleteUserCreds",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.DeleteUserCredsRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "client": {
+          "shortName": "FirestoreAdminClient",
+          "fullName": "google.firestore.admin.v1.FirestoreAdminClient"
+        },
+        "method": {
+          "shortName": "DeleteUserCreds",
+          "fullName": "google.firestore.admin.v1.FirestoreAdmin.DeleteUserCreds",
+          "service": {
+            "shortName": "FirestoreAdmin",
+            "fullName": "google.firestore.admin.v1.FirestoreAdmin"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 51,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "firestore_v1_generated_FirestoreAdmin_DisableUserCreds_sync",
+      "title": "firestore DisableUserCreds Sample",
+      "description": "DisableUserCreds disables a user creds. No-op if the user creds are already disabled.",
+      "file": "FirestoreAdminClient/DisableUserCreds/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "DisableUserCreds",
+        "fullName": "google.firestore.admin.v1.FirestoreAdminClient.DisableUserCreds",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.DisableUserCredsRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.UserCreds",
+        "client": {
+          "shortName": "FirestoreAdminClient",
+          "fullName": "google.firestore.admin.v1.FirestoreAdminClient"
+        },
+        "method": {
+          "shortName": "DisableUserCreds",
+          "fullName": "google.firestore.admin.v1.FirestoreAdmin.DisableUserCreds",
+          "service": {
+            "shortName": "FirestoreAdmin",
+            "fullName": "google.firestore.admin.v1.FirestoreAdmin"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "firestore_v1_generated_FirestoreAdmin_EnableUserCreds_sync",
+      "title": "firestore EnableUserCreds Sample",
+      "description": "EnableUserCreds enables a user creds. No-op if the user creds are already enabled.",
+      "file": "FirestoreAdminClient/EnableUserCreds/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "EnableUserCreds",
+        "fullName": "google.firestore.admin.v1.FirestoreAdminClient.EnableUserCreds",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.EnableUserCredsRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.UserCreds",
+        "client": {
+          "shortName": "FirestoreAdminClient",
+          "fullName": "google.firestore.admin.v1.FirestoreAdminClient"
+        },
+        "method": {
+          "shortName": "EnableUserCreds",
+          "fullName": "google.firestore.admin.v1.FirestoreAdmin.EnableUserCreds",
+          "service": {
+            "shortName": "FirestoreAdmin",
+            "fullName": "google.firestore.admin.v1.FirestoreAdmin"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
           "type": "FULL"
         }
       ]
@@ -776,6 +1005,52 @@
           "service": {
             "shortName": "Operations",
             "fullName": "google.longrunning.Operations"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "firestore_v1_generated_FirestoreAdmin_GetUserCreds_sync",
+      "title": "firestore GetUserCreds Sample",
+      "description": "GetUserCreds gets a user creds resource. Note that the returned resource does not\ncontain the secret value itself.",
+      "file": "FirestoreAdminClient/GetUserCreds/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "GetUserCreds",
+        "fullName": "google.firestore.admin.v1.FirestoreAdminClient.GetUserCreds",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.GetUserCredsRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.UserCreds",
+        "client": {
+          "shortName": "FirestoreAdminClient",
+          "fullName": "google.firestore.admin.v1.FirestoreAdminClient"
+        },
+        "method": {
+          "shortName": "GetUserCreds",
+          "fullName": "google.firestore.admin.v1.FirestoreAdmin.GetUserCreds",
+          "service": {
+            "shortName": "FirestoreAdmin",
+            "fullName": "google.firestore.admin.v1.FirestoreAdmin"
           }
         }
       },
@@ -1106,6 +1381,98 @@
         {
           "start": 18,
           "end": 66,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "firestore_v1_generated_FirestoreAdmin_ListUserCreds_sync",
+      "title": "firestore ListUserCreds Sample",
+      "description": "ListUserCreds list all user creds in the database. Note that the returned resource\ndoes not contain the secret value itself.",
+      "file": "FirestoreAdminClient/ListUserCreds/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "ListUserCreds",
+        "fullName": "google.firestore.admin.v1.FirestoreAdminClient.ListUserCreds",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.ListUserCredsRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.ListUserCredsResponse",
+        "client": {
+          "shortName": "FirestoreAdminClient",
+          "fullName": "google.firestore.admin.v1.FirestoreAdminClient"
+        },
+        "method": {
+          "shortName": "ListUserCreds",
+          "fullName": "google.firestore.admin.v1.FirestoreAdmin.ListUserCreds",
+          "service": {
+            "shortName": "FirestoreAdmin",
+            "fullName": "google.firestore.admin.v1.FirestoreAdmin"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "firestore_v1_generated_FirestoreAdmin_ResetUserPassword_sync",
+      "title": "firestore ResetUserPassword Sample",
+      "description": "ResetUserPassword resets the password of a user creds.",
+      "file": "FirestoreAdminClient/ResetUserPassword/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "ResetUserPassword",
+        "fullName": "google.firestore.admin.v1.FirestoreAdminClient.ResetUserPassword",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "adminpb.ResetUserPasswordRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*adminpb.UserCreds",
+        "client": {
+          "shortName": "FirestoreAdminClient",
+          "fullName": "google.firestore.admin.v1.FirestoreAdminClient"
+        },
+        "method": {
+          "shortName": "ResetUserPassword",
+          "fullName": "google.firestore.admin.v1.FirestoreAdmin.ResetUserPassword",
+          "service": {
+            "shortName": "FirestoreAdmin",
+            "fullName": "google.firestore.admin.v1.FirestoreAdmin"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
           "type": "FULL"
         }
       ]

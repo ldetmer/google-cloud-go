@@ -19,9 +19,12 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"math"
 	"math/rand"
+	"net"
+	"os"
 	"sort"
 	"strconv"
 	"sync"
@@ -42,8 +45,90 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
+
+type closeSpyListener struct {
+	net.Listener
+	closed bool
+}
+
+func (s *closeSpyListener) Close() error {
+	s.closed = true
+	return s.Listener.Close()
+}
+
+func TestNewServer(t *testing.T) {
+	t.Run("TCP", func(t *testing.T) {
+		srv, err := NewServer("localhost:0")
+		if err != nil {
+			t.Fatalf("NewServer() error = %v", err)
+		}
+		if srv == nil {
+			t.Fatal("NewServer() returned nil server")
+		}
+		defer srv.Close()
+		if srv.Addr == "" {
+			t.Error("NewServer() returned server with empty Addr")
+		}
+	})
+
+	t.Run("Unix", func(t *testing.T) {
+		tmpDir := t.TempDir()
+		sockPath := tmpDir + "/bttest.sock"
+		srv, err := NewServer(sockPath)
+		if err != nil {
+			t.Fatalf("NewServer() error = %v", err)
+		}
+		if srv == nil {
+			t.Fatal("NewServer() returned nil server")
+		}
+
+		if srv.Addr != sockPath {
+			t.Errorf("srv.Addr got %q, want %q", srv.Addr, sockPath)
+		}
+
+		srv.Close()
+
+		// Check that the unix socket file was removed.
+		if _, err := os.Stat(sockPath); !os.IsNotExist(err) {
+			t.Errorf("socket file %q was not removed after Close()", sockPath)
+		}
+	})
+
+	t.Run("WithListener", func(t *testing.T) {
+		l, err := net.Listen("tcp", "localhost:0")
+		if err != nil {
+			t.Fatalf("net.Listen() error = %v", err)
+		}
+
+		// Create a spy that can tell us if its Close method was called.
+		spy := &closeSpyListener{Listener: l}
+		srv, err := NewServerWithListener(spy) // This should not call spy.Close().
+		if err != nil {
+			l.Close()
+			t.Fatalf("NewServerWithListener() error = %v", err)
+		}
+
+		srv.Close() // This should NOT call the Close method on our spy.
+		if spy.closed {
+			t.Error("Listener was closed by the server, but it should not have been.")
+		}
+
+		// Clean up the real listener now that the test is done.
+		l.Close()
+
+		// Validate that the listener is now actually closed.
+		_, err = l.Accept()
+		if err == nil {
+			t.Fatal("l.Accept() should have failed for a closed listener, but it did not")
+		}
+		if !errors.Is(err, net.ErrClosed) {
+			t.Errorf("Expected net.ErrClosed, but got a different error: %v", err)
+		}
+	})
+}
 
 func TestConcurrentMutationsReadModifyAndGC(t *testing.T) {
 	s := &server{
@@ -218,6 +303,52 @@ func TestCreateTableWithFamily(t *testing.T) {
 	}
 	if got, want := cf.GcRule.GetMaxNumVersions(), int32(456); got != want {
 		t.Errorf("Invalid MaxNumVersions: wanted:%d, got:%d", want, got)
+	}
+}
+
+func TestGetPartitionsByTableName(t *testing.T) {
+	s := &server{
+		tables: make(map[string]*table),
+	}
+	ctx := context.Background()
+	newTbl := btapb.Table{
+		ColumnFamilies: map[string]*btapb.ColumnFamily{
+			"cf1": {GcRule: &btapb.GcRule{Rule: &btapb.GcRule_MaxNumVersions{MaxNumVersions: 123}}},
+			"cf2": {GcRule: &btapb.GcRule{Rule: &btapb.GcRule_MaxNumVersions{MaxNumVersions: 456}}},
+		},
+	}
+	_, err1 := s.CreateTable(ctx, &btapb.CreateTableRequest{Parent: "cluster", TableId: "t1", Table: &newTbl})
+	if err1 != nil {
+		t.Fatalf("Creating table: %v", err1)
+	}
+
+	newTbl = btapb.Table{
+		ColumnFamilies: map[string]*btapb.ColumnFamily{
+			"cf3": {GcRule: &btapb.GcRule{Rule: &btapb.GcRule_MaxNumVersions{MaxNumVersions: 567}}},
+			"cf4": {GcRule: &btapb.GcRule{Rule: &btapb.GcRule_MaxNumVersions{MaxNumVersions: 890}}},
+		},
+	}
+	_, err2 := s.CreateTable(ctx, &btapb.CreateTableRequest{Parent: "cluster", TableId: "t2", Table: &newTbl})
+	if err2 != nil {
+		t.Fatalf("Creating table: %v", err2)
+	}
+
+	tblNamePrefix := "cluster" + "/tables/"
+
+	// A random table name doesn't return partitions.
+	partitions := s.GetPartitionsByTableName(tblNamePrefix + "random")
+	if partitions != nil {
+		t.Fatalf("Getting partitions for table random")
+	}
+
+	partitions = s.GetPartitionsByTableName(tblNamePrefix + "t1")
+	if len(partitions) != 10 {
+		t.Fatalf("Getting partitions for table t1")
+	}
+
+	partitions = s.GetPartitionsByTableName(tblNamePrefix + "t2")
+	if len(partitions) != 10 {
+		t.Fatalf("Getting partitions for table t2")
 	}
 }
 
@@ -2663,5 +2794,315 @@ func TestAuthorizedViewApis(t *testing.T) {
 	if fmt.Sprint(err) !=
 		"rpc error: code = Unimplemented desc = the emulator does not currently support authorized views" {
 		t.Fatalf("Failed to error %s", err)
+	}
+}
+
+func TestUpdateGCPolicyOnAggregateColumnFamily(t *testing.T) {
+	ctx := context.Background()
+
+	s := &server{
+		tables: make(map[string]*table),
+	}
+
+	tblInfo, err := s.CreateTable(ctx, &btapb.CreateTableRequest{
+		Parent:  "cluster",
+		TableId: "t",
+		Table: &btapb.Table{
+			ColumnFamilies: map[string]*btapb.ColumnFamily{
+				"sum": {
+					ValueType: &btapb.Type{
+						Kind: &btapb.Type_AggregateType{
+							AggregateType: &btapb.Type_Aggregate{
+								InputType: &btapb.Type{
+									Kind: &btapb.Type_Int64Type{},
+								},
+								Aggregator: &btapb.Type_Aggregate_Sum_{
+									Sum: &btapb.Type_Aggregate_Sum{},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if tblInfo.ColumnFamilies["sum"].
+		GetValueType().
+		GetAggregateType().
+		GetSum() == nil {
+		t.Fatal("Unexpected aggregate column family type at start of test")
+	}
+
+	if tblInfo.ColumnFamilies["sum"].
+		GetGcRule().
+		GetMaxNumVersions() == 1 {
+		t.Fatal("Unexpected GC policy state at start of test")
+	}
+
+	tblInfo, err = s.ModifyColumnFamilies(ctx, &btapb.ModifyColumnFamiliesRequest{
+		Name: tblInfo.Name,
+		Modifications: []*btapb.ModifyColumnFamiliesRequest_Modification{
+			{
+				Id: "sum",
+				// UpdateMask intentionally left empty, which the server will
+				// implicitly interpret as a gc_rule update.
+				Mod: &btapb.ModifyColumnFamiliesRequest_Modification_Update{
+					Update: &btapb.ColumnFamily{
+						GcRule: &btapb.GcRule{
+							Rule: &btapb.GcRule_MaxNumVersions{
+								MaxNumVersions: 1,
+							},
+						},
+						// HACK: Intentionally include an invalid type
+						// update, which should be ignored since it isn't
+						// present in the UpdateMask.
+						ValueType: &btapb.Type{
+							Kind: &btapb.Type_AggregateType{
+								AggregateType: &btapb.Type_Aggregate{
+									InputType: &btapb.Type{
+										Kind: &btapb.Type_Int64Type{},
+									},
+									Aggregator: &btapb.Type_Aggregate_Max_{
+										Max: &btapb.Type_Aggregate_Max{},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if tblInfo.ColumnFamilies["sum"].
+		GetValueType().
+		GetAggregateType().
+		GetSum() == nil {
+		t.Fatal("Aggregate type was updated when it should not have been")
+	}
+
+	if tblInfo.ColumnFamilies["sum"].
+		GetGcRule().
+		GetMaxNumVersions() != 1 {
+		t.Fatal("GC policy was not updated when it should have been")
+	}
+
+	tblInfo, err = s.ModifyColumnFamilies(ctx, &btapb.ModifyColumnFamiliesRequest{
+		Name: tblInfo.Name,
+		Modifications: []*btapb.ModifyColumnFamiliesRequest_Modification{
+			{
+				Id: "sum",
+				// Including UpdateMask in the request this time.
+				UpdateMask: &fieldmaskpb.FieldMask{
+					Paths: []string{"gc_rule"},
+				},
+				Mod: &btapb.ModifyColumnFamiliesRequest_Modification_Update{
+					Update: &btapb.ColumnFamily{
+						GcRule: &btapb.GcRule{
+							Rule: &btapb.GcRule_MaxNumVersions{
+								MaxNumVersions: 2,
+							},
+						},
+						// HACK: Intentionally including an invalid type
+						// update, which should be ignored since it isn't
+						// present in the UpdateMask.
+						ValueType: &btapb.Type{
+							Kind: &btapb.Type_AggregateType{
+								AggregateType: &btapb.Type_Aggregate{
+									InputType: &btapb.Type{
+										Kind: &btapb.Type_Int64Type{},
+									},
+									Aggregator: &btapb.Type_Aggregate_Max_{
+										Max: &btapb.Type_Aggregate_Max{},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if tblInfo.ColumnFamilies["sum"].
+		GetValueType().
+		GetAggregateType().
+		GetSum() == nil {
+		t.Fatal("Aggregate type was updated when it should not have been")
+	}
+
+	if tblInfo.ColumnFamilies["sum"].
+		GetGcRule().
+		GetMaxNumVersions() != 2 {
+		t.Fatal("GC policy was not updated when it should have been")
+	}
+}
+
+func TestCannotUpdateTypeOfAggregateColumnFamily(t *testing.T) {
+	ctx := context.Background()
+
+	s := &server{
+		tables: make(map[string]*table),
+	}
+
+	tblInfo, err := s.CreateTable(ctx, &btapb.CreateTableRequest{
+		Parent:  "cluster",
+		TableId: "t",
+		Table: &btapb.Table{
+			ColumnFamilies: map[string]*btapb.ColumnFamily{
+				"sum": {
+					ValueType: &btapb.Type{
+						Kind: &btapb.Type_AggregateType{
+							AggregateType: &btapb.Type_Aggregate{
+								InputType: &btapb.Type{
+									Kind: &btapb.Type_Int64Type{},
+								},
+								Aggregator: &btapb.Type_Aggregate_Sum_{
+									Sum: &btapb.Type_Aggregate_Sum{},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if tblInfo.ColumnFamilies["sum"].
+		GetValueType().
+		GetAggregateType().
+		GetSum() == nil {
+		t.Fatal("Unexpected aggregate column family type at start of test")
+	}
+
+	_, err = s.ModifyColumnFamilies(ctx, &btapb.ModifyColumnFamiliesRequest{
+		Name: tblInfo.Name,
+		Modifications: []*btapb.ModifyColumnFamiliesRequest_Modification{
+			{
+				Id: "sum",
+				UpdateMask: &fieldmaskpb.FieldMask{
+					Paths: []string{"value_type"},
+				},
+				Mod: &btapb.ModifyColumnFamiliesRequest_Modification_Update{
+					Update: &btapb.ColumnFamily{
+						ValueType: &btapb.Type{
+							Kind: &btapb.Type_AggregateType{
+								AggregateType: &btapb.Type_Aggregate{
+									InputType: &btapb.Type{
+										Kind: &btapb.Type_Int64Type{},
+									},
+									Aggregator: &btapb.Type_Aggregate_Max_{
+										Max: &btapb.Type_Aggregate_Max{},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	})
+	if err == nil {
+		t.Fatal("ModifyColumnFamilies was supposed to return an error, but it did not")
+	}
+
+	tblInfo, err = s.GetTable(ctx, &btapb.GetTableRequest{Name: tblInfo.Name})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if tblInfo.ColumnFamilies["sum"].
+		GetValueType().
+		GetAggregateType().
+		GetSum() == nil {
+		t.Fatal("Aggregate type was updated when it should not have been")
+	}
+}
+
+func TestInvalidUpdateMaskInColumnFamilyUpdate(t *testing.T) {
+	ctx := context.Background()
+
+	s := &server{
+		tables: make(map[string]*table),
+	}
+
+	tblInfo, err := s.CreateTable(ctx, &btapb.CreateTableRequest{
+		Parent:  "cluster",
+		TableId: "t",
+		Table: &btapb.Table{
+			ColumnFamilies: map[string]*btapb.ColumnFamily{
+				"sum": {
+					ValueType: &btapb.Type{
+						Kind: &btapb.Type_AggregateType{
+							AggregateType: &btapb.Type_Aggregate{
+								InputType: &btapb.Type{
+									Kind: &btapb.Type_Int64Type{},
+								},
+								Aggregator: &btapb.Type_Aggregate_Sum_{
+									Sum: &btapb.Type_Aggregate_Sum{},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if tblInfo.ColumnFamilies["sum"].
+		GetGcRule().
+		GetMaxNumVersions() == 1 {
+		t.Fatal("Unexpected GC policy state at start of test")
+	}
+
+	_, err = s.ModifyColumnFamilies(ctx, &btapb.ModifyColumnFamiliesRequest{
+		Name: tblInfo.Name,
+		Modifications: []*btapb.ModifyColumnFamiliesRequest_Modification{
+			{
+				Id: "sum",
+				UpdateMask: &fieldmaskpb.FieldMask{
+					Paths: []string{"bad", "gc_rule"},
+				},
+				Mod: &btapb.ModifyColumnFamiliesRequest_Modification_Update{
+					Update: &btapb.ColumnFamily{
+						GcRule: &btapb.GcRule{
+							Rule: &btapb.GcRule_MaxNumVersions{
+								MaxNumVersions: 1,
+							},
+						},
+					},
+				},
+			},
+		},
+	})
+	if err == nil {
+		t.Fatal("ModifyColumnFamilies was supposed to return an error, but it did not")
+	}
+
+	tblInfo, err = s.GetTable(ctx, &btapb.GetTableRequest{Name: tblInfo.Name})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if tblInfo.ColumnFamilies["sum"].
+		GetGcRule().
+		GetMaxNumVersions() == 1 {
+		t.Fatal("GC policy was updated when it should not have been")
 	}
 }

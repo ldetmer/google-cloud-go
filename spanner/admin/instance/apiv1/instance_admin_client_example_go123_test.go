@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package instance_test
 import (
 	"context"
 
+	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	instance "cloud.google.com/go/spanner/admin/instance/apiv1"
 	instancepb "cloud.google.com/go/spanner/admin/instance/apiv1/instancepb"
 )
@@ -44,7 +45,7 @@ func ExampleInstanceAdminClient_ListInstanceConfigOperations_all() {
 	}
 	for resp, err := range c.ListInstanceConfigOperations(ctx, req).All() {
 		if err != nil {
-			// TODO: Handle error.
+			// TODO: Handle error and break/return/continue. Iteration will stop after any error.
 		}
 		// TODO: Use resp.
 		_ = resp
@@ -70,7 +71,7 @@ func ExampleInstanceAdminClient_ListInstanceConfigs_all() {
 	}
 	for resp, err := range c.ListInstanceConfigs(ctx, req).All() {
 		if err != nil {
-			// TODO: Handle error.
+			// TODO: Handle error and break/return/continue. Iteration will stop after any error.
 		}
 		// TODO: Use resp.
 		_ = resp
@@ -96,7 +97,7 @@ func ExampleInstanceAdminClient_ListInstancePartitionOperations_all() {
 	}
 	for resp, err := range c.ListInstancePartitionOperations(ctx, req).All() {
 		if err != nil {
-			// TODO: Handle error.
+			// TODO: Handle error and break/return/continue. Iteration will stop after any error.
 		}
 		// TODO: Use resp.
 		_ = resp
@@ -122,7 +123,7 @@ func ExampleInstanceAdminClient_ListInstancePartitions_all() {
 	}
 	for resp, err := range c.ListInstancePartitions(ctx, req).All() {
 		if err != nil {
-			// TODO: Handle error.
+			// TODO: Handle error and break/return/continue. Iteration will stop after any error.
 		}
 		// TODO: Use resp.
 		_ = resp
@@ -148,7 +149,33 @@ func ExampleInstanceAdminClient_ListInstances_all() {
 	}
 	for resp, err := range c.ListInstances(ctx, req).All() {
 		if err != nil {
-			// TODO: Handle error.
+			// TODO: Handle error and break/return/continue. Iteration will stop after any error.
+		}
+		// TODO: Use resp.
+		_ = resp
+	}
+}
+
+func ExampleInstanceAdminClient_ListOperations_all() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := instance.NewInstanceAdminClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &longrunningpb.ListOperationsRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/longrunning/autogen/longrunningpb#ListOperationsRequest.
+	}
+	for resp, err := range c.ListOperations(ctx, req).All() {
+		if err != nil {
+			// TODO: Handle error and break/return/continue. Iteration will stop after any error.
 		}
 		// TODO: Use resp.
 		_ = resp

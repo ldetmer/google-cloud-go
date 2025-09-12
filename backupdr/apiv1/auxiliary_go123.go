@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,6 +47,12 @@ func (it *BackupPlanIterator) All() iter.Seq2[*backupdrpb.BackupPlan, error] {
 
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
+func (it *BackupPlanRevisionIterator) All() iter.Seq2[*backupdrpb.BackupPlanRevision, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
 func (it *BackupVaultIterator) All() iter.Seq2[*backupdrpb.BackupVault, error] {
 	return iterator.RangeAdapter(it.Next)
 }
@@ -54,6 +60,12 @@ func (it *BackupVaultIterator) All() iter.Seq2[*backupdrpb.BackupVault, error] {
 // All returns an iterator. If an error is returned by the iterator, the
 // iterator will stop after that iteration.
 func (it *DataSourceIterator) All() iter.Seq2[*backupdrpb.DataSource, error] {
+	return iterator.RangeAdapter(it.Next)
+}
+
+// All returns an iterator. If an error is returned by the iterator, the
+// iterator will stop after that iteration.
+func (it *DataSourceReferenceIterator) All() iter.Seq2[*backupdrpb.DataSourceReference, error] {
 	return iterator.RangeAdapter(it.Next)
 }
 

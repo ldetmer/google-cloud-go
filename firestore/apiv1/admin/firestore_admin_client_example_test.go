@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -89,6 +89,36 @@ func ExampleFirestoreAdminClient_BulkDeleteDocuments() {
 	_ = resp
 }
 
+func ExampleFirestoreAdminClient_CloneDatabase() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apiv1.NewFirestoreAdminClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &adminpb.CloneDatabaseRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/firestore/apiv1/admin/adminpb#CloneDatabaseRequest.
+	}
+	op, err := c.CloneDatabase(ctx, req)
+	if err != nil {
+		// TODO: Handle error.
+	}
+
+	resp, err := op.Wait(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	// TODO: Use resp.
+	_ = resp
+}
+
 func ExampleFirestoreAdminClient_CreateBackupSchedule() {
 	ctx := context.Background()
 	// This snippet has been automatically generated and should be regarded as a code template only.
@@ -167,6 +197,31 @@ func ExampleFirestoreAdminClient_CreateIndex() {
 	}
 
 	resp, err := op.Wait(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	// TODO: Use resp.
+	_ = resp
+}
+
+func ExampleFirestoreAdminClient_CreateUserCreds() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apiv1.NewFirestoreAdminClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &adminpb.CreateUserCredsRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/firestore/apiv1/admin/adminpb#CreateUserCredsRequest.
+	}
+	resp, err := c.CreateUserCreds(ctx, req)
 	if err != nil {
 		// TODO: Handle error.
 	}
@@ -271,6 +326,79 @@ func ExampleFirestoreAdminClient_DeleteIndex() {
 	if err != nil {
 		// TODO: Handle error.
 	}
+}
+
+func ExampleFirestoreAdminClient_DeleteUserCreds() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apiv1.NewFirestoreAdminClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &adminpb.DeleteUserCredsRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/firestore/apiv1/admin/adminpb#DeleteUserCredsRequest.
+	}
+	err = c.DeleteUserCreds(ctx, req)
+	if err != nil {
+		// TODO: Handle error.
+	}
+}
+
+func ExampleFirestoreAdminClient_DisableUserCreds() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apiv1.NewFirestoreAdminClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &adminpb.DisableUserCredsRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/firestore/apiv1/admin/adminpb#DisableUserCredsRequest.
+	}
+	resp, err := c.DisableUserCreds(ctx, req)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	// TODO: Use resp.
+	_ = resp
+}
+
+func ExampleFirestoreAdminClient_EnableUserCreds() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apiv1.NewFirestoreAdminClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &adminpb.EnableUserCredsRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/firestore/apiv1/admin/adminpb#EnableUserCredsRequest.
+	}
+	resp, err := c.EnableUserCreds(ctx, req)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	// TODO: Use resp.
+	_ = resp
 }
 
 func ExampleFirestoreAdminClient_ExportDocuments() {
@@ -421,6 +549,31 @@ func ExampleFirestoreAdminClient_GetIndex() {
 		// See https://pkg.go.dev/cloud.google.com/go/firestore/apiv1/admin/adminpb#GetIndexRequest.
 	}
 	resp, err := c.GetIndex(ctx, req)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	// TODO: Use resp.
+	_ = resp
+}
+
+func ExampleFirestoreAdminClient_GetUserCreds() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apiv1.NewFirestoreAdminClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &adminpb.GetUserCredsRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/firestore/apiv1/admin/adminpb#GetUserCredsRequest.
+	}
+	resp, err := c.GetUserCreds(ctx, req)
 	if err != nil {
 		// TODO: Handle error.
 	}
@@ -603,6 +756,56 @@ func ExampleFirestoreAdminClient_ListIndexes() {
 		// first call to Next(). Not safe for concurrent access.
 		_ = it.Response.(*adminpb.ListIndexesResponse)
 	}
+}
+
+func ExampleFirestoreAdminClient_ListUserCreds() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apiv1.NewFirestoreAdminClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &adminpb.ListUserCredsRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/firestore/apiv1/admin/adminpb#ListUserCredsRequest.
+	}
+	resp, err := c.ListUserCreds(ctx, req)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	// TODO: Use resp.
+	_ = resp
+}
+
+func ExampleFirestoreAdminClient_ResetUserPassword() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apiv1.NewFirestoreAdminClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &adminpb.ResetUserPasswordRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/firestore/apiv1/admin/adminpb#ResetUserPasswordRequest.
+	}
+	resp, err := c.ResetUserPassword(ctx, req)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	// TODO: Use resp.
+	_ = resp
 }
 
 func ExampleFirestoreAdminClient_RestoreDatabase() {

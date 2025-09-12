@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ type AccountIssueIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*accountspb.AccountIssue, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *AccountIssueIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -88,7 +88,7 @@ type AccountIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*accountspb.Account, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *AccountIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -135,7 +135,7 @@ type AccountTaxIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*accountspb.AccountTax, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *AccountTaxIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -162,6 +162,147 @@ func (it *AccountTaxIterator) takeBuf() interface{} {
 	return b
 }
 
+// GbpAccountIterator manages a stream of *accountspb.GbpAccount.
+type GbpAccountIterator struct {
+	items    []*accountspb.GbpAccount
+	pageInfo *iterator.PageInfo
+	nextFunc func() error
+
+	// Response is the raw response for the current page.
+	// It must be cast to the RPC response type.
+	// Calling Next() or InternalFetch() updates this value.
+	Response interface{}
+
+	// InternalFetch is for use by the Google Cloud Libraries only.
+	// It is not part of the stable interface of this package.
+	//
+	// InternalFetch returns results from a single call to the underlying RPC.
+	// The number of results is no greater than pageSize.
+	// If there are no more results, nextPageToken is empty and err is nil.
+	InternalFetch func(pageSize int, pageToken string) (results []*accountspb.GbpAccount, nextPageToken string, err error)
+}
+
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
+func (it *GbpAccountIterator) PageInfo() *iterator.PageInfo {
+	return it.pageInfo
+}
+
+// Next returns the next result. Its second return value is iterator.Done if there are no more
+// results. Once Next returns Done, all subsequent calls will return Done.
+func (it *GbpAccountIterator) Next() (*accountspb.GbpAccount, error) {
+	var item *accountspb.GbpAccount
+	if err := it.nextFunc(); err != nil {
+		return item, err
+	}
+	item = it.items[0]
+	it.items = it.items[1:]
+	return item, nil
+}
+
+func (it *GbpAccountIterator) bufLen() int {
+	return len(it.items)
+}
+
+func (it *GbpAccountIterator) takeBuf() interface{} {
+	b := it.items
+	it.items = nil
+	return b
+}
+
+// LfpProviderIterator manages a stream of *accountspb.LfpProvider.
+type LfpProviderIterator struct {
+	items    []*accountspb.LfpProvider
+	pageInfo *iterator.PageInfo
+	nextFunc func() error
+
+	// Response is the raw response for the current page.
+	// It must be cast to the RPC response type.
+	// Calling Next() or InternalFetch() updates this value.
+	Response interface{}
+
+	// InternalFetch is for use by the Google Cloud Libraries only.
+	// It is not part of the stable interface of this package.
+	//
+	// InternalFetch returns results from a single call to the underlying RPC.
+	// The number of results is no greater than pageSize.
+	// If there are no more results, nextPageToken is empty and err is nil.
+	InternalFetch func(pageSize int, pageToken string) (results []*accountspb.LfpProvider, nextPageToken string, err error)
+}
+
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
+func (it *LfpProviderIterator) PageInfo() *iterator.PageInfo {
+	return it.pageInfo
+}
+
+// Next returns the next result. Its second return value is iterator.Done if there are no more
+// results. Once Next returns Done, all subsequent calls will return Done.
+func (it *LfpProviderIterator) Next() (*accountspb.LfpProvider, error) {
+	var item *accountspb.LfpProvider
+	if err := it.nextFunc(); err != nil {
+		return item, err
+	}
+	item = it.items[0]
+	it.items = it.items[1:]
+	return item, nil
+}
+
+func (it *LfpProviderIterator) bufLen() int {
+	return len(it.items)
+}
+
+func (it *LfpProviderIterator) takeBuf() interface{} {
+	b := it.items
+	it.items = nil
+	return b
+}
+
+// OmnichannelSettingIterator manages a stream of *accountspb.OmnichannelSetting.
+type OmnichannelSettingIterator struct {
+	items    []*accountspb.OmnichannelSetting
+	pageInfo *iterator.PageInfo
+	nextFunc func() error
+
+	// Response is the raw response for the current page.
+	// It must be cast to the RPC response type.
+	// Calling Next() or InternalFetch() updates this value.
+	Response interface{}
+
+	// InternalFetch is for use by the Google Cloud Libraries only.
+	// It is not part of the stable interface of this package.
+	//
+	// InternalFetch returns results from a single call to the underlying RPC.
+	// The number of results is no greater than pageSize.
+	// If there are no more results, nextPageToken is empty and err is nil.
+	InternalFetch func(pageSize int, pageToken string) (results []*accountspb.OmnichannelSetting, nextPageToken string, err error)
+}
+
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
+func (it *OmnichannelSettingIterator) PageInfo() *iterator.PageInfo {
+	return it.pageInfo
+}
+
+// Next returns the next result. Its second return value is iterator.Done if there are no more
+// results. Once Next returns Done, all subsequent calls will return Done.
+func (it *OmnichannelSettingIterator) Next() (*accountspb.OmnichannelSetting, error) {
+	var item *accountspb.OmnichannelSetting
+	if err := it.nextFunc(); err != nil {
+		return item, err
+	}
+	item = it.items[0]
+	it.items = it.items[1:]
+	return item, nil
+}
+
+func (it *OmnichannelSettingIterator) bufLen() int {
+	return len(it.items)
+}
+
+func (it *OmnichannelSettingIterator) takeBuf() interface{} {
+	b := it.items
+	it.items = nil
+	return b
+}
+
 // OnlineReturnPolicyIterator manages a stream of *accountspb.OnlineReturnPolicy.
 type OnlineReturnPolicyIterator struct {
 	items    []*accountspb.OnlineReturnPolicy
@@ -182,7 +323,7 @@ type OnlineReturnPolicyIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*accountspb.OnlineReturnPolicy, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *OnlineReturnPolicyIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -229,7 +370,7 @@ type ProgramIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*accountspb.Program, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *ProgramIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -276,7 +417,7 @@ type RegionIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*accountspb.Region, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *RegionIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -323,7 +464,7 @@ type UserIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*accountspb.User, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *UserIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }

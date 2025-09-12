@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io"
+	"log/slog"
 	"math"
 	"net/http"
 	"net/url"
@@ -28,7 +28,6 @@ import (
 
 	supportpb "cloud.google.com/go/support/apiv2/supportpb"
 	gax "github.com/googleapis/gax-go/v2"
-	"google.golang.org/api/googleapi"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 	"google.golang.org/api/option/internaloption"
@@ -146,13 +145,14 @@ func (c *CommentClient) Connection() *grpc.ClientConn {
 	return c.internalClient.Connection()
 }
 
-// ListComments retrieve all Comments associated with the Case object.
+// ListComments list all the comments associated with a case.
 func (c *CommentClient) ListComments(ctx context.Context, req *supportpb.ListCommentsRequest, opts ...gax.CallOption) *CommentIterator {
 	return c.internalClient.ListComments(ctx, req, opts...)
 }
 
-// CreateComment add a new comment to the specified Case.
-// The comment object must have the following fields set: body.
+// CreateComment add a new comment to a case.
+//
+// The comment must have the following fields set: body.
 func (c *CommentClient) CreateComment(ctx context.Context, req *supportpb.CreateCommentRequest, opts ...gax.CallOption) (*supportpb.Comment, error) {
 	return c.internalClient.CreateComment(ctx, req, opts...)
 }
@@ -172,6 +172,8 @@ type commentGRPCClient struct {
 
 	// The x-goog-* metadata to be sent with each request.
 	xGoogHeaders []string
+
+	logger *slog.Logger
 }
 
 // NewCommentClient creates a new comment service client based on gRPC.
@@ -198,6 +200,7 @@ func NewCommentClient(ctx context.Context, opts ...option.ClientOption) (*Commen
 		connPool:      connPool,
 		commentClient: supportpb.NewCommentServiceClient(connPool),
 		CallOptions:   &client.CallOptions,
+		logger:        internaloption.GetLogger(opts),
 	}
 	c.setGoogleClientInfo()
 
@@ -219,7 +222,7 @@ func (c *commentGRPCClient) Connection() *grpc.ClientConn {
 // use by Google-written clients.
 func (c *commentGRPCClient) setGoogleClientInfo(keyval ...string) {
 	kv := append([]string{"gl-go", gax.GoVersion}, keyval...)
-	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "grpc", grpc.Version)
+	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "grpc", grpc.Version, "pb", protoVersion)
 	c.xGoogHeaders = []string{
 		"x-goog-api-client", gax.XGoogHeader(kv...),
 	}
@@ -244,6 +247,8 @@ type commentRESTClient struct {
 
 	// Points back to the CallOptions field of the containing CommentClient
 	CallOptions **CommentCallOptions
+
+	logger *slog.Logger
 }
 
 // NewCommentRESTClient creates a new comment service rest client.
@@ -261,6 +266,7 @@ func NewCommentRESTClient(ctx context.Context, opts ...option.ClientOption) (*Co
 		endpoint:    endpoint,
 		httpClient:  httpClient,
 		CallOptions: &callOpts,
+		logger:      internaloption.GetLogger(opts),
 	}
 	c.setGoogleClientInfo()
 
@@ -284,7 +290,7 @@ func defaultCommentRESTClientOptions() []option.ClientOption {
 // use by Google-written clients.
 func (c *commentRESTClient) setGoogleClientInfo(keyval ...string) {
 	kv := append([]string{"gl-go", gax.GoVersion}, keyval...)
-	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "rest", "UNKNOWN")
+	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "rest", "UNKNOWN", "pb", protoVersion)
 	c.xGoogHeaders = []string{
 		"x-goog-api-client", gax.XGoogHeader(kv...),
 	}
@@ -324,7 +330,7 @@ func (c *commentGRPCClient) ListComments(ctx context.Context, req *supportpb.Lis
 		}
 		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 			var err error
-			resp, err = c.commentClient.ListComments(ctx, req, settings.GRPC...)
+			resp, err = executeRPC(ctx, c.commentClient.ListComments, req, settings.GRPC, c.logger, "ListComments")
 			return err
 		}, opts...)
 		if err != nil {
@@ -359,7 +365,7 @@ func (c *commentGRPCClient) CreateComment(ctx context.Context, req *supportpb.Cr
 	var resp *supportpb.Comment
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.commentClient.CreateComment(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.commentClient.CreateComment, req, settings.GRPC, c.logger, "CreateComment")
 		return err
 	}, opts...)
 	if err != nil {
@@ -368,7 +374,7 @@ func (c *commentGRPCClient) CreateComment(ctx context.Context, req *supportpb.Cr
 	return resp, nil
 }
 
-// ListComments retrieve all Comments associated with the Case object.
+// ListComments list all the comments associated with a case.
 func (c *commentRESTClient) ListComments(ctx context.Context, req *supportpb.ListCommentsRequest, opts ...gax.CallOption) *CommentIterator {
 	it := &CommentIterator{}
 	req = proto.Clone(req).(*supportpb.ListCommentsRequest)
@@ -413,21 +419,10 @@ func (c *commentRESTClient) ListComments(ctx context.Context, req *supportpb.Lis
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListComments")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -457,8 +452,9 @@ func (c *commentRESTClient) ListComments(ctx context.Context, req *supportpb.Lis
 	return it
 }
 
-// CreateComment add a new comment to the specified Case.
-// The comment object must have the following fields set: body.
+// CreateComment add a new comment to a case.
+//
+// The comment must have the following fields set: body.
 func (c *commentRESTClient) CreateComment(ctx context.Context, req *supportpb.CreateCommentRequest, opts ...gax.CallOption) (*supportpb.Comment, error) {
 	m := protojson.MarshalOptions{AllowPartial: true, UseEnumNumbers: true}
 	body := req.GetComment()
@@ -498,17 +494,7 @@ func (c *commentRESTClient) CreateComment(ctx context.Context, req *supportpb.Cr
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateComment")
 		if err != nil {
 			return err
 		}

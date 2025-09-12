@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -379,6 +379,70 @@ func (op *DeleteCloudVmClusterOperation) Name() string {
 	return op.lro.Name()
 }
 
+// RestartAutonomousDatabaseOperation manages a long-running operation from RestartAutonomousDatabase.
+type RestartAutonomousDatabaseOperation struct {
+	lro      *longrunning.Operation
+	pollPath string
+}
+
+// Wait blocks until the long-running operation is completed, returning the response and any errors encountered.
+//
+// See documentation of Poll for error-handling information.
+func (op *RestartAutonomousDatabaseOperation) Wait(ctx context.Context, opts ...gax.CallOption) (*oracledatabasepb.AutonomousDatabase, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp oracledatabasepb.AutonomousDatabase
+	if err := op.lro.WaitWithInterval(ctx, &resp, time.Minute, opts...); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// Poll fetches the latest state of the long-running operation.
+//
+// Poll also fetches the latest metadata, which can be retrieved by Metadata.
+//
+// If Poll fails, the error is returned and op is unmodified. If Poll succeeds and
+// the operation has completed with failure, the error is returned and op.Done will return true.
+// If Poll succeeds and the operation has completed successfully,
+// op.Done will return true, and the response of the operation is returned.
+// If Poll succeeds and the operation has not completed, the returned response and error are both nil.
+func (op *RestartAutonomousDatabaseOperation) Poll(ctx context.Context, opts ...gax.CallOption) (*oracledatabasepb.AutonomousDatabase, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp oracledatabasepb.AutonomousDatabase
+	if err := op.lro.Poll(ctx, &resp, opts...); err != nil {
+		return nil, err
+	}
+	if !op.Done() {
+		return nil, nil
+	}
+	return &resp, nil
+}
+
+// Metadata returns metadata associated with the long-running operation.
+// Metadata itself does not contact the server, but Poll does.
+// To get the latest metadata, call this method after a successful call to Poll.
+// If the metadata is not available, the returned metadata and error are both nil.
+func (op *RestartAutonomousDatabaseOperation) Metadata() (*oracledatabasepb.OperationMetadata, error) {
+	var meta oracledatabasepb.OperationMetadata
+	if err := op.lro.Metadata(&meta); err == longrunning.ErrNoMetadata {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+	return &meta, nil
+}
+
+// Done reports whether the long-running operation has completed.
+func (op *RestartAutonomousDatabaseOperation) Done() bool {
+	return op.lro.Done()
+}
+
+// Name returns the name of the long-running operation.
+// The name is assigned by the server and is unique within the service from which the operation is created.
+func (op *RestartAutonomousDatabaseOperation) Name() string {
+	return op.lro.Name()
+}
+
 // RestoreAutonomousDatabaseOperation manages a long-running operation from RestoreAutonomousDatabase.
 type RestoreAutonomousDatabaseOperation struct {
 	lro      *longrunning.Operation
@@ -443,6 +507,134 @@ func (op *RestoreAutonomousDatabaseOperation) Name() string {
 	return op.lro.Name()
 }
 
+// StartAutonomousDatabaseOperation manages a long-running operation from StartAutonomousDatabase.
+type StartAutonomousDatabaseOperation struct {
+	lro      *longrunning.Operation
+	pollPath string
+}
+
+// Wait blocks until the long-running operation is completed, returning the response and any errors encountered.
+//
+// See documentation of Poll for error-handling information.
+func (op *StartAutonomousDatabaseOperation) Wait(ctx context.Context, opts ...gax.CallOption) (*oracledatabasepb.AutonomousDatabase, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp oracledatabasepb.AutonomousDatabase
+	if err := op.lro.WaitWithInterval(ctx, &resp, time.Minute, opts...); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// Poll fetches the latest state of the long-running operation.
+//
+// Poll also fetches the latest metadata, which can be retrieved by Metadata.
+//
+// If Poll fails, the error is returned and op is unmodified. If Poll succeeds and
+// the operation has completed with failure, the error is returned and op.Done will return true.
+// If Poll succeeds and the operation has completed successfully,
+// op.Done will return true, and the response of the operation is returned.
+// If Poll succeeds and the operation has not completed, the returned response and error are both nil.
+func (op *StartAutonomousDatabaseOperation) Poll(ctx context.Context, opts ...gax.CallOption) (*oracledatabasepb.AutonomousDatabase, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp oracledatabasepb.AutonomousDatabase
+	if err := op.lro.Poll(ctx, &resp, opts...); err != nil {
+		return nil, err
+	}
+	if !op.Done() {
+		return nil, nil
+	}
+	return &resp, nil
+}
+
+// Metadata returns metadata associated with the long-running operation.
+// Metadata itself does not contact the server, but Poll does.
+// To get the latest metadata, call this method after a successful call to Poll.
+// If the metadata is not available, the returned metadata and error are both nil.
+func (op *StartAutonomousDatabaseOperation) Metadata() (*oracledatabasepb.OperationMetadata, error) {
+	var meta oracledatabasepb.OperationMetadata
+	if err := op.lro.Metadata(&meta); err == longrunning.ErrNoMetadata {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+	return &meta, nil
+}
+
+// Done reports whether the long-running operation has completed.
+func (op *StartAutonomousDatabaseOperation) Done() bool {
+	return op.lro.Done()
+}
+
+// Name returns the name of the long-running operation.
+// The name is assigned by the server and is unique within the service from which the operation is created.
+func (op *StartAutonomousDatabaseOperation) Name() string {
+	return op.lro.Name()
+}
+
+// StopAutonomousDatabaseOperation manages a long-running operation from StopAutonomousDatabase.
+type StopAutonomousDatabaseOperation struct {
+	lro      *longrunning.Operation
+	pollPath string
+}
+
+// Wait blocks until the long-running operation is completed, returning the response and any errors encountered.
+//
+// See documentation of Poll for error-handling information.
+func (op *StopAutonomousDatabaseOperation) Wait(ctx context.Context, opts ...gax.CallOption) (*oracledatabasepb.AutonomousDatabase, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp oracledatabasepb.AutonomousDatabase
+	if err := op.lro.WaitWithInterval(ctx, &resp, time.Minute, opts...); err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// Poll fetches the latest state of the long-running operation.
+//
+// Poll also fetches the latest metadata, which can be retrieved by Metadata.
+//
+// If Poll fails, the error is returned and op is unmodified. If Poll succeeds and
+// the operation has completed with failure, the error is returned and op.Done will return true.
+// If Poll succeeds and the operation has completed successfully,
+// op.Done will return true, and the response of the operation is returned.
+// If Poll succeeds and the operation has not completed, the returned response and error are both nil.
+func (op *StopAutonomousDatabaseOperation) Poll(ctx context.Context, opts ...gax.CallOption) (*oracledatabasepb.AutonomousDatabase, error) {
+	opts = append([]gax.CallOption{gax.WithPath(op.pollPath)}, opts...)
+	var resp oracledatabasepb.AutonomousDatabase
+	if err := op.lro.Poll(ctx, &resp, opts...); err != nil {
+		return nil, err
+	}
+	if !op.Done() {
+		return nil, nil
+	}
+	return &resp, nil
+}
+
+// Metadata returns metadata associated with the long-running operation.
+// Metadata itself does not contact the server, but Poll does.
+// To get the latest metadata, call this method after a successful call to Poll.
+// If the metadata is not available, the returned metadata and error are both nil.
+func (op *StopAutonomousDatabaseOperation) Metadata() (*oracledatabasepb.OperationMetadata, error) {
+	var meta oracledatabasepb.OperationMetadata
+	if err := op.lro.Metadata(&meta); err == longrunning.ErrNoMetadata {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+	return &meta, nil
+}
+
+// Done reports whether the long-running operation has completed.
+func (op *StopAutonomousDatabaseOperation) Done() bool {
+	return op.lro.Done()
+}
+
+// Name returns the name of the long-running operation.
+// The name is assigned by the server and is unique within the service from which the operation is created.
+func (op *StopAutonomousDatabaseOperation) Name() string {
+	return op.lro.Name()
+}
+
 // AutonomousDatabaseBackupIterator manages a stream of *oracledatabasepb.AutonomousDatabaseBackup.
 type AutonomousDatabaseBackupIterator struct {
 	items    []*oracledatabasepb.AutonomousDatabaseBackup
@@ -463,7 +655,7 @@ type AutonomousDatabaseBackupIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.AutonomousDatabaseBackup, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *AutonomousDatabaseBackupIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -510,7 +702,7 @@ type AutonomousDatabaseCharacterSetIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.AutonomousDatabaseCharacterSet, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *AutonomousDatabaseCharacterSetIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -557,7 +749,7 @@ type AutonomousDatabaseIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.AutonomousDatabase, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *AutonomousDatabaseIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -604,7 +796,7 @@ type AutonomousDbVersionIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.AutonomousDbVersion, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *AutonomousDbVersionIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -651,7 +843,7 @@ type CloudExadataInfrastructureIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.CloudExadataInfrastructure, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *CloudExadataInfrastructureIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -698,7 +890,7 @@ type CloudVmClusterIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.CloudVmCluster, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *CloudVmClusterIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -745,7 +937,7 @@ type DbNodeIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.DbNode, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *DbNodeIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -792,7 +984,7 @@ type DbServerIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.DbServer, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *DbServerIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -839,7 +1031,7 @@ type DbSystemShapeIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.DbSystemShape, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *DbSystemShapeIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -886,7 +1078,7 @@ type EntitlementIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.Entitlement, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *EntitlementIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -933,7 +1125,7 @@ type GiVersionIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*oracledatabasepb.GiVersion, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *GiVersionIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -980,7 +1172,7 @@ type LocationIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*locationpb.Location, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *LocationIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }
@@ -1027,7 +1219,7 @@ type OperationIterator struct {
 	InternalFetch func(pageSize int, pageToken string) (results []*longrunningpb.Operation, nextPageToken string, err error)
 }
 
-// PageInfo supports pagination. See the google.golang.org/api/iterator package for details.
+// PageInfo supports pagination. See the [google.golang.org/api/iterator] package for details.
 func (it *OperationIterator) PageInfo() *iterator.PageInfo {
 	return it.pageInfo
 }

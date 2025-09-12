@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io"
+	"log/slog"
 	"math"
 	"net/http"
 	"net/url"
@@ -31,7 +31,6 @@ import (
 	lroauto "cloud.google.com/go/longrunning/autogen"
 	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	gax "github.com/googleapis/gax-go/v2"
-	"google.golang.org/api/googleapi"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 	"google.golang.org/api/option/internaloption"
@@ -62,6 +61,16 @@ type CallOptions struct {
 	FetchLinkableGitRepositories []gax.CallOption
 	FetchGitHubInstallations     []gax.CallOption
 	FetchGitRefs                 []gax.CallOption
+	ListAccountConnectors        []gax.CallOption
+	GetAccountConnector          []gax.CallOption
+	CreateAccountConnector       []gax.CallOption
+	UpdateAccountConnector       []gax.CallOption
+	DeleteAccountConnector       []gax.CallOption
+	FetchAccessToken             []gax.CallOption
+	ListUsers                    []gax.CallOption
+	DeleteUser                   []gax.CallOption
+	FetchSelf                    []gax.CallOption
+	DeleteSelf                   []gax.CallOption
 	GetLocation                  []gax.CallOption
 	ListLocations                []gax.CallOption
 	CancelOperation              []gax.CallOption
@@ -232,13 +241,23 @@ func defaultCallOptions() *CallOptions {
 				})
 			}),
 		},
-		FetchGitRefs:    []gax.CallOption{},
-		GetLocation:     []gax.CallOption{},
-		ListLocations:   []gax.CallOption{},
-		CancelOperation: []gax.CallOption{},
-		DeleteOperation: []gax.CallOption{},
-		GetOperation:    []gax.CallOption{},
-		ListOperations:  []gax.CallOption{},
+		FetchGitRefs:           []gax.CallOption{},
+		ListAccountConnectors:  []gax.CallOption{},
+		GetAccountConnector:    []gax.CallOption{},
+		CreateAccountConnector: []gax.CallOption{},
+		UpdateAccountConnector: []gax.CallOption{},
+		DeleteAccountConnector: []gax.CallOption{},
+		FetchAccessToken:       []gax.CallOption{},
+		ListUsers:              []gax.CallOption{},
+		DeleteUser:             []gax.CallOption{},
+		FetchSelf:              []gax.CallOption{},
+		DeleteSelf:             []gax.CallOption{},
+		GetLocation:            []gax.CallOption{},
+		ListLocations:          []gax.CallOption{},
+		CancelOperation:        []gax.CallOption{},
+		DeleteOperation:        []gax.CallOption{},
+		GetOperation:           []gax.CallOption{},
+		ListOperations:         []gax.CallOption{},
 	}
 }
 
@@ -377,13 +396,23 @@ func defaultRESTCallOptions() *CallOptions {
 					http.StatusServiceUnavailable)
 			}),
 		},
-		FetchGitRefs:    []gax.CallOption{},
-		GetLocation:     []gax.CallOption{},
-		ListLocations:   []gax.CallOption{},
-		CancelOperation: []gax.CallOption{},
-		DeleteOperation: []gax.CallOption{},
-		GetOperation:    []gax.CallOption{},
-		ListOperations:  []gax.CallOption{},
+		FetchGitRefs:           []gax.CallOption{},
+		ListAccountConnectors:  []gax.CallOption{},
+		GetAccountConnector:    []gax.CallOption{},
+		CreateAccountConnector: []gax.CallOption{},
+		UpdateAccountConnector: []gax.CallOption{},
+		DeleteAccountConnector: []gax.CallOption{},
+		FetchAccessToken:       []gax.CallOption{},
+		ListUsers:              []gax.CallOption{},
+		DeleteUser:             []gax.CallOption{},
+		FetchSelf:              []gax.CallOption{},
+		DeleteSelf:             []gax.CallOption{},
+		GetLocation:            []gax.CallOption{},
+		ListLocations:          []gax.CallOption{},
+		CancelOperation:        []gax.CallOption{},
+		DeleteOperation:        []gax.CallOption{},
+		GetOperation:           []gax.CallOption{},
+		ListOperations:         []gax.CallOption{},
 	}
 }
 
@@ -411,6 +440,21 @@ type internalClient interface {
 	FetchLinkableGitRepositories(context.Context, *developerconnectpb.FetchLinkableGitRepositoriesRequest, ...gax.CallOption) *LinkableGitRepositoryIterator
 	FetchGitHubInstallations(context.Context, *developerconnectpb.FetchGitHubInstallationsRequest, ...gax.CallOption) (*developerconnectpb.FetchGitHubInstallationsResponse, error)
 	FetchGitRefs(context.Context, *developerconnectpb.FetchGitRefsRequest, ...gax.CallOption) *StringIterator
+	ListAccountConnectors(context.Context, *developerconnectpb.ListAccountConnectorsRequest, ...gax.CallOption) *AccountConnectorIterator
+	GetAccountConnector(context.Context, *developerconnectpb.GetAccountConnectorRequest, ...gax.CallOption) (*developerconnectpb.AccountConnector, error)
+	CreateAccountConnector(context.Context, *developerconnectpb.CreateAccountConnectorRequest, ...gax.CallOption) (*CreateAccountConnectorOperation, error)
+	CreateAccountConnectorOperation(name string) *CreateAccountConnectorOperation
+	UpdateAccountConnector(context.Context, *developerconnectpb.UpdateAccountConnectorRequest, ...gax.CallOption) (*UpdateAccountConnectorOperation, error)
+	UpdateAccountConnectorOperation(name string) *UpdateAccountConnectorOperation
+	DeleteAccountConnector(context.Context, *developerconnectpb.DeleteAccountConnectorRequest, ...gax.CallOption) (*DeleteAccountConnectorOperation, error)
+	DeleteAccountConnectorOperation(name string) *DeleteAccountConnectorOperation
+	FetchAccessToken(context.Context, *developerconnectpb.FetchAccessTokenRequest, ...gax.CallOption) (*developerconnectpb.FetchAccessTokenResponse, error)
+	ListUsers(context.Context, *developerconnectpb.ListUsersRequest, ...gax.CallOption) *UserIterator
+	DeleteUser(context.Context, *developerconnectpb.DeleteUserRequest, ...gax.CallOption) (*DeleteUserOperation, error)
+	DeleteUserOperation(name string) *DeleteUserOperation
+	FetchSelf(context.Context, *developerconnectpb.FetchSelfRequest, ...gax.CallOption) (*developerconnectpb.User, error)
+	DeleteSelf(context.Context, *developerconnectpb.DeleteSelfRequest, ...gax.CallOption) (*DeleteSelfOperation, error)
+	DeleteSelfOperation(name string) *DeleteSelfOperation
 	GetLocation(context.Context, *locationpb.GetLocationRequest, ...gax.CallOption) (*locationpb.Location, error)
 	ListLocations(context.Context, *locationpb.ListLocationsRequest, ...gax.CallOption) *LocationIterator
 	CancelOperation(context.Context, *longrunningpb.CancelOperationRequest, ...gax.CallOption) error
@@ -567,6 +611,86 @@ func (c *Client) FetchGitRefs(ctx context.Context, req *developerconnectpb.Fetch
 	return c.internalClient.FetchGitRefs(ctx, req, opts...)
 }
 
+// ListAccountConnectors lists AccountConnectors in a given project and location.
+func (c *Client) ListAccountConnectors(ctx context.Context, req *developerconnectpb.ListAccountConnectorsRequest, opts ...gax.CallOption) *AccountConnectorIterator {
+	return c.internalClient.ListAccountConnectors(ctx, req, opts...)
+}
+
+// GetAccountConnector gets details of a single AccountConnector.
+func (c *Client) GetAccountConnector(ctx context.Context, req *developerconnectpb.GetAccountConnectorRequest, opts ...gax.CallOption) (*developerconnectpb.AccountConnector, error) {
+	return c.internalClient.GetAccountConnector(ctx, req, opts...)
+}
+
+// CreateAccountConnector creates a new AccountConnector in a given project and location.
+func (c *Client) CreateAccountConnector(ctx context.Context, req *developerconnectpb.CreateAccountConnectorRequest, opts ...gax.CallOption) (*CreateAccountConnectorOperation, error) {
+	return c.internalClient.CreateAccountConnector(ctx, req, opts...)
+}
+
+// CreateAccountConnectorOperation returns a new CreateAccountConnectorOperation from a given name.
+// The name must be that of a previously created CreateAccountConnectorOperation, possibly from a different process.
+func (c *Client) CreateAccountConnectorOperation(name string) *CreateAccountConnectorOperation {
+	return c.internalClient.CreateAccountConnectorOperation(name)
+}
+
+// UpdateAccountConnector updates the parameters of a single AccountConnector.
+func (c *Client) UpdateAccountConnector(ctx context.Context, req *developerconnectpb.UpdateAccountConnectorRequest, opts ...gax.CallOption) (*UpdateAccountConnectorOperation, error) {
+	return c.internalClient.UpdateAccountConnector(ctx, req, opts...)
+}
+
+// UpdateAccountConnectorOperation returns a new UpdateAccountConnectorOperation from a given name.
+// The name must be that of a previously created UpdateAccountConnectorOperation, possibly from a different process.
+func (c *Client) UpdateAccountConnectorOperation(name string) *UpdateAccountConnectorOperation {
+	return c.internalClient.UpdateAccountConnectorOperation(name)
+}
+
+// DeleteAccountConnector deletes a single AccountConnector.
+func (c *Client) DeleteAccountConnector(ctx context.Context, req *developerconnectpb.DeleteAccountConnectorRequest, opts ...gax.CallOption) (*DeleteAccountConnectorOperation, error) {
+	return c.internalClient.DeleteAccountConnector(ctx, req, opts...)
+}
+
+// DeleteAccountConnectorOperation returns a new DeleteAccountConnectorOperation from a given name.
+// The name must be that of a previously created DeleteAccountConnectorOperation, possibly from a different process.
+func (c *Client) DeleteAccountConnectorOperation(name string) *DeleteAccountConnectorOperation {
+	return c.internalClient.DeleteAccountConnectorOperation(name)
+}
+
+// FetchAccessToken fetches OAuth access token based on end user credentials.
+func (c *Client) FetchAccessToken(ctx context.Context, req *developerconnectpb.FetchAccessTokenRequest, opts ...gax.CallOption) (*developerconnectpb.FetchAccessTokenResponse, error) {
+	return c.internalClient.FetchAccessToken(ctx, req, opts...)
+}
+
+// ListUsers lists Users in a given project, location, and account_connector.
+func (c *Client) ListUsers(ctx context.Context, req *developerconnectpb.ListUsersRequest, opts ...gax.CallOption) *UserIterator {
+	return c.internalClient.ListUsers(ctx, req, opts...)
+}
+
+// DeleteUser deletes a single User.
+func (c *Client) DeleteUser(ctx context.Context, req *developerconnectpb.DeleteUserRequest, opts ...gax.CallOption) (*DeleteUserOperation, error) {
+	return c.internalClient.DeleteUser(ctx, req, opts...)
+}
+
+// DeleteUserOperation returns a new DeleteUserOperation from a given name.
+// The name must be that of a previously created DeleteUserOperation, possibly from a different process.
+func (c *Client) DeleteUserOperation(name string) *DeleteUserOperation {
+	return c.internalClient.DeleteUserOperation(name)
+}
+
+// FetchSelf fetch the User based on the user credentials.
+func (c *Client) FetchSelf(ctx context.Context, req *developerconnectpb.FetchSelfRequest, opts ...gax.CallOption) (*developerconnectpb.User, error) {
+	return c.internalClient.FetchSelf(ctx, req, opts...)
+}
+
+// DeleteSelf delete the User based on the user credentials.
+func (c *Client) DeleteSelf(ctx context.Context, req *developerconnectpb.DeleteSelfRequest, opts ...gax.CallOption) (*DeleteSelfOperation, error) {
+	return c.internalClient.DeleteSelf(ctx, req, opts...)
+}
+
+// DeleteSelfOperation returns a new DeleteSelfOperation from a given name.
+// The name must be that of a previously created DeleteSelfOperation, possibly from a different process.
+func (c *Client) DeleteSelfOperation(name string) *DeleteSelfOperation {
+	return c.internalClient.DeleteSelfOperation(name)
+}
+
 // GetLocation gets information about a location.
 func (c *Client) GetLocation(ctx context.Context, req *locationpb.GetLocationRequest, opts ...gax.CallOption) (*locationpb.Location, error) {
 	return c.internalClient.GetLocation(ctx, req, opts...)
@@ -621,6 +745,8 @@ type gRPCClient struct {
 
 	// The x-goog-* metadata to be sent with each request.
 	xGoogHeaders []string
+
+	logger *slog.Logger
 }
 
 // NewClient creates a new developer connect client based on gRPC.
@@ -647,6 +773,7 @@ func NewClient(ctx context.Context, opts ...option.ClientOption) (*Client, error
 		connPool:         connPool,
 		client:           developerconnectpb.NewDeveloperConnectClient(connPool),
 		CallOptions:      &client.CallOptions,
+		logger:           internaloption.GetLogger(opts),
 		operationsClient: longrunningpb.NewOperationsClient(connPool),
 		locationsClient:  locationpb.NewLocationsClient(connPool),
 	}
@@ -681,7 +808,7 @@ func (c *gRPCClient) Connection() *grpc.ClientConn {
 // use by Google-written clients.
 func (c *gRPCClient) setGoogleClientInfo(keyval ...string) {
 	kv := append([]string{"gl-go", gax.GoVersion}, keyval...)
-	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "grpc", grpc.Version)
+	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "grpc", grpc.Version, "pb", protoVersion)
 	c.xGoogHeaders = []string{
 		"x-goog-api-client", gax.XGoogHeader(kv...),
 	}
@@ -711,6 +838,8 @@ type restClient struct {
 
 	// Points back to the CallOptions field of the containing Client
 	CallOptions **CallOptions
+
+	logger *slog.Logger
 }
 
 // NewRESTClient creates a new developer connect rest client.
@@ -728,6 +857,7 @@ func NewRESTClient(ctx context.Context, opts ...option.ClientOption) (*Client, e
 		endpoint:    endpoint,
 		httpClient:  httpClient,
 		CallOptions: &callOpts,
+		logger:      internaloption.GetLogger(opts),
 	}
 	c.setGoogleClientInfo()
 
@@ -761,7 +891,7 @@ func defaultRESTClientOptions() []option.ClientOption {
 // use by Google-written clients.
 func (c *restClient) setGoogleClientInfo(keyval ...string) {
 	kv := append([]string{"gl-go", gax.GoVersion}, keyval...)
-	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "rest", "UNKNOWN")
+	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "rest", "UNKNOWN", "pb", protoVersion)
 	c.xGoogHeaders = []string{
 		"x-goog-api-client", gax.XGoogHeader(kv...),
 	}
@@ -801,7 +931,7 @@ func (c *gRPCClient) ListConnections(ctx context.Context, req *developerconnectp
 		}
 		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 			var err error
-			resp, err = c.client.ListConnections(ctx, req, settings.GRPC...)
+			resp, err = executeRPC(ctx, c.client.ListConnections, req, settings.GRPC, c.logger, "ListConnections")
 			return err
 		}, opts...)
 		if err != nil {
@@ -836,7 +966,7 @@ func (c *gRPCClient) GetConnection(ctx context.Context, req *developerconnectpb.
 	var resp *developerconnectpb.Connection
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.GetConnection(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.GetConnection, req, settings.GRPC, c.logger, "GetConnection")
 		return err
 	}, opts...)
 	if err != nil {
@@ -854,7 +984,7 @@ func (c *gRPCClient) CreateConnection(ctx context.Context, req *developerconnect
 	var resp *longrunningpb.Operation
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.CreateConnection(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.CreateConnection, req, settings.GRPC, c.logger, "CreateConnection")
 		return err
 	}, opts...)
 	if err != nil {
@@ -874,7 +1004,7 @@ func (c *gRPCClient) UpdateConnection(ctx context.Context, req *developerconnect
 	var resp *longrunningpb.Operation
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.UpdateConnection(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.UpdateConnection, req, settings.GRPC, c.logger, "UpdateConnection")
 		return err
 	}, opts...)
 	if err != nil {
@@ -894,7 +1024,7 @@ func (c *gRPCClient) DeleteConnection(ctx context.Context, req *developerconnect
 	var resp *longrunningpb.Operation
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.DeleteConnection(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.DeleteConnection, req, settings.GRPC, c.logger, "DeleteConnection")
 		return err
 	}, opts...)
 	if err != nil {
@@ -914,7 +1044,7 @@ func (c *gRPCClient) CreateGitRepositoryLink(ctx context.Context, req *developer
 	var resp *longrunningpb.Operation
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.CreateGitRepositoryLink(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.CreateGitRepositoryLink, req, settings.GRPC, c.logger, "CreateGitRepositoryLink")
 		return err
 	}, opts...)
 	if err != nil {
@@ -934,7 +1064,7 @@ func (c *gRPCClient) DeleteGitRepositoryLink(ctx context.Context, req *developer
 	var resp *longrunningpb.Operation
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.DeleteGitRepositoryLink(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.DeleteGitRepositoryLink, req, settings.GRPC, c.logger, "DeleteGitRepositoryLink")
 		return err
 	}, opts...)
 	if err != nil {
@@ -965,7 +1095,7 @@ func (c *gRPCClient) ListGitRepositoryLinks(ctx context.Context, req *developerc
 		}
 		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 			var err error
-			resp, err = c.client.ListGitRepositoryLinks(ctx, req, settings.GRPC...)
+			resp, err = executeRPC(ctx, c.client.ListGitRepositoryLinks, req, settings.GRPC, c.logger, "ListGitRepositoryLinks")
 			return err
 		}, opts...)
 		if err != nil {
@@ -1000,7 +1130,7 @@ func (c *gRPCClient) GetGitRepositoryLink(ctx context.Context, req *developercon
 	var resp *developerconnectpb.GitRepositoryLink
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.GetGitRepositoryLink(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.GetGitRepositoryLink, req, settings.GRPC, c.logger, "GetGitRepositoryLink")
 		return err
 	}, opts...)
 	if err != nil {
@@ -1018,7 +1148,7 @@ func (c *gRPCClient) FetchReadWriteToken(ctx context.Context, req *developerconn
 	var resp *developerconnectpb.FetchReadWriteTokenResponse
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.FetchReadWriteToken(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.FetchReadWriteToken, req, settings.GRPC, c.logger, "FetchReadWriteToken")
 		return err
 	}, opts...)
 	if err != nil {
@@ -1036,7 +1166,7 @@ func (c *gRPCClient) FetchReadToken(ctx context.Context, req *developerconnectpb
 	var resp *developerconnectpb.FetchReadTokenResponse
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.FetchReadToken(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.FetchReadToken, req, settings.GRPC, c.logger, "FetchReadToken")
 		return err
 	}, opts...)
 	if err != nil {
@@ -1065,7 +1195,7 @@ func (c *gRPCClient) FetchLinkableGitRepositories(ctx context.Context, req *deve
 		}
 		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 			var err error
-			resp, err = c.client.FetchLinkableGitRepositories(ctx, req, settings.GRPC...)
+			resp, err = executeRPC(ctx, c.client.FetchLinkableGitRepositories, req, settings.GRPC, c.logger, "FetchLinkableGitRepositories")
 			return err
 		}, opts...)
 		if err != nil {
@@ -1100,7 +1230,7 @@ func (c *gRPCClient) FetchGitHubInstallations(ctx context.Context, req *develope
 	var resp *developerconnectpb.FetchGitHubInstallationsResponse
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.client.FetchGitHubInstallations(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.client.FetchGitHubInstallations, req, settings.GRPC, c.logger, "FetchGitHubInstallations")
 		return err
 	}, opts...)
 	if err != nil {
@@ -1129,7 +1259,7 @@ func (c *gRPCClient) FetchGitRefs(ctx context.Context, req *developerconnectpb.F
 		}
 		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 			var err error
-			resp, err = c.client.FetchGitRefs(ctx, req, settings.GRPC...)
+			resp, err = executeRPC(ctx, c.client.FetchGitRefs, req, settings.GRPC, c.logger, "FetchGitRefs")
 			return err
 		}, opts...)
 		if err != nil {
@@ -1155,6 +1285,252 @@ func (c *gRPCClient) FetchGitRefs(ctx context.Context, req *developerconnectpb.F
 	return it
 }
 
+func (c *gRPCClient) ListAccountConnectors(ctx context.Context, req *developerconnectpb.ListAccountConnectorsRequest, opts ...gax.CallOption) *AccountConnectorIterator {
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "parent", url.QueryEscape(req.GetParent()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	opts = append((*c.CallOptions).ListAccountConnectors[0:len((*c.CallOptions).ListAccountConnectors):len((*c.CallOptions).ListAccountConnectors)], opts...)
+	it := &AccountConnectorIterator{}
+	req = proto.Clone(req).(*developerconnectpb.ListAccountConnectorsRequest)
+	it.InternalFetch = func(pageSize int, pageToken string) ([]*developerconnectpb.AccountConnector, string, error) {
+		resp := &developerconnectpb.ListAccountConnectorsResponse{}
+		if pageToken != "" {
+			req.PageToken = pageToken
+		}
+		if pageSize > math.MaxInt32 {
+			req.PageSize = math.MaxInt32
+		} else if pageSize != 0 {
+			req.PageSize = int32(pageSize)
+		}
+		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+			var err error
+			resp, err = executeRPC(ctx, c.client.ListAccountConnectors, req, settings.GRPC, c.logger, "ListAccountConnectors")
+			return err
+		}, opts...)
+		if err != nil {
+			return nil, "", err
+		}
+
+		it.Response = resp
+		return resp.GetAccountConnectors(), resp.GetNextPageToken(), nil
+	}
+	fetch := func(pageSize int, pageToken string) (string, error) {
+		items, nextPageToken, err := it.InternalFetch(pageSize, pageToken)
+		if err != nil {
+			return "", err
+		}
+		it.items = append(it.items, items...)
+		return nextPageToken, nil
+	}
+
+	it.pageInfo, it.nextFunc = iterator.NewPageInfo(fetch, it.bufLen, it.takeBuf)
+	it.pageInfo.MaxSize = int(req.GetPageSize())
+	it.pageInfo.Token = req.GetPageToken()
+
+	return it
+}
+
+func (c *gRPCClient) GetAccountConnector(ctx context.Context, req *developerconnectpb.GetAccountConnectorRequest, opts ...gax.CallOption) (*developerconnectpb.AccountConnector, error) {
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	opts = append((*c.CallOptions).GetAccountConnector[0:len((*c.CallOptions).GetAccountConnector):len((*c.CallOptions).GetAccountConnector)], opts...)
+	var resp *developerconnectpb.AccountConnector
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		resp, err = executeRPC(ctx, c.client.GetAccountConnector, req, settings.GRPC, c.logger, "GetAccountConnector")
+		return err
+	}, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *gRPCClient) CreateAccountConnector(ctx context.Context, req *developerconnectpb.CreateAccountConnectorRequest, opts ...gax.CallOption) (*CreateAccountConnectorOperation, error) {
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "parent", url.QueryEscape(req.GetParent()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	opts = append((*c.CallOptions).CreateAccountConnector[0:len((*c.CallOptions).CreateAccountConnector):len((*c.CallOptions).CreateAccountConnector)], opts...)
+	var resp *longrunningpb.Operation
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		resp, err = executeRPC(ctx, c.client.CreateAccountConnector, req, settings.GRPC, c.logger, "CreateAccountConnector")
+		return err
+	}, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &CreateAccountConnectorOperation{
+		lro: longrunning.InternalNewOperation(*c.LROClient, resp),
+	}, nil
+}
+
+func (c *gRPCClient) UpdateAccountConnector(ctx context.Context, req *developerconnectpb.UpdateAccountConnectorRequest, opts ...gax.CallOption) (*UpdateAccountConnectorOperation, error) {
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "account_connector.name", url.QueryEscape(req.GetAccountConnector().GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	opts = append((*c.CallOptions).UpdateAccountConnector[0:len((*c.CallOptions).UpdateAccountConnector):len((*c.CallOptions).UpdateAccountConnector)], opts...)
+	var resp *longrunningpb.Operation
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		resp, err = executeRPC(ctx, c.client.UpdateAccountConnector, req, settings.GRPC, c.logger, "UpdateAccountConnector")
+		return err
+	}, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &UpdateAccountConnectorOperation{
+		lro: longrunning.InternalNewOperation(*c.LROClient, resp),
+	}, nil
+}
+
+func (c *gRPCClient) DeleteAccountConnector(ctx context.Context, req *developerconnectpb.DeleteAccountConnectorRequest, opts ...gax.CallOption) (*DeleteAccountConnectorOperation, error) {
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	opts = append((*c.CallOptions).DeleteAccountConnector[0:len((*c.CallOptions).DeleteAccountConnector):len((*c.CallOptions).DeleteAccountConnector)], opts...)
+	var resp *longrunningpb.Operation
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		resp, err = executeRPC(ctx, c.client.DeleteAccountConnector, req, settings.GRPC, c.logger, "DeleteAccountConnector")
+		return err
+	}, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &DeleteAccountConnectorOperation{
+		lro: longrunning.InternalNewOperation(*c.LROClient, resp),
+	}, nil
+}
+
+func (c *gRPCClient) FetchAccessToken(ctx context.Context, req *developerconnectpb.FetchAccessTokenRequest, opts ...gax.CallOption) (*developerconnectpb.FetchAccessTokenResponse, error) {
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "account_connector", url.QueryEscape(req.GetAccountConnector()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	opts = append((*c.CallOptions).FetchAccessToken[0:len((*c.CallOptions).FetchAccessToken):len((*c.CallOptions).FetchAccessToken)], opts...)
+	var resp *developerconnectpb.FetchAccessTokenResponse
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		resp, err = executeRPC(ctx, c.client.FetchAccessToken, req, settings.GRPC, c.logger, "FetchAccessToken")
+		return err
+	}, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *gRPCClient) ListUsers(ctx context.Context, req *developerconnectpb.ListUsersRequest, opts ...gax.CallOption) *UserIterator {
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "parent", url.QueryEscape(req.GetParent()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	opts = append((*c.CallOptions).ListUsers[0:len((*c.CallOptions).ListUsers):len((*c.CallOptions).ListUsers)], opts...)
+	it := &UserIterator{}
+	req = proto.Clone(req).(*developerconnectpb.ListUsersRequest)
+	it.InternalFetch = func(pageSize int, pageToken string) ([]*developerconnectpb.User, string, error) {
+		resp := &developerconnectpb.ListUsersResponse{}
+		if pageToken != "" {
+			req.PageToken = pageToken
+		}
+		if pageSize > math.MaxInt32 {
+			req.PageSize = math.MaxInt32
+		} else if pageSize != 0 {
+			req.PageSize = int32(pageSize)
+		}
+		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+			var err error
+			resp, err = executeRPC(ctx, c.client.ListUsers, req, settings.GRPC, c.logger, "ListUsers")
+			return err
+		}, opts...)
+		if err != nil {
+			return nil, "", err
+		}
+
+		it.Response = resp
+		return resp.GetUsers(), resp.GetNextPageToken(), nil
+	}
+	fetch := func(pageSize int, pageToken string) (string, error) {
+		items, nextPageToken, err := it.InternalFetch(pageSize, pageToken)
+		if err != nil {
+			return "", err
+		}
+		it.items = append(it.items, items...)
+		return nextPageToken, nil
+	}
+
+	it.pageInfo, it.nextFunc = iterator.NewPageInfo(fetch, it.bufLen, it.takeBuf)
+	it.pageInfo.MaxSize = int(req.GetPageSize())
+	it.pageInfo.Token = req.GetPageToken()
+
+	return it
+}
+
+func (c *gRPCClient) DeleteUser(ctx context.Context, req *developerconnectpb.DeleteUserRequest, opts ...gax.CallOption) (*DeleteUserOperation, error) {
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	opts = append((*c.CallOptions).DeleteUser[0:len((*c.CallOptions).DeleteUser):len((*c.CallOptions).DeleteUser)], opts...)
+	var resp *longrunningpb.Operation
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		resp, err = executeRPC(ctx, c.client.DeleteUser, req, settings.GRPC, c.logger, "DeleteUser")
+		return err
+	}, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &DeleteUserOperation{
+		lro: longrunning.InternalNewOperation(*c.LROClient, resp),
+	}, nil
+}
+
+func (c *gRPCClient) FetchSelf(ctx context.Context, req *developerconnectpb.FetchSelfRequest, opts ...gax.CallOption) (*developerconnectpb.User, error) {
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	opts = append((*c.CallOptions).FetchSelf[0:len((*c.CallOptions).FetchSelf):len((*c.CallOptions).FetchSelf)], opts...)
+	var resp *developerconnectpb.User
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		resp, err = executeRPC(ctx, c.client.FetchSelf, req, settings.GRPC, c.logger, "FetchSelf")
+		return err
+	}, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *gRPCClient) DeleteSelf(ctx context.Context, req *developerconnectpb.DeleteSelfRequest, opts ...gax.CallOption) (*DeleteSelfOperation, error) {
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	ctx = gax.InsertMetadataIntoOutgoingContext(ctx, hds...)
+	opts = append((*c.CallOptions).DeleteSelf[0:len((*c.CallOptions).DeleteSelf):len((*c.CallOptions).DeleteSelf)], opts...)
+	var resp *longrunningpb.Operation
+	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		var err error
+		resp, err = executeRPC(ctx, c.client.DeleteSelf, req, settings.GRPC, c.logger, "DeleteSelf")
+		return err
+	}, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &DeleteSelfOperation{
+		lro: longrunning.InternalNewOperation(*c.LROClient, resp),
+	}, nil
+}
+
 func (c *gRPCClient) GetLocation(ctx context.Context, req *locationpb.GetLocationRequest, opts ...gax.CallOption) (*locationpb.Location, error) {
 	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
 
@@ -1164,7 +1540,7 @@ func (c *gRPCClient) GetLocation(ctx context.Context, req *locationpb.GetLocatio
 	var resp *locationpb.Location
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.locationsClient.GetLocation(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.locationsClient.GetLocation, req, settings.GRPC, c.logger, "GetLocation")
 		return err
 	}, opts...)
 	if err != nil {
@@ -1193,7 +1569,7 @@ func (c *gRPCClient) ListLocations(ctx context.Context, req *locationpb.ListLoca
 		}
 		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 			var err error
-			resp, err = c.locationsClient.ListLocations(ctx, req, settings.GRPC...)
+			resp, err = executeRPC(ctx, c.locationsClient.ListLocations, req, settings.GRPC, c.logger, "ListLocations")
 			return err
 		}, opts...)
 		if err != nil {
@@ -1227,7 +1603,7 @@ func (c *gRPCClient) CancelOperation(ctx context.Context, req *longrunningpb.Can
 	opts = append((*c.CallOptions).CancelOperation[0:len((*c.CallOptions).CancelOperation):len((*c.CallOptions).CancelOperation)], opts...)
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		_, err = c.operationsClient.CancelOperation(ctx, req, settings.GRPC...)
+		_, err = executeRPC(ctx, c.operationsClient.CancelOperation, req, settings.GRPC, c.logger, "CancelOperation")
 		return err
 	}, opts...)
 	return err
@@ -1241,7 +1617,7 @@ func (c *gRPCClient) DeleteOperation(ctx context.Context, req *longrunningpb.Del
 	opts = append((*c.CallOptions).DeleteOperation[0:len((*c.CallOptions).DeleteOperation):len((*c.CallOptions).DeleteOperation)], opts...)
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		_, err = c.operationsClient.DeleteOperation(ctx, req, settings.GRPC...)
+		_, err = executeRPC(ctx, c.operationsClient.DeleteOperation, req, settings.GRPC, c.logger, "DeleteOperation")
 		return err
 	}, opts...)
 	return err
@@ -1256,7 +1632,7 @@ func (c *gRPCClient) GetOperation(ctx context.Context, req *longrunningpb.GetOpe
 	var resp *longrunningpb.Operation
 	err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 		var err error
-		resp, err = c.operationsClient.GetOperation(ctx, req, settings.GRPC...)
+		resp, err = executeRPC(ctx, c.operationsClient.GetOperation, req, settings.GRPC, c.logger, "GetOperation")
 		return err
 	}, opts...)
 	if err != nil {
@@ -1285,7 +1661,7 @@ func (c *gRPCClient) ListOperations(ctx context.Context, req *longrunningpb.List
 		}
 		err := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
 			var err error
-			resp, err = c.operationsClient.ListOperations(ctx, req, settings.GRPC...)
+			resp, err = executeRPC(ctx, c.operationsClient.ListOperations, req, settings.GRPC, c.logger, "ListOperations")
 			return err
 		}, opts...)
 		if err != nil {
@@ -1362,21 +1738,10 @@ func (c *restClient) ListConnections(ctx context.Context, req *developerconnectp
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListConnections")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -1439,17 +1804,7 @@ func (c *restClient) GetConnection(ctx context.Context, req *developerconnectpb.
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetConnection")
 		if err != nil {
 			return err
 		}
@@ -1512,21 +1867,10 @@ func (c *restClient) CreateConnection(ctx context.Context, req *developerconnect
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateConnection")
 		if err != nil {
 			return err
 		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
-		if err != nil {
-			return err
-		}
-
 		if err := unm.Unmarshal(buf, resp); err != nil {
 			return err
 		}
@@ -1599,21 +1943,10 @@ func (c *restClient) UpdateConnection(ctx context.Context, req *developerconnect
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "UpdateConnection")
 		if err != nil {
 			return err
 		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
-		if err != nil {
-			return err
-		}
-
 		if err := unm.Unmarshal(buf, resp); err != nil {
 			return err
 		}
@@ -1672,21 +2005,10 @@ func (c *restClient) DeleteConnection(ctx context.Context, req *developerconnect
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteConnection")
 		if err != nil {
 			return err
 		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
-		if err != nil {
-			return err
-		}
-
 		if err := unm.Unmarshal(buf, resp); err != nil {
 			return err
 		}
@@ -1754,21 +2076,10 @@ func (c *restClient) CreateGitRepositoryLink(ctx context.Context, req *developer
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateGitRepositoryLink")
 		if err != nil {
 			return err
 		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
-		if err != nil {
-			return err
-		}
-
 		if err := unm.Unmarshal(buf, resp); err != nil {
 			return err
 		}
@@ -1827,21 +2138,10 @@ func (c *restClient) DeleteGitRepositoryLink(ctx context.Context, req *developer
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteGitRepositoryLink")
 		if err != nil {
 			return err
 		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
-		if err != nil {
-			return err
-		}
-
 		if err := unm.Unmarshal(buf, resp); err != nil {
 			return err
 		}
@@ -1910,21 +2210,10 @@ func (c *restClient) ListGitRepositoryLinks(ctx context.Context, req *developerc
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListGitRepositoryLinks")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -1987,17 +2276,7 @@ func (c *restClient) GetGitRepositoryLink(ctx context.Context, req *developercon
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetGitRepositoryLink")
 		if err != nil {
 			return err
 		}
@@ -2053,17 +2332,7 @@ func (c *restClient) FetchReadWriteToken(ctx context.Context, req *developerconn
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "FetchReadWriteToken")
 		if err != nil {
 			return err
 		}
@@ -2119,17 +2388,7 @@ func (c *restClient) FetchReadToken(ctx context.Context, req *developerconnectpb
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "FetchReadToken")
 		if err != nil {
 			return err
 		}
@@ -2192,21 +2451,10 @@ func (c *restClient) FetchLinkableGitRepositories(ctx context.Context, req *deve
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "FetchLinkableGitRepositories")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -2272,17 +2520,7 @@ func (c *restClient) FetchGitHubInstallations(ctx context.Context, req *develope
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "FetchGitHubInstallations")
 		if err != nil {
 			return err
 		}
@@ -2345,21 +2583,10 @@ func (c *restClient) FetchGitRefs(ctx context.Context, req *developerconnectpb.F
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "FetchGitRefs")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -2387,6 +2614,653 @@ func (c *restClient) FetchGitRefs(ctx context.Context, req *developerconnectpb.F
 	it.pageInfo.Token = req.GetPageToken()
 
 	return it
+}
+
+// ListAccountConnectors lists AccountConnectors in a given project and location.
+func (c *restClient) ListAccountConnectors(ctx context.Context, req *developerconnectpb.ListAccountConnectorsRequest, opts ...gax.CallOption) *AccountConnectorIterator {
+	it := &AccountConnectorIterator{}
+	req = proto.Clone(req).(*developerconnectpb.ListAccountConnectorsRequest)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	it.InternalFetch = func(pageSize int, pageToken string) ([]*developerconnectpb.AccountConnector, string, error) {
+		resp := &developerconnectpb.ListAccountConnectorsResponse{}
+		if pageToken != "" {
+			req.PageToken = pageToken
+		}
+		if pageSize > math.MaxInt32 {
+			req.PageSize = math.MaxInt32
+		} else if pageSize != 0 {
+			req.PageSize = int32(pageSize)
+		}
+		baseUrl, err := url.Parse(c.endpoint)
+		if err != nil {
+			return nil, "", err
+		}
+		baseUrl.Path += fmt.Sprintf("/v1/%v/accountConnectors", req.GetParent())
+
+		params := url.Values{}
+		params.Add("$alt", "json;enum-encoding=int")
+		if req.GetFilter() != "" {
+			params.Add("filter", fmt.Sprintf("%v", req.GetFilter()))
+		}
+		if req.GetOrderBy() != "" {
+			params.Add("orderBy", fmt.Sprintf("%v", req.GetOrderBy()))
+		}
+		if req.GetPageSize() != 0 {
+			params.Add("pageSize", fmt.Sprintf("%v", req.GetPageSize()))
+		}
+		if req.GetPageToken() != "" {
+			params.Add("pageToken", fmt.Sprintf("%v", req.GetPageToken()))
+		}
+
+		baseUrl.RawQuery = params.Encode()
+
+		// Build HTTP headers from client and context metadata.
+		hds := append(c.xGoogHeaders, "Content-Type", "application/json")
+		headers := gax.BuildHeaders(ctx, hds...)
+		e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+			if settings.Path != "" {
+				baseUrl.Path = settings.Path
+			}
+			httpReq, err := http.NewRequest("GET", baseUrl.String(), nil)
+			if err != nil {
+				return err
+			}
+			httpReq.Header = headers
+
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListAccountConnectors")
+			if err != nil {
+				return err
+			}
+			if err := unm.Unmarshal(buf, resp); err != nil {
+				return err
+			}
+
+			return nil
+		}, opts...)
+		if e != nil {
+			return nil, "", e
+		}
+		it.Response = resp
+		return resp.GetAccountConnectors(), resp.GetNextPageToken(), nil
+	}
+
+	fetch := func(pageSize int, pageToken string) (string, error) {
+		items, nextPageToken, err := it.InternalFetch(pageSize, pageToken)
+		if err != nil {
+			return "", err
+		}
+		it.items = append(it.items, items...)
+		return nextPageToken, nil
+	}
+
+	it.pageInfo, it.nextFunc = iterator.NewPageInfo(fetch, it.bufLen, it.takeBuf)
+	it.pageInfo.MaxSize = int(req.GetPageSize())
+	it.pageInfo.Token = req.GetPageToken()
+
+	return it
+}
+
+// GetAccountConnector gets details of a single AccountConnector.
+func (c *restClient) GetAccountConnector(ctx context.Context, req *developerconnectpb.GetAccountConnectorRequest, opts ...gax.CallOption) (*developerconnectpb.AccountConnector, error) {
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v", req.GetName())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	opts = append((*c.CallOptions).GetAccountConnector[0:len((*c.CallOptions).GetAccountConnector):len((*c.CallOptions).GetAccountConnector)], opts...)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	resp := &developerconnectpb.AccountConnector{}
+	e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("GET", baseUrl.String(), nil)
+		if err != nil {
+			return err
+		}
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
+
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetAccountConnector")
+		if err != nil {
+			return err
+		}
+
+		if err := unm.Unmarshal(buf, resp); err != nil {
+			return err
+		}
+
+		return nil
+	}, opts...)
+	if e != nil {
+		return nil, e
+	}
+	return resp, nil
+}
+
+// CreateAccountConnector creates a new AccountConnector in a given project and location.
+func (c *restClient) CreateAccountConnector(ctx context.Context, req *developerconnectpb.CreateAccountConnectorRequest, opts ...gax.CallOption) (*CreateAccountConnectorOperation, error) {
+	m := protojson.MarshalOptions{AllowPartial: true, UseEnumNumbers: true}
+	body := req.GetAccountConnector()
+	jsonReq, err := m.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v/accountConnectors", req.GetParent())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+	params.Add("accountConnectorId", fmt.Sprintf("%v", req.GetAccountConnectorId()))
+	if req.GetRequestId() != "" {
+		params.Add("requestId", fmt.Sprintf("%v", req.GetRequestId()))
+	}
+	if req.GetValidateOnly() {
+		params.Add("validateOnly", fmt.Sprintf("%v", req.GetValidateOnly()))
+	}
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "parent", url.QueryEscape(req.GetParent()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	resp := &longrunningpb.Operation{}
+	e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("POST", baseUrl.String(), bytes.NewReader(jsonReq))
+		if err != nil {
+			return err
+		}
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
+
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateAccountConnector")
+		if err != nil {
+			return err
+		}
+		if err := unm.Unmarshal(buf, resp); err != nil {
+			return err
+		}
+
+		return nil
+	}, opts...)
+	if e != nil {
+		return nil, e
+	}
+
+	override := fmt.Sprintf("/v1/%s", resp.GetName())
+	return &CreateAccountConnectorOperation{
+		lro:      longrunning.InternalNewOperation(*c.LROClient, resp),
+		pollPath: override,
+	}, nil
+}
+
+// UpdateAccountConnector updates the parameters of a single AccountConnector.
+func (c *restClient) UpdateAccountConnector(ctx context.Context, req *developerconnectpb.UpdateAccountConnectorRequest, opts ...gax.CallOption) (*UpdateAccountConnectorOperation, error) {
+	m := protojson.MarshalOptions{AllowPartial: true, UseEnumNumbers: true}
+	body := req.GetAccountConnector()
+	jsonReq, err := m.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v", req.GetAccountConnector().GetName())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+	if req.GetAllowMissing() {
+		params.Add("allowMissing", fmt.Sprintf("%v", req.GetAllowMissing()))
+	}
+	if req.GetRequestId() != "" {
+		params.Add("requestId", fmt.Sprintf("%v", req.GetRequestId()))
+	}
+	if req.GetUpdateMask() != nil {
+		field, err := protojson.Marshal(req.GetUpdateMask())
+		if err != nil {
+			return nil, err
+		}
+		params.Add("updateMask", string(field[1:len(field)-1]))
+	}
+	if req.GetValidateOnly() {
+		params.Add("validateOnly", fmt.Sprintf("%v", req.GetValidateOnly()))
+	}
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "account_connector.name", url.QueryEscape(req.GetAccountConnector().GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	resp := &longrunningpb.Operation{}
+	e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("PATCH", baseUrl.String(), bytes.NewReader(jsonReq))
+		if err != nil {
+			return err
+		}
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
+
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "UpdateAccountConnector")
+		if err != nil {
+			return err
+		}
+		if err := unm.Unmarshal(buf, resp); err != nil {
+			return err
+		}
+
+		return nil
+	}, opts...)
+	if e != nil {
+		return nil, e
+	}
+
+	override := fmt.Sprintf("/v1/%s", resp.GetName())
+	return &UpdateAccountConnectorOperation{
+		lro:      longrunning.InternalNewOperation(*c.LROClient, resp),
+		pollPath: override,
+	}, nil
+}
+
+// DeleteAccountConnector deletes a single AccountConnector.
+func (c *restClient) DeleteAccountConnector(ctx context.Context, req *developerconnectpb.DeleteAccountConnectorRequest, opts ...gax.CallOption) (*DeleteAccountConnectorOperation, error) {
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v", req.GetName())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+	if req.GetEtag() != "" {
+		params.Add("etag", fmt.Sprintf("%v", req.GetEtag()))
+	}
+	if req.GetForce() {
+		params.Add("force", fmt.Sprintf("%v", req.GetForce()))
+	}
+	if req.GetRequestId() != "" {
+		params.Add("requestId", fmt.Sprintf("%v", req.GetRequestId()))
+	}
+	if req.GetValidateOnly() {
+		params.Add("validateOnly", fmt.Sprintf("%v", req.GetValidateOnly()))
+	}
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	resp := &longrunningpb.Operation{}
+	e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("DELETE", baseUrl.String(), nil)
+		if err != nil {
+			return err
+		}
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
+
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteAccountConnector")
+		if err != nil {
+			return err
+		}
+		if err := unm.Unmarshal(buf, resp); err != nil {
+			return err
+		}
+
+		return nil
+	}, opts...)
+	if e != nil {
+		return nil, e
+	}
+
+	override := fmt.Sprintf("/v1/%s", resp.GetName())
+	return &DeleteAccountConnectorOperation{
+		lro:      longrunning.InternalNewOperation(*c.LROClient, resp),
+		pollPath: override,
+	}, nil
+}
+
+// FetchAccessToken fetches OAuth access token based on end user credentials.
+func (c *restClient) FetchAccessToken(ctx context.Context, req *developerconnectpb.FetchAccessTokenRequest, opts ...gax.CallOption) (*developerconnectpb.FetchAccessTokenResponse, error) {
+	m := protojson.MarshalOptions{AllowPartial: true, UseEnumNumbers: true}
+	jsonReq, err := m.Marshal(req)
+	if err != nil {
+		return nil, err
+	}
+
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v/users:fetchAccessToken", req.GetAccountConnector())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "account_connector", url.QueryEscape(req.GetAccountConnector()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	opts = append((*c.CallOptions).FetchAccessToken[0:len((*c.CallOptions).FetchAccessToken):len((*c.CallOptions).FetchAccessToken)], opts...)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	resp := &developerconnectpb.FetchAccessTokenResponse{}
+	e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("POST", baseUrl.String(), bytes.NewReader(jsonReq))
+		if err != nil {
+			return err
+		}
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
+
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "FetchAccessToken")
+		if err != nil {
+			return err
+		}
+
+		if err := unm.Unmarshal(buf, resp); err != nil {
+			return err
+		}
+
+		return nil
+	}, opts...)
+	if e != nil {
+		return nil, e
+	}
+	return resp, nil
+}
+
+// ListUsers lists Users in a given project, location, and account_connector.
+func (c *restClient) ListUsers(ctx context.Context, req *developerconnectpb.ListUsersRequest, opts ...gax.CallOption) *UserIterator {
+	it := &UserIterator{}
+	req = proto.Clone(req).(*developerconnectpb.ListUsersRequest)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	it.InternalFetch = func(pageSize int, pageToken string) ([]*developerconnectpb.User, string, error) {
+		resp := &developerconnectpb.ListUsersResponse{}
+		if pageToken != "" {
+			req.PageToken = pageToken
+		}
+		if pageSize > math.MaxInt32 {
+			req.PageSize = math.MaxInt32
+		} else if pageSize != 0 {
+			req.PageSize = int32(pageSize)
+		}
+		baseUrl, err := url.Parse(c.endpoint)
+		if err != nil {
+			return nil, "", err
+		}
+		baseUrl.Path += fmt.Sprintf("/v1/%v/users", req.GetParent())
+
+		params := url.Values{}
+		params.Add("$alt", "json;enum-encoding=int")
+		if req.GetFilter() != "" {
+			params.Add("filter", fmt.Sprintf("%v", req.GetFilter()))
+		}
+		if req.GetOrderBy() != "" {
+			params.Add("orderBy", fmt.Sprintf("%v", req.GetOrderBy()))
+		}
+		if req.GetPageSize() != 0 {
+			params.Add("pageSize", fmt.Sprintf("%v", req.GetPageSize()))
+		}
+		if req.GetPageToken() != "" {
+			params.Add("pageToken", fmt.Sprintf("%v", req.GetPageToken()))
+		}
+
+		baseUrl.RawQuery = params.Encode()
+
+		// Build HTTP headers from client and context metadata.
+		hds := append(c.xGoogHeaders, "Content-Type", "application/json")
+		headers := gax.BuildHeaders(ctx, hds...)
+		e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+			if settings.Path != "" {
+				baseUrl.Path = settings.Path
+			}
+			httpReq, err := http.NewRequest("GET", baseUrl.String(), nil)
+			if err != nil {
+				return err
+			}
+			httpReq.Header = headers
+
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListUsers")
+			if err != nil {
+				return err
+			}
+			if err := unm.Unmarshal(buf, resp); err != nil {
+				return err
+			}
+
+			return nil
+		}, opts...)
+		if e != nil {
+			return nil, "", e
+		}
+		it.Response = resp
+		return resp.GetUsers(), resp.GetNextPageToken(), nil
+	}
+
+	fetch := func(pageSize int, pageToken string) (string, error) {
+		items, nextPageToken, err := it.InternalFetch(pageSize, pageToken)
+		if err != nil {
+			return "", err
+		}
+		it.items = append(it.items, items...)
+		return nextPageToken, nil
+	}
+
+	it.pageInfo, it.nextFunc = iterator.NewPageInfo(fetch, it.bufLen, it.takeBuf)
+	it.pageInfo.MaxSize = int(req.GetPageSize())
+	it.pageInfo.Token = req.GetPageToken()
+
+	return it
+}
+
+// DeleteUser deletes a single User.
+func (c *restClient) DeleteUser(ctx context.Context, req *developerconnectpb.DeleteUserRequest, opts ...gax.CallOption) (*DeleteUserOperation, error) {
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v", req.GetName())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+	if req.GetEtag() != "" {
+		params.Add("etag", fmt.Sprintf("%v", req.GetEtag()))
+	}
+	if req.GetRequestId() != "" {
+		params.Add("requestId", fmt.Sprintf("%v", req.GetRequestId()))
+	}
+	if req.GetValidateOnly() {
+		params.Add("validateOnly", fmt.Sprintf("%v", req.GetValidateOnly()))
+	}
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	resp := &longrunningpb.Operation{}
+	e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("DELETE", baseUrl.String(), nil)
+		if err != nil {
+			return err
+		}
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
+
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteUser")
+		if err != nil {
+			return err
+		}
+		if err := unm.Unmarshal(buf, resp); err != nil {
+			return err
+		}
+
+		return nil
+	}, opts...)
+	if e != nil {
+		return nil, e
+	}
+
+	override := fmt.Sprintf("/v1/%s", resp.GetName())
+	return &DeleteUserOperation{
+		lro:      longrunning.InternalNewOperation(*c.LROClient, resp),
+		pollPath: override,
+	}, nil
+}
+
+// FetchSelf fetch the User based on the user credentials.
+func (c *restClient) FetchSelf(ctx context.Context, req *developerconnectpb.FetchSelfRequest, opts ...gax.CallOption) (*developerconnectpb.User, error) {
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v/users:fetchSelf", req.GetName())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	opts = append((*c.CallOptions).FetchSelf[0:len((*c.CallOptions).FetchSelf):len((*c.CallOptions).FetchSelf)], opts...)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	resp := &developerconnectpb.User{}
+	e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("GET", baseUrl.String(), nil)
+		if err != nil {
+			return err
+		}
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
+
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "FetchSelf")
+		if err != nil {
+			return err
+		}
+
+		if err := unm.Unmarshal(buf, resp); err != nil {
+			return err
+		}
+
+		return nil
+	}, opts...)
+	if e != nil {
+		return nil, e
+	}
+	return resp, nil
+}
+
+// DeleteSelf delete the User based on the user credentials.
+func (c *restClient) DeleteSelf(ctx context.Context, req *developerconnectpb.DeleteSelfRequest, opts ...gax.CallOption) (*DeleteSelfOperation, error) {
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v/users:deleteSelf", req.GetName())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	resp := &longrunningpb.Operation{}
+	e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("DELETE", baseUrl.String(), nil)
+		if err != nil {
+			return err
+		}
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
+
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteSelf")
+		if err != nil {
+			return err
+		}
+		if err := unm.Unmarshal(buf, resp); err != nil {
+			return err
+		}
+
+		return nil
+	}, opts...)
+	if e != nil {
+		return nil, e
+	}
+
+	override := fmt.Sprintf("/v1/%s", resp.GetName())
+	return &DeleteSelfOperation{
+		lro:      longrunning.InternalNewOperation(*c.LROClient, resp),
+		pollPath: override,
+	}, nil
 }
 
 // GetLocation gets information about a location.
@@ -2422,17 +3296,7 @@ func (c *restClient) GetLocation(ctx context.Context, req *locationpb.GetLocatio
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetLocation")
 		if err != nil {
 			return err
 		}
@@ -2497,21 +3361,10 @@ func (c *restClient) ListLocations(ctx context.Context, req *locationpb.ListLoca
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListLocations")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -2577,15 +3430,8 @@ func (c *restClient) CancelOperation(ctx context.Context, req *longrunningpb.Can
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		// Returns nil if there is no error, otherwise wraps
-		// the response code and body into a non-nil error
-		return googleapi.CheckResponse(httpRsp)
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CancelOperation")
+		return err
 	}, opts...)
 }
 
@@ -2619,15 +3465,8 @@ func (c *restClient) DeleteOperation(ctx context.Context, req *longrunningpb.Del
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		// Returns nil if there is no error, otherwise wraps
-		// the response code and body into a non-nil error
-		return googleapi.CheckResponse(httpRsp)
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteOperation")
+		return err
 	}, opts...)
 }
 
@@ -2664,17 +3503,7 @@ func (c *restClient) GetOperation(ctx context.Context, req *longrunningpb.GetOpe
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetOperation")
 		if err != nil {
 			return err
 		}
@@ -2739,21 +3568,10 @@ func (c *restClient) ListOperations(ctx context.Context, req *longrunningpb.List
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListOperations")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -2781,6 +3599,24 @@ func (c *restClient) ListOperations(ctx context.Context, req *longrunningpb.List
 	it.pageInfo.Token = req.GetPageToken()
 
 	return it
+}
+
+// CreateAccountConnectorOperation returns a new CreateAccountConnectorOperation from a given name.
+// The name must be that of a previously created CreateAccountConnectorOperation, possibly from a different process.
+func (c *gRPCClient) CreateAccountConnectorOperation(name string) *CreateAccountConnectorOperation {
+	return &CreateAccountConnectorOperation{
+		lro: longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
+	}
+}
+
+// CreateAccountConnectorOperation returns a new CreateAccountConnectorOperation from a given name.
+// The name must be that of a previously created CreateAccountConnectorOperation, possibly from a different process.
+func (c *restClient) CreateAccountConnectorOperation(name string) *CreateAccountConnectorOperation {
+	override := fmt.Sprintf("/v1/%s", name)
+	return &CreateAccountConnectorOperation{
+		lro:      longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
+		pollPath: override,
+	}
 }
 
 // CreateConnectionOperation returns a new CreateConnectionOperation from a given name.
@@ -2819,6 +3655,24 @@ func (c *restClient) CreateGitRepositoryLinkOperation(name string) *CreateGitRep
 	}
 }
 
+// DeleteAccountConnectorOperation returns a new DeleteAccountConnectorOperation from a given name.
+// The name must be that of a previously created DeleteAccountConnectorOperation, possibly from a different process.
+func (c *gRPCClient) DeleteAccountConnectorOperation(name string) *DeleteAccountConnectorOperation {
+	return &DeleteAccountConnectorOperation{
+		lro: longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
+	}
+}
+
+// DeleteAccountConnectorOperation returns a new DeleteAccountConnectorOperation from a given name.
+// The name must be that of a previously created DeleteAccountConnectorOperation, possibly from a different process.
+func (c *restClient) DeleteAccountConnectorOperation(name string) *DeleteAccountConnectorOperation {
+	override := fmt.Sprintf("/v1/%s", name)
+	return &DeleteAccountConnectorOperation{
+		lro:      longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
+		pollPath: override,
+	}
+}
+
 // DeleteConnectionOperation returns a new DeleteConnectionOperation from a given name.
 // The name must be that of a previously created DeleteConnectionOperation, possibly from a different process.
 func (c *gRPCClient) DeleteConnectionOperation(name string) *DeleteConnectionOperation {
@@ -2850,6 +3704,60 @@ func (c *gRPCClient) DeleteGitRepositoryLinkOperation(name string) *DeleteGitRep
 func (c *restClient) DeleteGitRepositoryLinkOperation(name string) *DeleteGitRepositoryLinkOperation {
 	override := fmt.Sprintf("/v1/%s", name)
 	return &DeleteGitRepositoryLinkOperation{
+		lro:      longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
+		pollPath: override,
+	}
+}
+
+// DeleteSelfOperation returns a new DeleteSelfOperation from a given name.
+// The name must be that of a previously created DeleteSelfOperation, possibly from a different process.
+func (c *gRPCClient) DeleteSelfOperation(name string) *DeleteSelfOperation {
+	return &DeleteSelfOperation{
+		lro: longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
+	}
+}
+
+// DeleteSelfOperation returns a new DeleteSelfOperation from a given name.
+// The name must be that of a previously created DeleteSelfOperation, possibly from a different process.
+func (c *restClient) DeleteSelfOperation(name string) *DeleteSelfOperation {
+	override := fmt.Sprintf("/v1/%s", name)
+	return &DeleteSelfOperation{
+		lro:      longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
+		pollPath: override,
+	}
+}
+
+// DeleteUserOperation returns a new DeleteUserOperation from a given name.
+// The name must be that of a previously created DeleteUserOperation, possibly from a different process.
+func (c *gRPCClient) DeleteUserOperation(name string) *DeleteUserOperation {
+	return &DeleteUserOperation{
+		lro: longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
+	}
+}
+
+// DeleteUserOperation returns a new DeleteUserOperation from a given name.
+// The name must be that of a previously created DeleteUserOperation, possibly from a different process.
+func (c *restClient) DeleteUserOperation(name string) *DeleteUserOperation {
+	override := fmt.Sprintf("/v1/%s", name)
+	return &DeleteUserOperation{
+		lro:      longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
+		pollPath: override,
+	}
+}
+
+// UpdateAccountConnectorOperation returns a new UpdateAccountConnectorOperation from a given name.
+// The name must be that of a previously created UpdateAccountConnectorOperation, possibly from a different process.
+func (c *gRPCClient) UpdateAccountConnectorOperation(name string) *UpdateAccountConnectorOperation {
+	return &UpdateAccountConnectorOperation{
+		lro: longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
+	}
+}
+
+// UpdateAccountConnectorOperation returns a new UpdateAccountConnectorOperation from a given name.
+// The name must be that of a previously created UpdateAccountConnectorOperation, possibly from a different process.
+func (c *restClient) UpdateAccountConnectorOperation(name string) *UpdateAccountConnectorOperation {
+	override := fmt.Sprintf("/v1/%s", name)
+	return &UpdateAccountConnectorOperation{
 		lro:      longrunning.InternalNewOperation(*c.LROClient, &longrunningpb.Operation{Name: name}),
 		pollPath: override,
 	}

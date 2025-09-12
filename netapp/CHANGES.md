@@ -1,6 +1,119 @@
 # Changelog
 
 
+## [1.10.0](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.9.0...netapp/v1.10.0) (2025-09-04)
+
+
+### Features
+
+* **netapp:** Add fields for hybrid replication ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Add fields for manual qos ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Add new fields for flex auto tiering ([#12798](https://github.com/googleapis/google-cloud-go/issues/12798)) ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+
+
+### Documentation
+
+* **netapp:** A comment for field `cold_tier_size_gib` in message `.google.cloud.netapp.v1.Volume` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `command_expiry_time` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `command` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `daily_backup_immutable` in message `.google.cloud.netapp.v1.BackupVault` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `manual_backup_immutable` in message `.google.cloud.netapp.v1.BackupVault` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `monthly_backup_immutable` in message `.google.cloud.netapp.v1.BackupVault` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `passphrase` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `peer_cluster_name` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `peer_svm_name` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `peer_volume_name` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `subnet_ip` in message `.google.cloud.netapp.v1.HybridPeeringDetails` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `total_iops` in message `.google.cloud.netapp.v1.StoragePool` is added ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `total_throughput_mibps` in message `.google.cloud.netapp.v1.StoragePool` is added ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+* **netapp:** Field `weekly_backup_immutable` in message `.google.cloud.netapp.v1.BackupVault` is changed ([10e67ef](https://github.com/googleapis/google-cloud-go/commit/10e67efccf048adea11d3ecba8d0c625455e545f))
+
+## [1.9.0](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.8.0...netapp/v1.9.0) (2025-05-21)
+
+
+### Features
+
+* **netapp:** A new field 'enforced_retention_end_time' in message 'google.cloud.netapp.v1.Backup' is added ([2a9d8ee](https://github.com/googleapis/google-cloud-go/commit/2a9d8eec71a7e6803eb534287c8d2f64903dcddd))
+* **netapp:** A new message 'google.cloud.netapp.v1.BackupRetentionPolicy' is added in 'google.cloud.netapp.v1.BackupVault' ([2a9d8ee](https://github.com/googleapis/google-cloud-go/commit/2a9d8eec71a7e6803eb534287c8d2f64903dcddd))
+* **netapp:** New fields 'custom_performance_enabled', 'total_throughput_mibps', 'total_iops' in message 'google.cloud.netapp.v1.StoragePool' are added ([2a9d8ee](https://github.com/googleapis/google-cloud-go/commit/2a9d8eec71a7e6803eb534287c8d2f64903dcddd))
+
+
+### Documentation
+
+* **netapp:** A comment for field `transfer_bytes` in message `.google.cloud.netapp.v1.TransferStats` is changed ([2a9d8ee](https://github.com/googleapis/google-cloud-go/commit/2a9d8eec71a7e6803eb534287c8d2f64903dcddd))
+
+## [1.8.0](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.7.3...netapp/v1.8.0) (2025-04-30)
+
+
+### Features
+
+* **netapp:** Add `source_region`, `backup_region`, `source_backup_vault`, `destination_backup_vault`, `backupVault_type` (of new enum type `BackupVaultType`) to `BackupVault` message ([4c53c42](https://github.com/googleapis/google-cloud-go/commit/4c53c4273a17a39667d962ffa74e308b663270e9))
+* **netapp:** Add `volume_region` and `backup_region` to backup `Backup` message ([4c53c42](https://github.com/googleapis/google-cloud-go/commit/4c53c4273a17a39667d962ffa74e308b663270e9))
+
+## [1.7.3](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.7.2...netapp/v1.7.3) (2025-04-22)
+
+
+### Documentation
+
+* **netapp:** A comment for field `cooling_threshold_days` in message `.google.cloud.netapp.v1.TieringPolicy` is changed ([fe831f9](https://github.com/googleapis/google-cloud-go/commit/fe831f9b125baf2cf5774ad892361df2d655814a))
+
+## [1.7.2](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.7.1...netapp/v1.7.2) (2025-04-15)
+
+
+### Bug Fixes
+
+* **netapp:** Update google.golang.org/api to 0.229.0 ([3319672](https://github.com/googleapis/google-cloud-go/commit/3319672f3dba84a7150772ccb5433e02dab7e201))
+
+## [1.7.1](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.7.0...netapp/v1.7.1) (2025-03-13)
+
+
+### Bug Fixes
+
+* **netapp:** Update golang.org/x/net to 0.37.0 ([1144978](https://github.com/googleapis/google-cloud-go/commit/11449782c7fb4896bf8b8b9cde8e7441c84fb2fd))
+
+## [1.7.0](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.6.0...netapp/v1.7.0) (2025-02-05)
+
+
+### Features
+
+* **netapp:** Add ipAddress field to MountOption ([59fe58a](https://github.com/googleapis/google-cloud-go/commit/59fe58aba61abf69bfb7549c0a03b21bdb4b8b2f))
+* **netapp:** Add support for Quota Rule apis ([59fe58a](https://github.com/googleapis/google-cloud-go/commit/59fe58aba61abf69bfb7549c0a03b21bdb4b8b2f))
+
+## [1.6.0](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.5.1...netapp/v1.6.0) (2025-01-08)
+
+
+### Features
+
+* **netapp:** Add ValidateDirectoryService API for testing AD connection of a storage pool ([2e4feb9](https://github.com/googleapis/google-cloud-go/commit/2e4feb938ce9ab023c8aa6bd1dbdf36fe589213a))
+
+
+### Documentation
+
+* **netapp:** Removed the format for `replication` in message `google.cloud.netapp.v1.HybridReplicationParameters` ([2e4feb9](https://github.com/googleapis/google-cloud-go/commit/2e4feb938ce9ab023c8aa6bd1dbdf36fe589213a))
+
+## [1.5.1](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.5.0...netapp/v1.5.1) (2025-01-02)
+
+
+### Bug Fixes
+
+* **netapp:** Update golang.org/x/net to v0.33.0 ([e9b0b69](https://github.com/googleapis/google-cloud-go/commit/e9b0b69644ea5b276cacff0a707e8a5e87efafc9))
+
+## [1.5.0](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.4.1...netapp/v1.5.0) (2024-12-04)
+
+
+### Features
+
+* **netapp:** Add EstablishPeering API for Onprem Migration ([bf3fe5b](https://github.com/googleapis/google-cloud-go/commit/bf3fe5be3262c5f91f92d4850c833e56fe11be16))
+* **netapp:** Add new Active Directory state for AD Diagnostics support ([bf3fe5b](https://github.com/googleapis/google-cloud-go/commit/bf3fe5be3262c5f91f92d4850c833e56fe11be16))
+* **netapp:** Add Sync API for Replications ([bf3fe5b](https://github.com/googleapis/google-cloud-go/commit/bf3fe5be3262c5f91f92d4850c833e56fe11be16))
+* **netapp:** Enable creation of Onprem Migration in CreateVolume ([bf3fe5b](https://github.com/googleapis/google-cloud-go/commit/bf3fe5be3262c5f91f92d4850c833e56fe11be16))
+* **netapp:** Enable creation of Onprem Migration in CreateVolume ([#11172](https://github.com/googleapis/google-cloud-go/issues/11172)) ([bf3fe5b](https://github.com/googleapis/google-cloud-go/commit/bf3fe5be3262c5f91f92d4850c833e56fe11be16))
+
+
+### Documentation
+
+* **netapp:** Docs now do not allow underscore in IDs of various Resources ([bf3fe5b](https://github.com/googleapis/google-cloud-go/commit/bf3fe5be3262c5f91f92d4850c833e56fe11be16))
+
 ## [1.4.1](https://github.com/googleapis/google-cloud-go/compare/netapp/v1.4.0...netapp/v1.4.1) (2024-10-23)
 
 

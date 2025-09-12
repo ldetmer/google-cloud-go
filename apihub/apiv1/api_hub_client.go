@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io"
+	"log/slog"
 	"math"
 	"net/http"
 	"net/url"
@@ -29,7 +29,6 @@ import (
 	apihubpb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	gax "github.com/googleapis/gax-go/v2"
-	"google.golang.org/api/googleapi"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 	"google.golang.org/api/option/internaloption"
@@ -44,47 +43,50 @@ var newClientHook clientHook
 
 // CallOptions contains the retry settings for each method of Client.
 type CallOptions struct {
-	CreateApi         []gax.CallOption
-	GetApi            []gax.CallOption
-	ListApis          []gax.CallOption
-	UpdateApi         []gax.CallOption
-	DeleteApi         []gax.CallOption
-	CreateVersion     []gax.CallOption
-	GetVersion        []gax.CallOption
-	ListVersions      []gax.CallOption
-	UpdateVersion     []gax.CallOption
-	DeleteVersion     []gax.CallOption
-	CreateSpec        []gax.CallOption
-	GetSpec           []gax.CallOption
-	GetSpecContents   []gax.CallOption
-	ListSpecs         []gax.CallOption
-	UpdateSpec        []gax.CallOption
-	DeleteSpec        []gax.CallOption
-	GetApiOperation   []gax.CallOption
-	ListApiOperations []gax.CallOption
-	GetDefinition     []gax.CallOption
-	CreateDeployment  []gax.CallOption
-	GetDeployment     []gax.CallOption
-	ListDeployments   []gax.CallOption
-	UpdateDeployment  []gax.CallOption
-	DeleteDeployment  []gax.CallOption
-	CreateAttribute   []gax.CallOption
-	GetAttribute      []gax.CallOption
-	UpdateAttribute   []gax.CallOption
-	DeleteAttribute   []gax.CallOption
-	ListAttributes    []gax.CallOption
-	SearchResources   []gax.CallOption
-	CreateExternalApi []gax.CallOption
-	GetExternalApi    []gax.CallOption
-	UpdateExternalApi []gax.CallOption
-	DeleteExternalApi []gax.CallOption
-	ListExternalApis  []gax.CallOption
-	GetLocation       []gax.CallOption
-	ListLocations     []gax.CallOption
-	CancelOperation   []gax.CallOption
-	DeleteOperation   []gax.CallOption
-	GetOperation      []gax.CallOption
-	ListOperations    []gax.CallOption
+	CreateApi          []gax.CallOption
+	GetApi             []gax.CallOption
+	ListApis           []gax.CallOption
+	UpdateApi          []gax.CallOption
+	DeleteApi          []gax.CallOption
+	CreateVersion      []gax.CallOption
+	GetVersion         []gax.CallOption
+	ListVersions       []gax.CallOption
+	UpdateVersion      []gax.CallOption
+	DeleteVersion      []gax.CallOption
+	CreateSpec         []gax.CallOption
+	GetSpec            []gax.CallOption
+	GetSpecContents    []gax.CallOption
+	ListSpecs          []gax.CallOption
+	UpdateSpec         []gax.CallOption
+	DeleteSpec         []gax.CallOption
+	CreateApiOperation []gax.CallOption
+	GetApiOperation    []gax.CallOption
+	ListApiOperations  []gax.CallOption
+	UpdateApiOperation []gax.CallOption
+	DeleteApiOperation []gax.CallOption
+	GetDefinition      []gax.CallOption
+	CreateDeployment   []gax.CallOption
+	GetDeployment      []gax.CallOption
+	ListDeployments    []gax.CallOption
+	UpdateDeployment   []gax.CallOption
+	DeleteDeployment   []gax.CallOption
+	CreateAttribute    []gax.CallOption
+	GetAttribute       []gax.CallOption
+	UpdateAttribute    []gax.CallOption
+	DeleteAttribute    []gax.CallOption
+	ListAttributes     []gax.CallOption
+	SearchResources    []gax.CallOption
+	CreateExternalApi  []gax.CallOption
+	GetExternalApi     []gax.CallOption
+	UpdateExternalApi  []gax.CallOption
+	DeleteExternalApi  []gax.CallOption
+	ListExternalApis   []gax.CallOption
+	GetLocation        []gax.CallOption
+	ListLocations      []gax.CallOption
+	CancelOperation    []gax.CallOption
+	DeleteOperation    []gax.CallOption
+	GetOperation       []gax.CallOption
+	ListOperations     []gax.CallOption
 }
 
 func defaultRESTCallOptions() *CallOptions {
@@ -118,7 +120,7 @@ func defaultRESTCallOptions() *CallOptions {
 			gax.WithTimeout(60000 * time.Millisecond),
 		},
 		DeleteApi: []gax.CallOption{
-			gax.WithTimeout(60000 * time.Millisecond),
+			gax.WithTimeout(300000 * time.Millisecond),
 		},
 		CreateVersion: []gax.CallOption{
 			gax.WithTimeout(60000 * time.Millisecond),
@@ -149,7 +151,7 @@ func defaultRESTCallOptions() *CallOptions {
 			gax.WithTimeout(60000 * time.Millisecond),
 		},
 		DeleteVersion: []gax.CallOption{
-			gax.WithTimeout(60000 * time.Millisecond),
+			gax.WithTimeout(300000 * time.Millisecond),
 		},
 		CreateSpec: []gax.CallOption{
 			gax.WithTimeout(60000 * time.Millisecond),
@@ -191,8 +193,9 @@ func defaultRESTCallOptions() *CallOptions {
 			gax.WithTimeout(60000 * time.Millisecond),
 		},
 		DeleteSpec: []gax.CallOption{
-			gax.WithTimeout(60000 * time.Millisecond),
+			gax.WithTimeout(300000 * time.Millisecond),
 		},
+		CreateApiOperation: []gax.CallOption{},
 		GetApiOperation: []gax.CallOption{
 			gax.WithTimeout(60000 * time.Millisecond),
 			gax.WithRetry(func() gax.Retryer {
@@ -215,6 +218,8 @@ func defaultRESTCallOptions() *CallOptions {
 					http.StatusServiceUnavailable)
 			}),
 		},
+		UpdateApiOperation: []gax.CallOption{},
+		DeleteApiOperation: []gax.CallOption{},
 		GetDefinition: []gax.CallOption{
 			gax.WithTimeout(60000 * time.Millisecond),
 			gax.WithRetry(func() gax.Retryer {
@@ -360,8 +365,11 @@ type internalClient interface {
 	ListSpecs(context.Context, *apihubpb.ListSpecsRequest, ...gax.CallOption) *SpecIterator
 	UpdateSpec(context.Context, *apihubpb.UpdateSpecRequest, ...gax.CallOption) (*apihubpb.Spec, error)
 	DeleteSpec(context.Context, *apihubpb.DeleteSpecRequest, ...gax.CallOption) error
+	CreateApiOperation(context.Context, *apihubpb.CreateApiOperationRequest, ...gax.CallOption) (*apihubpb.ApiOperation, error)
 	GetApiOperation(context.Context, *apihubpb.GetApiOperationRequest, ...gax.CallOption) (*apihubpb.ApiOperation, error)
 	ListApiOperations(context.Context, *apihubpb.ListApiOperationsRequest, ...gax.CallOption) *ApiOperationIterator
+	UpdateApiOperation(context.Context, *apihubpb.UpdateApiOperationRequest, ...gax.CallOption) (*apihubpb.ApiOperation, error)
+	DeleteApiOperation(context.Context, *apihubpb.DeleteApiOperationRequest, ...gax.CallOption) error
 	GetDefinition(context.Context, *apihubpb.GetDefinitionRequest, ...gax.CallOption) (*apihubpb.Definition, error)
 	CreateDeployment(context.Context, *apihubpb.CreateDeploymentRequest, ...gax.CallOption) (*apihubpb.Deployment, error)
 	GetDeployment(context.Context, *apihubpb.GetDeploymentRequest, ...gax.CallOption) (*apihubpb.Deployment, error)
@@ -456,6 +464,8 @@ func (c *Client) ListApis(ctx context.Context, req *apihubpb.ListApisRequest, op
 //	business_unit
 //
 //	maturity_level
+//
+//	api_style
 //
 //	attributes
 //
@@ -608,6 +618,13 @@ func (c *Client) DeleteSpec(ctx context.Context, req *apihubpb.DeleteSpecRequest
 	return c.internalClient.DeleteSpec(ctx, req, opts...)
 }
 
+// CreateApiOperation create an apiOperation in an API version.
+// An apiOperation can be created only if the version has no apiOperations
+// which were created by parsing a spec.
+func (c *Client) CreateApiOperation(ctx context.Context, req *apihubpb.CreateApiOperationRequest, opts ...gax.CallOption) (*apihubpb.ApiOperation, error) {
+	return c.internalClient.CreateApiOperation(ctx, req, opts...)
+}
+
 // GetApiOperation get details about a particular operation in API version.
 func (c *Client) GetApiOperation(ctx context.Context, req *apihubpb.GetApiOperationRequest, opts ...gax.CallOption) (*apihubpb.ApiOperation, error) {
 	return c.internalClient.GetApiOperation(ctx, req, opts...)
@@ -616,6 +633,41 @@ func (c *Client) GetApiOperation(ctx context.Context, req *apihubpb.GetApiOperat
 // ListApiOperations list operations in an API version.
 func (c *Client) ListApiOperations(ctx context.Context, req *apihubpb.ListApiOperationsRequest, opts ...gax.CallOption) *ApiOperationIterator {
 	return c.internalClient.ListApiOperations(ctx, req, opts...)
+}
+
+// UpdateApiOperation update an operation in an API version. The following fields in the
+// [ApiOperation resource][google.cloud.apihub.v1.ApiOperation] can be
+// updated:
+//
+//	details.description
+//
+//	details.documentation
+//
+//	details.http_operation.path
+//
+//	details.http_operation.method
+//
+//	details.deprecated
+//
+//	attributes
+//
+// The
+// update_mask
+// should be used to specify the fields being updated.
+//
+// An operation can be updated only if the operation was created via
+// CreateApiOperation API.
+// If the operation was created by parsing the spec, then it can be edited by
+// updating the spec.
+func (c *Client) UpdateApiOperation(ctx context.Context, req *apihubpb.UpdateApiOperationRequest, opts ...gax.CallOption) (*apihubpb.ApiOperation, error) {
+	return c.internalClient.UpdateApiOperation(ctx, req, opts...)
+}
+
+// DeleteApiOperation delete an operation in an API version and we can delete only the
+// operations created via create API. If the operation was created by parsing
+// the spec, then it can be deleted by editing or deleting the spec.
+func (c *Client) DeleteApiOperation(ctx context.Context, req *apihubpb.DeleteApiOperationRequest, opts ...gax.CallOption) error {
+	return c.internalClient.DeleteApiOperation(ctx, req, opts...)
 }
 
 // GetDefinition get details about a definition in an API version.
@@ -662,9 +714,17 @@ func (c *Client) ListDeployments(ctx context.Context, req *apihubpb.ListDeployme
 //
 //	attributes
 //
-// The
-// update_mask
-// should be used to specify the fields being updated.
+//	[source_project] [google.cloud.apihub.v1.Deployment.source_project]
+//
+//	[source_environment]
+//	[google.cloud.apihub.v1.Deployment.source_environment]
+//
+//	management_url
+//
+//	source_uri
+//	The
+//	update_mask
+//	should be used to specify the fields being updated.
 func (c *Client) UpdateDeployment(ctx context.Context, req *apihubpb.UpdateDeploymentRequest, opts ...gax.CallOption) (*apihubpb.Deployment, error) {
 	return c.internalClient.UpdateDeployment(ctx, req, opts...)
 }
@@ -822,6 +882,8 @@ type restClient struct {
 
 	// Points back to the CallOptions field of the containing Client
 	CallOptions **CallOptions
+
+	logger *slog.Logger
 }
 
 // NewRESTClient creates a new api hub rest client.
@@ -839,6 +901,7 @@ func NewRESTClient(ctx context.Context, opts ...option.ClientOption) (*Client, e
 		endpoint:    endpoint,
 		httpClient:  httpClient,
 		CallOptions: &callOpts,
+		logger:      internaloption.GetLogger(opts),
 	}
 	c.setGoogleClientInfo()
 
@@ -862,7 +925,7 @@ func defaultRESTClientOptions() []option.ClientOption {
 // use by Google-written clients.
 func (c *restClient) setGoogleClientInfo(keyval ...string) {
 	kv := append([]string{"gl-go", gax.GoVersion}, keyval...)
-	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "rest", "UNKNOWN")
+	kv = append(kv, "gapic", getVersionClient(), "gax", gax.Version, "rest", "UNKNOWN", "pb", protoVersion)
 	c.xGoogHeaders = []string{
 		"x-goog-api-client", gax.XGoogHeader(kv...),
 	}
@@ -927,17 +990,7 @@ func (c *restClient) CreateApi(ctx context.Context, req *apihubpb.CreateApiReque
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateApi")
 		if err != nil {
 			return err
 		}
@@ -987,17 +1040,7 @@ func (c *restClient) GetApi(ctx context.Context, req *apihubpb.GetApiRequest, op
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetApi")
 		if err != nil {
 			return err
 		}
@@ -1062,21 +1105,10 @@ func (c *restClient) ListApis(ctx context.Context, req *apihubpb.ListApisRequest
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListApis")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -1124,6 +1156,8 @@ func (c *restClient) ListApis(ctx context.Context, req *apihubpb.ListApisRequest
 //	business_unit
 //
 //	maturity_level
+//
+//	api_style
 //
 //	attributes
 //
@@ -1179,17 +1213,7 @@ func (c *restClient) UpdateApi(ctx context.Context, req *apihubpb.UpdateApiReque
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "UpdateApi")
 		if err != nil {
 			return err
 		}
@@ -1240,15 +1264,8 @@ func (c *restClient) DeleteApi(ctx context.Context, req *apihubpb.DeleteApiReque
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		// Returns nil if there is no error, otherwise wraps
-		// the response code and body into a non-nil error
-		return googleapi.CheckResponse(httpRsp)
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteApi")
+		return err
 	}, opts...)
 }
 
@@ -1295,17 +1312,7 @@ func (c *restClient) CreateVersion(ctx context.Context, req *apihubpb.CreateVers
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateVersion")
 		if err != nil {
 			return err
 		}
@@ -1357,17 +1364,7 @@ func (c *restClient) GetVersion(ctx context.Context, req *apihubpb.GetVersionReq
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetVersion")
 		if err != nil {
 			return err
 		}
@@ -1432,21 +1429,10 @@ func (c *restClient) ListVersions(ctx context.Context, req *apihubpb.ListVersion
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListVersions")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -1544,17 +1530,7 @@ func (c *restClient) UpdateVersion(ctx context.Context, req *apihubpb.UpdateVers
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "UpdateVersion")
 		if err != nil {
 			return err
 		}
@@ -1605,15 +1581,8 @@ func (c *restClient) DeleteVersion(ctx context.Context, req *apihubpb.DeleteVers
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		// Returns nil if there is no error, otherwise wraps
-		// the response code and body into a non-nil error
-		return googleapi.CheckResponse(httpRsp)
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteVersion")
+		return err
 	}, opts...)
 }
 
@@ -1680,17 +1649,7 @@ func (c *restClient) CreateSpec(ctx context.Context, req *apihubpb.CreateSpecReq
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateSpec")
 		if err != nil {
 			return err
 		}
@@ -1743,17 +1702,7 @@ func (c *restClient) GetSpec(ctx context.Context, req *apihubpb.GetSpecRequest, 
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetSpec")
 		if err != nil {
 			return err
 		}
@@ -1803,17 +1752,7 @@ func (c *restClient) GetSpecContents(ctx context.Context, req *apihubpb.GetSpecC
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetSpecContents")
 		if err != nil {
 			return err
 		}
@@ -1878,21 +1817,10 @@ func (c *restClient) ListSpecs(ctx context.Context, req *apihubpb.ListSpecsReque
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListSpecs")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -1998,17 +1926,7 @@ func (c *restClient) UpdateSpec(ctx context.Context, req *apihubpb.UpdateSpecReq
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "UpdateSpec")
 		if err != nil {
 			return err
 		}
@@ -2057,16 +1975,71 @@ func (c *restClient) DeleteSpec(ctx context.Context, req *apihubpb.DeleteSpecReq
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteSpec")
+		return err
+	}, opts...)
+}
+
+// CreateApiOperation create an apiOperation in an API version.
+// An apiOperation can be created only if the version has no apiOperations
+// which were created by parsing a spec.
+func (c *restClient) CreateApiOperation(ctx context.Context, req *apihubpb.CreateApiOperationRequest, opts ...gax.CallOption) (*apihubpb.ApiOperation, error) {
+	m := protojson.MarshalOptions{AllowPartial: true, UseEnumNumbers: true}
+	body := req.GetApiOperation()
+	jsonReq, err := m.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v/operations", req.GetParent())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+	if req.GetApiOperationId() != "" {
+		params.Add("apiOperationId", fmt.Sprintf("%v", req.GetApiOperationId()))
+	}
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "parent", url.QueryEscape(req.GetParent()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	opts = append((*c.CallOptions).CreateApiOperation[0:len((*c.CallOptions).CreateApiOperation):len((*c.CallOptions).CreateApiOperation)], opts...)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	resp := &apihubpb.ApiOperation{}
+	e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("POST", baseUrl.String(), bytes.NewReader(jsonReq))
 		if err != nil {
 			return err
 		}
-		defer httpRsp.Body.Close()
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
 
-		// Returns nil if there is no error, otherwise wraps
-		// the response code and body into a non-nil error
-		return googleapi.CheckResponse(httpRsp)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateApiOperation")
+		if err != nil {
+			return err
+		}
+
+		if err := unm.Unmarshal(buf, resp); err != nil {
+			return err
+		}
+
+		return nil
 	}, opts...)
+	if e != nil {
+		return nil, e
+	}
+	return resp, nil
 }
 
 // GetApiOperation get details about a particular operation in API version.
@@ -2102,17 +2075,7 @@ func (c *restClient) GetApiOperation(ctx context.Context, req *apihubpb.GetApiOp
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetApiOperation")
 		if err != nil {
 			return err
 		}
@@ -2177,21 +2140,10 @@ func (c *restClient) ListApiOperations(ctx context.Context, req *apihubpb.ListAp
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListApiOperations")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -2219,6 +2171,130 @@ func (c *restClient) ListApiOperations(ctx context.Context, req *apihubpb.ListAp
 	it.pageInfo.Token = req.GetPageToken()
 
 	return it
+}
+
+// UpdateApiOperation update an operation in an API version. The following fields in the
+// [ApiOperation resource][google.cloud.apihub.v1.ApiOperation] can be
+// updated:
+//
+//	details.description
+//
+//	details.documentation
+//
+//	details.http_operation.path
+//
+//	details.http_operation.method
+//
+//	details.deprecated
+//
+//	attributes
+//
+// The
+// update_mask
+// should be used to specify the fields being updated.
+//
+// An operation can be updated only if the operation was created via
+// CreateApiOperation API.
+// If the operation was created by parsing the spec, then it can be edited by
+// updating the spec.
+func (c *restClient) UpdateApiOperation(ctx context.Context, req *apihubpb.UpdateApiOperationRequest, opts ...gax.CallOption) (*apihubpb.ApiOperation, error) {
+	m := protojson.MarshalOptions{AllowPartial: true, UseEnumNumbers: true}
+	body := req.GetApiOperation()
+	jsonReq, err := m.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v", req.GetApiOperation().GetName())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+	if req.GetUpdateMask() != nil {
+		field, err := protojson.Marshal(req.GetUpdateMask())
+		if err != nil {
+			return nil, err
+		}
+		params.Add("updateMask", string(field[1:len(field)-1]))
+	}
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "api_operation.name", url.QueryEscape(req.GetApiOperation().GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	opts = append((*c.CallOptions).UpdateApiOperation[0:len((*c.CallOptions).UpdateApiOperation):len((*c.CallOptions).UpdateApiOperation)], opts...)
+	unm := protojson.UnmarshalOptions{AllowPartial: true, DiscardUnknown: true}
+	resp := &apihubpb.ApiOperation{}
+	e := gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("PATCH", baseUrl.String(), bytes.NewReader(jsonReq))
+		if err != nil {
+			return err
+		}
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
+
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "UpdateApiOperation")
+		if err != nil {
+			return err
+		}
+
+		if err := unm.Unmarshal(buf, resp); err != nil {
+			return err
+		}
+
+		return nil
+	}, opts...)
+	if e != nil {
+		return nil, e
+	}
+	return resp, nil
+}
+
+// DeleteApiOperation delete an operation in an API version and we can delete only the
+// operations created via create API. If the operation was created by parsing
+// the spec, then it can be deleted by editing or deleting the spec.
+func (c *restClient) DeleteApiOperation(ctx context.Context, req *apihubpb.DeleteApiOperationRequest, opts ...gax.CallOption) error {
+	baseUrl, err := url.Parse(c.endpoint)
+	if err != nil {
+		return err
+	}
+	baseUrl.Path += fmt.Sprintf("/v1/%v", req.GetName())
+
+	params := url.Values{}
+	params.Add("$alt", "json;enum-encoding=int")
+
+	baseUrl.RawQuery = params.Encode()
+
+	// Build HTTP headers from client and context metadata.
+	hds := []string{"x-goog-request-params", fmt.Sprintf("%s=%v", "name", url.QueryEscape(req.GetName()))}
+
+	hds = append(c.xGoogHeaders, hds...)
+	hds = append(hds, "Content-Type", "application/json")
+	headers := gax.BuildHeaders(ctx, hds...)
+	return gax.Invoke(ctx, func(ctx context.Context, settings gax.CallSettings) error {
+		if settings.Path != "" {
+			baseUrl.Path = settings.Path
+		}
+		httpReq, err := http.NewRequest("DELETE", baseUrl.String(), nil)
+		if err != nil {
+			return err
+		}
+		httpReq = httpReq.WithContext(ctx)
+		httpReq.Header = headers
+
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteApiOperation")
+		return err
+	}, opts...)
 }
 
 // GetDefinition get details about a definition in an API version.
@@ -2254,17 +2330,7 @@ func (c *restClient) GetDefinition(ctx context.Context, req *apihubpb.GetDefinit
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetDefinition")
 		if err != nil {
 			return err
 		}
@@ -2326,17 +2392,7 @@ func (c *restClient) CreateDeployment(ctx context.Context, req *apihubpb.CreateD
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateDeployment")
 		if err != nil {
 			return err
 		}
@@ -2386,17 +2442,7 @@ func (c *restClient) GetDeployment(ctx context.Context, req *apihubpb.GetDeploym
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetDeployment")
 		if err != nil {
 			return err
 		}
@@ -2461,21 +2507,10 @@ func (c *restClient) ListDeployments(ctx context.Context, req *apihubpb.ListDepl
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListDeployments")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -2527,9 +2562,17 @@ func (c *restClient) ListDeployments(ctx context.Context, req *apihubpb.ListDepl
 //
 //	attributes
 //
-// The
-// update_mask
-// should be used to specify the fields being updated.
+//	[source_project] [google.cloud.apihub.v1.Deployment.source_project]
+//
+//	[source_environment]
+//	[google.cloud.apihub.v1.Deployment.source_environment]
+//
+//	management_url
+//
+//	source_uri
+//	The
+//	update_mask
+//	should be used to specify the fields being updated.
 func (c *restClient) UpdateDeployment(ctx context.Context, req *apihubpb.UpdateDeploymentRequest, opts ...gax.CallOption) (*apihubpb.Deployment, error) {
 	m := protojson.MarshalOptions{AllowPartial: true, UseEnumNumbers: true}
 	body := req.GetDeployment()
@@ -2576,17 +2619,7 @@ func (c *restClient) UpdateDeployment(ctx context.Context, req *apihubpb.UpdateD
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "UpdateDeployment")
 		if err != nil {
 			return err
 		}
@@ -2633,15 +2666,8 @@ func (c *restClient) DeleteDeployment(ctx context.Context, req *apihubpb.DeleteD
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		// Returns nil if there is no error, otherwise wraps
-		// the response code and body into a non-nil error
-		return googleapi.CheckResponse(httpRsp)
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteDeployment")
+		return err
 	}, opts...)
 }
 
@@ -2694,17 +2720,7 @@ func (c *restClient) CreateAttribute(ctx context.Context, req *apihubpb.CreateAt
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateAttribute")
 		if err != nil {
 			return err
 		}
@@ -2754,17 +2770,7 @@ func (c *restClient) GetAttribute(ctx context.Context, req *apihubpb.GetAttribut
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetAttribute")
 		if err != nil {
 			return err
 		}
@@ -2853,17 +2859,7 @@ func (c *restClient) UpdateAttribute(ctx context.Context, req *apihubpb.UpdateAt
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "UpdateAttribute")
 		if err != nil {
 			return err
 		}
@@ -2914,15 +2910,8 @@ func (c *restClient) DeleteAttribute(ctx context.Context, req *apihubpb.DeleteAt
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		// Returns nil if there is no error, otherwise wraps
-		// the response code and body into a non-nil error
-		return googleapi.CheckResponse(httpRsp)
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteAttribute")
+		return err
 	}, opts...)
 }
 
@@ -2974,21 +2963,10 @@ func (c *restClient) ListAttributes(ctx context.Context, req *apihubpb.ListAttri
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListAttributes")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -3063,21 +3041,10 @@ func (c *restClient) SearchResources(ctx context.Context, req *apihubpb.SearchRe
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "SearchResources")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -3150,17 +3117,7 @@ func (c *restClient) CreateExternalApi(ctx context.Context, req *apihubpb.Create
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CreateExternalApi")
 		if err != nil {
 			return err
 		}
@@ -3210,17 +3167,7 @@ func (c *restClient) GetExternalApi(ctx context.Context, req *apihubpb.GetExtern
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetExternalApi")
 		if err != nil {
 			return err
 		}
@@ -3299,17 +3246,7 @@ func (c *restClient) UpdateExternalApi(ctx context.Context, req *apihubpb.Update
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "UpdateExternalApi")
 		if err != nil {
 			return err
 		}
@@ -3356,15 +3293,8 @@ func (c *restClient) DeleteExternalApi(ctx context.Context, req *apihubpb.Delete
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		// Returns nil if there is no error, otherwise wraps
-		// the response code and body into a non-nil error
-		return googleapi.CheckResponse(httpRsp)
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteExternalApi")
+		return err
 	}, opts...)
 }
 
@@ -3413,21 +3343,10 @@ func (c *restClient) ListExternalApis(ctx context.Context, req *apihubpb.ListExt
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListExternalApis")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -3490,17 +3409,7 @@ func (c *restClient) GetLocation(ctx context.Context, req *locationpb.GetLocatio
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetLocation")
 		if err != nil {
 			return err
 		}
@@ -3565,21 +3474,10 @@ func (c *restClient) ListLocations(ctx context.Context, req *locationpb.ListLoca
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListLocations")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}
@@ -3645,15 +3543,8 @@ func (c *restClient) CancelOperation(ctx context.Context, req *longrunningpb.Can
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		// Returns nil if there is no error, otherwise wraps
-		// the response code and body into a non-nil error
-		return googleapi.CheckResponse(httpRsp)
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, jsonReq, "CancelOperation")
+		return err
 	}, opts...)
 }
 
@@ -3687,15 +3578,8 @@ func (c *restClient) DeleteOperation(ctx context.Context, req *longrunningpb.Del
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		// Returns nil if there is no error, otherwise wraps
-		// the response code and body into a non-nil error
-		return googleapi.CheckResponse(httpRsp)
+		_, err = executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "DeleteOperation")
+		return err
 	}, opts...)
 }
 
@@ -3732,17 +3616,7 @@ func (c *restClient) GetOperation(ctx context.Context, req *longrunningpb.GetOpe
 		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
-		httpRsp, err := c.httpClient.Do(httpReq)
-		if err != nil {
-			return err
-		}
-		defer httpRsp.Body.Close()
-
-		if err = googleapi.CheckResponse(httpRsp); err != nil {
-			return err
-		}
-
-		buf, err := io.ReadAll(httpRsp.Body)
+		buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "GetOperation")
 		if err != nil {
 			return err
 		}
@@ -3807,21 +3681,10 @@ func (c *restClient) ListOperations(ctx context.Context, req *longrunningpb.List
 			}
 			httpReq.Header = headers
 
-			httpRsp, err := c.httpClient.Do(httpReq)
+			buf, err := executeHTTPRequest(ctx, c.httpClient, httpReq, c.logger, nil, "ListOperations")
 			if err != nil {
 				return err
 			}
-			defer httpRsp.Body.Close()
-
-			if err = googleapi.CheckResponse(httpRsp); err != nil {
-				return err
-			}
-
-			buf, err := io.ReadAll(httpRsp.Body)
-			if err != nil {
-				return err
-			}
-
 			if err := unm.Unmarshal(buf, resp); err != nil {
 				return err
 			}

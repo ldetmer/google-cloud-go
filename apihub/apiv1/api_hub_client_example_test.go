@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,6 +61,31 @@ func ExampleClient_CreateApi() {
 		// See https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#CreateApiRequest.
 	}
 	resp, err := c.CreateApi(ctx, req)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	// TODO: Use resp.
+	_ = resp
+}
+
+func ExampleClient_CreateApiOperation() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apihub.NewRESTClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &apihubpb.CreateApiOperationRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#CreateApiOperationRequest.
+	}
+	resp, err := c.CreateApiOperation(ctx, req)
 	if err != nil {
 		// TODO: Handle error.
 	}
@@ -211,6 +236,29 @@ func ExampleClient_DeleteApi() {
 		// See https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#DeleteApiRequest.
 	}
 	err = c.DeleteApi(ctx, req)
+	if err != nil {
+		// TODO: Handle error.
+	}
+}
+
+func ExampleClient_DeleteApiOperation() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apihub.NewRESTClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &apihubpb.DeleteApiOperationRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#DeleteApiOperationRequest.
+	}
+	err = c.DeleteApiOperation(ctx, req)
 	if err != nil {
 		// TODO: Handle error.
 	}
@@ -870,6 +918,31 @@ func ExampleClient_UpdateApi() {
 		// See https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#UpdateApiRequest.
 	}
 	resp, err := c.UpdateApi(ctx, req)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	// TODO: Use resp.
+	_ = resp
+}
+
+func ExampleClient_UpdateApiOperation() {
+	ctx := context.Background()
+	// This snippet has been automatically generated and should be regarded as a code template only.
+	// It will require modifications to work:
+	// - It may require correct/in-range values for request initialization.
+	// - It may require specifying regional endpoints when creating the service client as shown in:
+	//   https://pkg.go.dev/cloud.google.com/go#hdr-Client_Options
+	c, err := apihub.NewRESTClient(ctx)
+	if err != nil {
+		// TODO: Handle error.
+	}
+	defer c.Close()
+
+	req := &apihubpb.UpdateApiOperationRequest{
+		// TODO: Fill request struct fields.
+		// See https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#UpdateApiOperationRequest.
+	}
+	resp, err := c.UpdateApiOperation(ctx, req)
 	if err != nil {
 		// TODO: Handle error.
 	}

@@ -1,7 +1,7 @@
 {
   "clientLibrary": {
     "name": "cloud.google.com/go/kms/apiv1",
-    "version": "1.20.1",
+    "version": "1.23.0",
     "language": "GO",
     "apis": [
       {
@@ -14,7 +14,7 @@
     {
       "regionTag": "cloudkms_v1_generated_Autokey_CreateKeyHandle_sync",
       "title": "cloudkms CreateKeyHandle Sample",
-      "description": "CreateKeyHandle creates a new [KeyHandle][google.cloud.kms.v1.KeyHandle], triggering the\nprovisioning of a new [CryptoKey][google.cloud.kms.v1.CryptoKey] for CMEK\nuse with the given resource type in the configured key project and the same\nlocation. [GetOperation][Operations.GetOperation] should be used to resolve\nthe resulting long-running operation and get the resulting\n[KeyHandle][google.cloud.kms.v1.KeyHandle] and\n[CryptoKey][google.cloud.kms.v1.CryptoKey].",
+      "description": "CreateKeyHandle creates a new [KeyHandle][google.cloud.kms.v1.KeyHandle], triggering the\nprovisioning of a new [CryptoKey][google.cloud.kms.v1.CryptoKey] for CMEK\nuse with the given resource type in the configured key project and the same\nlocation. [GetOperation][google.longrunning.Operations.GetOperation] should\nbe used to resolve the resulting long-running operation and get the\nresulting [KeyHandle][google.cloud.kms.v1.KeyHandle] and\n[CryptoKey][google.cloud.kms.v1.CryptoKey].",
       "file": "AutokeyClient/CreateKeyHandle/main.go",
       "language": "GO",
       "clientMethod": {
@@ -1698,6 +1698,52 @@
         "method": {
           "shortName": "CreateKeyRing",
           "fullName": "google.cloud.kms.v1.KeyManagementService.CreateKeyRing",
+          "service": {
+            "shortName": "KeyManagementService",
+            "fullName": "google.cloud.kms.v1.KeyManagementService"
+          }
+        }
+      },
+      "origin": "API_DEFINITION",
+      "segments": [
+        {
+          "start": 18,
+          "end": 53,
+          "type": "FULL"
+        }
+      ]
+    },
+    {
+      "regionTag": "cloudkms_v1_generated_KeyManagementService_Decapsulate_sync",
+      "title": "cloudkms Decapsulate Sample",
+      "description": "Decapsulate decapsulates data that was encapsulated with a public key retrieved from\n[GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey]\ncorresponding to a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]\nwith [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]\nKEY_ENCAPSULATION.",
+      "file": "KeyManagementClient/Decapsulate/main.go",
+      "language": "GO",
+      "clientMethod": {
+        "shortName": "Decapsulate",
+        "fullName": "google.cloud.kms.v1.KeyManagementClient.Decapsulate",
+        "parameters": [
+          {
+            "type": "context.Context",
+            "name": "ctx"
+          },
+          {
+            "type": "kmspb.DecapsulateRequest",
+            "name": "req"
+          },
+          {
+            "type": "...gax.CallOption",
+            "name": "opts"
+          }
+        ],
+        "resultType": "*kmspb.DecapsulateResponse",
+        "client": {
+          "shortName": "KeyManagementClient",
+          "fullName": "google.cloud.kms.v1.KeyManagementClient"
+        },
+        "method": {
+          "shortName": "Decapsulate",
+          "fullName": "google.cloud.kms.v1.KeyManagementService.Decapsulate",
           "service": {
             "shortName": "KeyManagementService",
             "fullName": "google.cloud.kms.v1.KeyManagementService"

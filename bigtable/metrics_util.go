@@ -28,8 +28,9 @@ import (
 )
 
 const (
-	defaultCluster = "unspecified"
+	defaultCluster = "<unspecified>"
 	defaultZone    = "global"
+	defaultTable   = "<unspecified>"
 )
 
 // get GFE latency in ms from response metadata
@@ -64,6 +65,8 @@ func extractServerLatency(headerMD metadata.MD, trailerMD metadata.MD) (float64,
 }
 
 // Obtain cluster and zone from response metadata
+// Check both headers and trailers because in different environments the metadata could
+// be returned in headers or trailers
 func extractLocation(headerMD metadata.MD, trailerMD metadata.MD) (string, string, error) {
 	var locationMetadata []string
 
