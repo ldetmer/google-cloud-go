@@ -68,7 +68,7 @@ func GenerateInternalVersionFile(moduleDir, version string) error {
 // the sourceDir and writing them to the destDir. These two may be the same, but don't have to be.
 func UpdateSnippetsMetadata(lib *request.Library, sourceDir string, destDir string, moduleConfig *config.ModuleConfig) error {
 	moduleName := lib.ID
-	version := lib.Version
+	version := lib.Version + "-new"
 
 	slog.Debug("librariangen: updating snippets metadata")
 	snpDir := filepath.Join("internal", "generated", "snippets", moduleName)
