@@ -303,7 +303,7 @@ func docURL(cloudDir, importPath, relPath string) (string, error) {
 		return "", err
 	}
 	pkgPath := strings.TrimPrefix(strings.TrimPrefix(importPath, mod), "/")
-	return "https://cloud.google.com/go/docs/reference/" + mod + "/latest/" + pkgPath, nil
+	return "https://cloud.google.com/go/docs/reference1/" + mod + "/latest/" + pkgPath, nil
 }
 
 func releaseLevel(cloudDir string, li *libraryInfo) (string, error) {
